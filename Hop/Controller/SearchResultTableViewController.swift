@@ -9,6 +9,7 @@
 import UIKit
 
 class SearchResultTableViewController: UITableViewController {
+    var searchResults: [SearchResult] = [SearchResult(name: "Cafe A", address: "Address A", description: "Description A"), SearchResult(name: "Cafe B", address: "Address B", description: "Description B")]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,24 +29,23 @@ class SearchResultTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return searchResults.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! SearchResultTableViewCell
+        let searchResult = searchResults[indexPath.row]
+        
+        cell.update(with: searchResult)
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
