@@ -17,7 +17,7 @@
 		28CA2C0820D2A562002781FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0620D2A562002781FF /* Main.storyboard */; };
 		28CA2C0A20D2A563002781FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0920D2A563002781FF /* Assets.xcassets */; };
 		28CA2C0D20D2A563002781FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0B20D2A563002781FF /* LaunchScreen.storyboard */; };
-		89DF7EFA20D6B95400BDEAF9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DF7EF920D6B95400BDEAF9 /* SwiftyJSON.swift */; };
+		89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		28CA2C0920D2A563002781FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28CA2C0C20D2A563002781FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		28CA2C0E20D2A563002781FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		89DF7EF920D6B95400BDEAF9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = "../../../../../Downloads/mrJitters-master-2/mrJitters/SwiftyJSON.swift"; sourceTree = "<group>"; };
+		89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +86,7 @@
 		28CA2C0120D2A562002781FF /* Hop */ = {
 			isa = PBXGroup;
 			children = (
-				89DF7EF920D6B95400BDEAF9 /* SwiftyJSON.swift */,
+				89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */,
 				28CA2C0220D2A562002781FF /* AppDelegate.swift */,
 				28CA2C0620D2A562002781FF /* Main.storyboard */,
 				22115A8C20D2BB62002F5CB9 /* Controller */,
@@ -172,7 +172,7 @@
 				22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */,
 				28CA2C0520D2A562002781FF /* InitialViewController.swift in Sources */,
 				28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */,
-				89DF7EFA20D6B95400BDEAF9 /* SwiftyJSON.swift in Sources */,
+				89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */,
 				22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */,
 				22115A8820D2BB25002F5CB9 /* SearchResult.swift in Sources */,
 				22115A8620D2BB17002F5CB9 /* Cafe.swift in Sources */,
