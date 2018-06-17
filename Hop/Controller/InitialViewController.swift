@@ -9,7 +9,8 @@
 import UIKit
 
 class InitialViewController: UIViewController {
-
+    @IBOutlet weak var searchInput: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.

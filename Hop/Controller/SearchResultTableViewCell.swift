@@ -18,12 +18,6 @@ class SearchResultTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    
-    func update(with searchResult: SearchResult) {
-        cafeNameLabel.text = searchResult.name
-        cafeAddressLabel.text = searchResult.address
-        cafeDescriptionLabel.text = searchResult.description
-    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

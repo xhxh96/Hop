@@ -7,13 +7,22 @@
 //
 
 import UIKit
+import CoreLocation
+
+let client_id = "NAT0ERZ20UEDFBBYWC3LFXTT0QPGH2GU4WEZ1PNI3QO22GRD"
+let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
 
 class SearchResultTableViewController: UITableViewController {
-    var searchResults: [SearchResult] = [SearchResult(name: "Cafe A", address: "Address A", description: "Description A"), SearchResult(name: "Cafe B", address: "Address B", description: "Description B")]
+    //var searchResults: [SearchResult] = [SearchResult(name: "Cafe A", address: "Address A", description: "Description A"), SearchResult(name: "Cafe B", address: "Address B", description: "Description B")]
 
+    var searchResults = [JSON]()
+    var currentLocation:CLLocationCoordinate2D!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        searchForCoffee()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -39,13 +48,37 @@ class SearchResultTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! SearchResultTableViewCell
-        let searchResult = searchResults[indexPath.row]
         
-        cell.update(with: searchResult)
-
+        cell.cafeNameLabel.text = searchResults[(indexPath as NSIndexPath).row]["venue"]["name"].string
+        cell.cafeAddressLabel.text = searchResults[(indexPath as NSIndexPath).row]["venue"]["location"]["formattedAddress"][0].string
+        
         return cell
     }
     
+    func searchForCoffee() {
+        let url = "https://api.foursquare.com/v2/search/recommendations?near=serangoon&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+        
+        let request = NSMutableURLRequest(url: URL(string: url)!)
+        let session = URLSession.shared
+        
+        request.httpMethod = "GET"
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
+            
+            let json = JSON(data: data!)
+            self.searchResults = json["response"]["group"]["results"].arrayValue
+            
+            DispatchQueue.main.async {
+                self.tableView.isHidden = false
+                self.tableView.reloadData()
+            }
+        })
+        
+        task.resume()
+    }
 
     /*
     // Override to support conditional editing of the table view.
