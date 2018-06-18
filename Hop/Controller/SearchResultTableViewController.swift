@@ -7,9 +7,9 @@ let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
 class SearchResultTableViewController: UITableViewController {
     var searchKeyword: String?
     var cafeResults = [JSON]()
+    var imageResults = [JSON]()
     var currentLocation:CLLocationCoordinate2D!
-    var counter = 0
-    
+    var counter: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,10 +43,33 @@ class SearchResultTableViewController: UITableViewController {
         cell.cafeNameLabel.text = cafeResults[indexPath.row]["venue"]["name"].string
         cell.cafeAddressLabel.text = cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string
         
-        print(counter)
-        counter += 1
+        let venueId: String? = cafeResults[indexPath.row]["venue"]["id"].string
         
+        //let URL: URL? = getURLFromVenueId(venueId: venueId)
+        let imageURL: URL? = URL(string: "https://igx.4sqi.net/img/general/" + "90x90" + "/63391676_WtSV4ixRqRlV_LnwdJNhA9iBRNePKnY0RyJ0XabQtls.jpg")
+        
+        print(imageURL!)
         return cell
+    }
+    
+    func getURLFromVenueId(venueId : String?) {
+        //fix this when unblocked
+        let url = "https://api.foursquare.com/v2/venues/\(venueId ?? "0")/photos?limit=1&v=20180617&client_id=\(client_id)&client_secret=\(client_secret)"
+        let request = NSMutableURLRequest(url: URL(string: url)!)
+        let session = URLSession.shared
+        
+        request.httpMethod = "GET"
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
+            
+            let json = JSON(data: data!)
+            self.imageResults = json["response"]["photos"]["items"].arrayValue
+            
+        })
+        task.resume()
     }
     
     func searchForCoffee() {
