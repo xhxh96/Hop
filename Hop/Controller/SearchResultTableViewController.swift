@@ -48,7 +48,9 @@ class SearchResultTableViewController: UITableViewController {
     }
     
     func searchForCoffee() {
-        let url = "https://api.foursquare.com/v2/search/recommendations?near=serangoon&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+        let formattedSearchInput = searchKeyword?.replacingOccurrences(of: " ", with: "-")
+        // to implement guard for input in URL
+        let url = "https://api.foursquare.com/v2/search/recommendations?near=\(formattedSearchInput ?? "Singapore")&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
         
         let request = NSMutableURLRequest(url: URL(string: url)!)
         let session = URLSession.shared
