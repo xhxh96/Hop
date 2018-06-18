@@ -41,8 +41,17 @@ class SearchResultTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! SearchResultTableViewCell
         
-        cell.cafeNameLabel.text = searchResults[(indexPath as NSIndexPath).row]["venue"]["name"].string
-        cell.cafeAddressLabel.text = searchResults[(indexPath as NSIndexPath).row]["venue"]["location"]["formattedAddress"][0].string
+        cell.cafeNameLabel.text = searchResults[indexPath.row]["venue"]["name"].string
+        
+        /*
+        var addressString = String.init()
+        
+        for i in 0...searchResults[indexPath.row]["venue"]["location"]["formattedAddress"].count {
+            addressString += (searchResults[indexPath.row]["venue"]["location"]["formattedAddress"][i].string! + " ")
+        }
+         */
+        
+        cell.cafeAddressLabel.text = searchResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string
         
         return cell
     }
