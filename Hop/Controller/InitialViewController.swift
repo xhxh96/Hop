@@ -34,7 +34,6 @@ class InitialViewController: UIViewController {
             let navigationController = segue.destination as? UINavigationController
             let searchResultTableViewController = navigationController?.viewControllers.first as! SearchResultTableViewController
             let searchKeyword = searchInput.text!
-            print(searchKeyword)
             searchResultTableViewController.searchKeyword = searchKeyword
         }
     }

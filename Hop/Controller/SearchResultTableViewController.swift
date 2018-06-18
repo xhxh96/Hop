@@ -40,15 +40,17 @@ class SearchResultTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! SearchResultTableViewCell
         
-        cell.cafeNameLabel.text = cafeResults[indexPath.row]["venue"]["name"].string
-        cell.cafeAddressLabel.text = cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string
+        let imageURL = URL(string: "https://igx.4sqi.net/img/general/90x90/63391676_WtSV4ixRqRlV_LnwdJNhA9iBRNePKnY0RyJ0XabQtls.jpg")
+        let data = try? Data(contentsOf: imageURL!)
         
-        let venueId: String? = cafeResults[indexPath.row]["venue"]["id"].string
+        cell.update(thumbnailData: data, name: cafeResults[indexPath.row]["venue"]["name"].string, address: cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string)
+        
+        //let venueId: String? = cafeResults[indexPath.row]["venue"]["id"].string
         
         //let URL: URL? = getURLFromVenueId(venueId: venueId)
-        let imageURL: URL? = URL(string: "https://igx.4sqi.net/img/general/" + "90x90" + "/63391676_WtSV4ixRqRlV_LnwdJNhA9iBRNePKnY0RyJ0XabQtls.jpg")
+        //let imageURL: URL? = URL(string: "https://igx.4sqi.net/img/general/" + "90x90" + "/63391676_WtSV4ixRqRlV_LnwdJNhA9iBRNePKnY0RyJ0XabQtls.jpg")
         
-        print(imageURL!)
+        //print(imageURL!)
         return cell
     }
     

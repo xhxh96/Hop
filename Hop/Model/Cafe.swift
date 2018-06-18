@@ -22,26 +22,26 @@ enum Amenities: Int {
 }
 
 class Cafe {
-    var images: [UIImage]
+    //var images: [UIImage]
     var name: String
     var address: String
-    var bloggerReview: Int
-    var hopperReview: Int
-    var priceRange: Int
-    var amenities: [Bool]
-    var locationX: Double
-    var locationY: Double
+    var bloggerReview: Double?
+    var hopperReview: Double?
+    //var priceRange: Int
+    //var amenities: [Bool]
+    var latitude: Double
+    var longitude: Double
     
-    init(images: [UIImage], name: String, address: String, bloggerReview: Int, hopperReview: Int, priceRange: Int, amenities: [Bool], locationX: Double, locationY: Double) {
-        self.images = images
+    init(name: String, address: String, bloggerReview: Double?, hopperReview: Double?, latitude: Double, longitude: Double) {
+        //self.images = images
         self.name = name
         self.address = address
         self.bloggerReview = bloggerReview
         self.hopperReview = hopperReview
-        self.priceRange = priceRange
-        self.amenities = amenities
-        self.locationX = locationX
-        self.locationY = locationY
+        //self.priceRange = priceRange
+        //self.amenities = amenities
+        self.latitude = latitude
+        self.longitude = longitude
     }
     
     static func getAmenities(cardPayment: Bool, halal: Bool, openBooking: Bool, parking: Bool, phoneBooking: Bool, powerPlug: Bool, transit: Bool, vegetarian: Bool, water: Bool, wifi: Bool) -> [Bool] {
