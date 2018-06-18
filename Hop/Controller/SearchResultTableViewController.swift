@@ -1,11 +1,3 @@
-//
-//  SearchResultTableViewController.swift
-//  Hop
-//
-//  Created by macOS on 14/6/18.
-//  Copyright © 2018 NUS. All rights reserved.
-//
-
 import UIKit
 import CoreLocation
 
@@ -15,13 +7,13 @@ let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
 class SearchResultTableViewController: UITableViewController {
     //var searchResults: [SearchResult] = [SearchResult(name: "Cafe A", address: "Address A", description: "Description A"), SearchResult(name: "Cafe B", address: "Address B", description: "Description B")]
 
+    var searchKeyword: String?
     var searchResults = [JSON]()
     var currentLocation:CLLocationCoordinate2D!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         searchForCoffee()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

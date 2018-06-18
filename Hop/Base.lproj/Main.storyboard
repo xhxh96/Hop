@@ -29,12 +29,15 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="searchValueChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="kCM-sM-g58"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dZ0-rm-bfb">
                                 <rect key="frame" x="130" y="356.5" width="115" height="30"/>
                                 <state key="normal" title="Search Near You"/>
                                 <connections>
-                                    <segue destination="nVn-lL-Vff" kind="show" id="lc7-JM-197"/>
+                                    <segue destination="nVn-lL-Vff" kind="show" identifier="beginSearch" id="Fs6-li-ydb"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -53,6 +56,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="searchButton" destination="dZ0-rm-bfb" id="gKa-v9-tC6"/>
                         <outlet property="searchInput" destination="8wT-0H-B2Q" id="GjJ-Z9-r86"/>
                     </connections>
                 </viewController>
@@ -574,7 +578,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BW0-QM-eTU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="100" y="154"/>
+            <point key="canvasLocation" x="116" y="154"/>
         </scene>
     </scenes>
     <resources>

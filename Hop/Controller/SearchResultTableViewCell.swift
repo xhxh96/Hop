@@ -1,11 +1,3 @@
-//
-//  SearchResultTableViewCell.swift
-//  Hop
-//
-//  Created by macOS on 16/6/18.
-//  Copyright © 2018 NUS. All rights reserved.
-//
-
 import UIKit
 
 class SearchResultTableViewCell: UITableViewCell {
