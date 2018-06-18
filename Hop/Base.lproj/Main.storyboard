@@ -128,7 +128,7 @@
                                     <outlet property="cafeDescriptionLabel" destination="D4R-dK-kft" id="1cu-M4-SxK"/>
                                     <outlet property="cafeNameLabel" destination="mjL-qX-UO9" id="3OP-OU-N1e"/>
                                     <outlet property="cafeThumbnail" destination="LHP-70-eGK" id="ei0-me-9xP"/>
-                                    <segue destination="jOF-RL-4fm" kind="show" id="XdK-UF-hmH"/>
+                                    <segue destination="jOF-RL-4fm" kind="show" identifier="cafeDetails" id="XdK-UF-hmH"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -557,6 +557,11 @@
                             <outlet property="delegate" destination="jOF-RL-4fm" id="iYM-b6-pGZ"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="cafeAddressLabel" destination="Fvh-jN-3Ek" id="LN8-Ei-w6y"/>
+                        <outlet property="cafeNameLabel" destination="hci-eg-ij3" id="P4a-2v-MtS"/>
+                        <outlet property="mapView" destination="hNW-vM-AJk" id="rjU-I1-IU1"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O4H-Uu-UGV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

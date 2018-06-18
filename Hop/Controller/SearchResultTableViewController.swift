@@ -5,11 +5,10 @@ let client_id = "NAT0ERZ20UEDFBBYWC3LFXTT0QPGH2GU4WEZ1PNI3QO22GRD"
 let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
 
 class SearchResultTableViewController: UITableViewController {
-    //var searchResults: [SearchResult] = [SearchResult(name: "Cafe A", address: "Address A", description: "Description A"), SearchResult(name: "Cafe B", address: "Address B", description: "Description B")]
-
     var searchKeyword: String?
-    var searchResults = [JSON]()
+    var cafeResults = [JSON]()
     var currentLocation:CLLocationCoordinate2D!
+    var counter = 0
     
     
     override func viewDidLoad() {
@@ -34,24 +33,18 @@ class SearchResultTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults.count
+        return cafeResults.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! SearchResultTableViewCell
         
-        cell.cafeNameLabel.text = searchResults[indexPath.row]["venue"]["name"].string
+        cell.cafeNameLabel.text = cafeResults[indexPath.row]["venue"]["name"].string
+        cell.cafeAddressLabel.text = cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string
         
-        /*
-        var addressString = String.init()
-        
-        for i in 0...searchResults[indexPath.row]["venue"]["location"]["formattedAddress"].count {
-            addressString += (searchResults[indexPath.row]["venue"]["location"]["formattedAddress"][i].string! + " ")
-        }
-         */
-        
-        cell.cafeAddressLabel.text = searchResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string
+        print(counter)
+        counter += 1
         
         return cell
     }
@@ -72,7 +65,7 @@ class SearchResultTableViewController: UITableViewController {
         let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
             
             let json = JSON(data: data!)
-            self.searchResults = json["response"]["group"]["results"].arrayValue
+            self.cafeResults = json["response"]["group"]["results"].arrayValue
             
             DispatchQueue.main.async {
                 self.tableView.isHidden = false
@@ -118,14 +111,18 @@ class SearchResultTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "cafeDetails" {
+            let cafeTableViewController = segue.destination as! CafeTableViewController
+            let indexPath = tableView.indexPathForSelectedRow!
+            let selectedCafe = cafeResults[indexPath.row]
+            cafeTableViewController.selectedCafe = selectedCafe
+        }
     }
-    */
+    
 
 }

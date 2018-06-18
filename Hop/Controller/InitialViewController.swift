@@ -38,7 +38,5 @@ class InitialViewController: UIViewController {
             searchResultTableViewController.searchKeyword = searchKeyword
         }
     }
-
-
 }
 

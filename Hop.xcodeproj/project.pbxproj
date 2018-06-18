@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		22115A8620D2BB17002F5CB9 /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22115A8520D2BB17002F5CB9 /* Cafe.swift */; };
-		22115A8820D2BB25002F5CB9 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22115A8720D2BB25002F5CB9 /* SearchResult.swift */; };
 		22115A8B20D2BB5A002F5CB9 /* SearchResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */; };
 		22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */; };
 		22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */; };
@@ -17,12 +16,12 @@
 		28CA2C0820D2A562002781FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0620D2A562002781FF /* Main.storyboard */; };
 		28CA2C0A20D2A563002781FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0920D2A563002781FF /* Assets.xcassets */; };
 		28CA2C0D20D2A563002781FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0B20D2A563002781FF /* LaunchScreen.storyboard */; };
+		28D9657D20D7BE9D00158318 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D9657C20D7BE9D00158318 /* MapAnnotation.swift */; };
 		89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		22115A8520D2BB17002F5CB9 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
-		22115A8720D2BB25002F5CB9 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewController.swift; sourceTree = "<group>"; };
 		22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeTableViewController.swift; sourceTree = "<group>"; };
 		22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
@@ -33,6 +32,7 @@
 		28CA2C0920D2A563002781FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28CA2C0C20D2A563002781FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		28CA2C0E20D2A563002781FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28D9657C20D7BE9D00158318 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -51,7 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				22115A8520D2BB17002F5CB9 /* Cafe.swift */,
-				22115A8720D2BB25002F5CB9 /* SearchResult.swift */,
+				28D9657C20D7BE9D00158318 /* MapAnnotation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -171,10 +171,10 @@
 			files = (
 				22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */,
 				28CA2C0520D2A562002781FF /* InitialViewController.swift in Sources */,
+				28D9657D20D7BE9D00158318 /* MapAnnotation.swift in Sources */,
 				28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */,
 				89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */,
 				22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */,
-				22115A8820D2BB25002F5CB9 /* SearchResult.swift in Sources */,
 				22115A8620D2BB17002F5CB9 /* Cafe.swift in Sources */,
 				22115A8B20D2BB5A002F5CB9 /* SearchResultTableViewController.swift in Sources */,
 			);
