@@ -4,7 +4,8 @@ import MapKit
 class CafeTableViewController: UITableViewController {
     var selectedCafe: JSON!
     var cafeObject: Cafe!
-
+    var rawCafeHours = [JSON]()
+    
     @IBOutlet weak var cafeNameLabel: UILabel!
     @IBOutlet weak var cafeAddressLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
@@ -14,7 +15,6 @@ class CafeTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.allowsSelection = false
         
         cafeObject = createCafeObject()
@@ -74,6 +74,29 @@ class CafeTableViewController: UITableViewController {
                 hopperReviewStars[index].alpha = 1
             }
         }
+    }
+    
+    func listOpeningHours() {
+        let venueId = selectedCafe["venue"]["id"].string!
+        
+        let url = "https://api.foursquare.com/v2/venues/\(venueId)/hours?client_id=\(client_id)&client_secret=\(client_secret)"
+        
+        let request = NSMutableURLRequest(url: URL(string: url)!)
+        let session = URLSession.shared
+        
+        request.httpMethod = "GET"
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
+            
+            let json = JSON(data: data!)
+            print(json)
+            self.rawCafeHours = json["response"]["hours"]["timeframes"].arrayValue
+        })
+        
+        task.resume()
     }
 
     /*
