@@ -10,8 +10,10 @@ class SearchResultTableViewCell: UITableViewCell {
         // Initialization code
     }
     
-    func update(thumbnailData: Data?, name: String?, address: String?) {
-        cafeThumbnail.image = UIImage(data: thumbnailData!)
+    func update(thumbnail: Data?, name: String?, address: String?) {
+        if let thumbnail = thumbnail {
+            cafeThumbnail.image = UIImage(data: thumbnail)
+        }
         cafeNameLabel.text = name
         cafeAddressLabel.text = address
     }

@@ -39,10 +39,28 @@ class SearchResultTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! SearchResultTableViewCell
         //getURLFromVenueId(venueId: venueId)
-        let imageURL = URL(string: cafeResults[indexPath.row]["photo"]["prefix"].string! + "90x90" + cafeResults[indexPath.row]["photo"]["suffix"].string!)
-        let data = try? Data(contentsOf: imageURL!)
         
-        cell.update(thumbnailData: data, name: cafeResults[indexPath.row]["venue"]["name"].string, address: cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string)
+        
+        // Start of Image Retrieval and Image Encoding
+        var imageURL: URL?
+        var imageData: Data?
+        
+        if let prefixURL = cafeResults[indexPath.row]["photo"]["prefix"].string, let suffixURL = cafeResults[indexPath.row]["photo"]["suffix"].string {
+            imageURL = URL(string: prefixURL + "90x90" + suffixURL)
+        }
+        else {
+            imageURL = nil
+        }
+        
+        if let imageURL = imageURL {
+            imageData = try? Data(contentsOf: imageURL)
+        }
+        else {
+            imageData = nil
+        }
+        // End of Image Retrieval and Image Encoding
+        
+        cell.update(thumbnail: imageData, name: cafeResults[indexPath.row]["venue"]["name"].string, address: cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string)
         
 
         return cell
@@ -112,8 +130,6 @@ class SearchResultTableViewController: UITableViewController {
 
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "cafeDetails" {
             let cafeTableViewController = segue.destination as! CafeTableViewController

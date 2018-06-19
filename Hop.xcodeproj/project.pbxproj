@@ -59,12 +59,19 @@
 		22115A8C20D2BB62002F5CB9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */,
 				28CA2C0420D2A562002781FF /* InitialViewController.swift */,
 				22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */,
 				22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		285DCFF720D94BAF006C6FAB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		28CA2BF620D2A562002781FF = {
@@ -89,6 +96,7 @@
 				89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */,
 				28CA2C0220D2A562002781FF /* AppDelegate.swift */,
 				28CA2C0620D2A562002781FF /* Main.storyboard */,
+				285DCFF720D94BAF006C6FAB /* View */,
 				22115A8C20D2BB62002F5CB9 /* Controller */,
 				22115A8920D2BB2C002F5CB9 /* Model */,
 				28CA2C0920D2A563002781FF /* Assets.xcassets */,

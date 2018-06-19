@@ -1,4 +1,5 @@
 import MapKit
+import Contacts
 
 class MapAnnotation: NSObject, MKAnnotation {
     let title: String?
@@ -15,5 +16,13 @@ class MapAnnotation: NSObject, MKAnnotation {
     
     var subtitle: String? {
         return address
+    }
+    
+    func mapItem() -> MKMapItem {
+        let addressDict = [CNPostalAddressStreetKey: subtitle!]
+        let placemark = MKPlacemark(coordinate: coordinate, addressDictionary: addressDict)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = title
+        return mapItem
     }
 }
