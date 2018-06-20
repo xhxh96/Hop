@@ -34,6 +34,7 @@ class CafeTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Helper Functions
     func createCafeObject() -> Cafe {
         let cafeName = selectedCafe["venue"]["name"].string
         let cafeAddress = selectedCafe["venue"]["location"]["formattedAddress"][0].string

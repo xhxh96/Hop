@@ -7,11 +7,12 @@ let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
 class SearchResultTableViewController: UITableViewController {
     var searchKeyword: String?
     var cafeResults = [JSON]()
-    var currentLocation:CLLocationCoordinate2D!
+    var currentLocation: CLLocationCoordinate2D?
     var counter: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         searchForCoffee()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -65,6 +66,8 @@ class SearchResultTableViewController: UITableViewController {
 
         return cell
     }
+    
+    // MARK: - Helper Functions
     
     func searchForCoffee() {
         let formattedSearchInput = searchKeyword?.replacingOccurrences(of: " ", with: "-")
