@@ -456,36 +456,36 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YKM-r6-DN2">
-                                                    <rect key="frame" x="16" y="10" width="635" height="198.5"/>
+                                                    <rect key="frame" x="16" y="10" width="343" height="198.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blogger's Review" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gvn-NM-630">
-                                                            <rect key="frame" x="0.0" y="0.0" width="635" height="24"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="24"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9bn-ki-Qia">
-                                                            <rect key="frame" x="0.0" y="24" width="635" height="174.5"/>
+                                                            <rect key="frame" x="0.0" y="24" width="343" height="174.5"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <prototypes>
                                                                 <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="foodBloggerCell" id="l8y-Do-DmH">
-                                                                    <rect key="frame" x="0.0" y="28" width="635" height="44"/>
+                                                                    <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                     <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="l8y-Do-DmH" id="YtZ-br-70z">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="635" height="43.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="edl-Rk-wp1">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="635" height="43.5"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Food Blogger" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GCZ-df-JUO">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="25.5"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="635" height="25.5"/>
                                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review Content" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMl-gD-45x">
-                                                                                        <rect key="frame" x="0.0" y="25.5" width="343" height="18"/>
+                                                                                        <rect key="frame" x="0.0" y="25.5" width="635" height="18"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
@@ -522,36 +522,36 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="adF-OI-9Ji">
-                                                    <rect key="frame" x="16" y="10" width="635" height="229.5"/>
+                                                    <rect key="frame" x="16" y="10" width="343" height="229.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hopper's Review" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zVB-wQ-hEr">
-                                                            <rect key="frame" x="0.0" y="0.0" width="635" height="24"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="343" height="24"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XQA-Bl-sqB">
-                                                            <rect key="frame" x="0.0" y="24" width="635" height="205.5"/>
+                                                            <rect key="frame" x="0.0" y="24" width="343" height="205.5"/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <prototypes>
                                                                 <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="userReviewCell" id="dA8-4u-J4R">
-                                                                    <rect key="frame" x="0.0" y="28" width="635" height="44"/>
+                                                                    <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                     <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dA8-4u-J4R" id="Mrh-OU-ca8">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="635" height="43.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <subviews>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Y2s-hR-IEB">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="635" height="43.5"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FKj-LL-Jhw">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="25.5"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="635" height="25.5"/>
                                                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review Content" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mQT-gb-p1W">
-                                                                                        <rect key="frame" x="0.0" y="25.5" width="343" height="18"/>
+                                                                                        <rect key="frame" x="0.0" y="25.5" width="635" height="18"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                                         <nil key="textColor"/>
                                                                                         <nil key="highlightedColor"/>

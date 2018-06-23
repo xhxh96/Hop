@@ -12,7 +12,6 @@ class SearchResultTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         searchForCoffee()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -70,9 +69,16 @@ class SearchResultTableViewController: UITableViewController {
     // MARK: - Helper Functions
     
     func searchForCoffee() {
+        var url: String
         let formattedSearchInput = searchKeyword?.replacingOccurrences(of: " ", with: "-")
         // to implement guard for input in URL
-        let url = "https://api.foursquare.com/v2/search/recommendations?near=\(formattedSearchInput ?? "Singapore")&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+        
+        if let searchExist = formattedSearchInput {
+            url = "https://api.foursquare.com/v2/search/recommendations?near=\(searchExist)&radius=100&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+        }
+        else {
+            url = "https://api.foursquare.com/v2/search/recommendations?ll=\(currentLocation!.latitude),\(currentLocation!.longitude)&radius=100&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+        }
         
         let request = NSMutableURLRequest(url: URL(string: url)!)
         let session = URLSession.shared
