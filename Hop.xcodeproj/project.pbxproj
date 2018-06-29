@@ -10,6 +10,8 @@
 		22115A8620D2BB17002F5CB9 /* Cafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22115A8520D2BB17002F5CB9 /* Cafe.swift */; };
 		22115A8B20D2BB5A002F5CB9 /* SearchResultTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */; };
 		22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */; };
+		22CFD6A520E645B9002646A8 /* Reviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFD6A420E645B9002646A8 /* Reviews.swift */; };
+		22E53E0E20E653C8005CD8CC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E53E0D20E653C8005CD8CC /* LoginViewController.swift */; };
 		22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */; };
 		28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0220D2A562002781FF /* AppDelegate.swift */; };
 		28CA2C0520D2A562002781FF /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0420D2A562002781FF /* InitialViewController.swift */; };
@@ -24,6 +26,8 @@
 		22115A8520D2BB17002F5CB9 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
 		22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewController.swift; sourceTree = "<group>"; };
 		22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeTableViewController.swift; sourceTree = "<group>"; };
+		22CFD6A420E645B9002646A8 /* Reviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reviews.swift; sourceTree = "<group>"; };
+		22E53E0D20E653C8005CD8CC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		28CA2BFF20D2A562002781FF /* Hop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28CA2C0220D2A562002781FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,6 +56,7 @@
 			children = (
 				22115A8520D2BB17002F5CB9 /* Cafe.swift */,
 				28D9657C20D7BE9D00158318 /* MapAnnotation.swift */,
+				22CFD6A420E645B9002646A8 /* Reviews.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -59,6 +64,7 @@
 		22115A8C20D2BB62002F5CB9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				22E53E0D20E653C8005CD8CC /* LoginViewController.swift */,
 				28CA2C0420D2A562002781FF /* InitialViewController.swift */,
 				22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */,
 				22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */,
@@ -183,7 +189,9 @@
 				28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */,
 				89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */,
 				22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */,
+				22CFD6A520E645B9002646A8 /* Reviews.swift in Sources */,
 				22115A8620D2BB17002F5CB9 /* Cafe.swift in Sources */,
+				22E53E0E20E653C8005CD8CC /* LoginViewController.swift in Sources */,
 				22115A8B20D2BB5A002F5CB9 /* SearchResultTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,11 +6,21 @@ class CafeTableViewController: UITableViewController {
     var cafeObject: Cafe!
     var rawCafeHours = [JSON]()
     
+    var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+    var bloggerReviews: [Reviews] = [Reviews(name: "Lady Iron Chef", description: "Lady Iron Chef's description", date: Date.init(), url: nil), Reviews(name: "Daniel Food Diary", description: "Daniel Food Diary's description", date: Date.init(), url: nil)]
+    var hopperReviews: [Reviews] = [Reviews(name: "John", description: "John's Review", date: Date.init(), url: nil), Reviews(name: "Mary", description: "Mary's Review", date: Date.init(), url: nil)]
+    
     @IBOutlet weak var cafeNameLabel: UILabel!
     @IBOutlet weak var cafeAddressLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet var bloggerReviewStars: [UIImageView]!
-    @IBOutlet var hopperReviewStars: [UIImageView]!
+    @IBOutlet var bloggerRatingStars: [UIImageView]!
+    @IBOutlet var hopperRatingStars: [UIImageView]!
+    @IBOutlet weak var sliderScrollView: UIScrollView!
+    @IBOutlet weak var sliderPageControl: UIPageControl!
+    @IBOutlet weak var bloggerReviewScrollView: UIScrollView!
+    @IBOutlet weak var bloggerReviewPageControl: UIPageControl!
+    @IBOutlet weak var hopperReviewScrollView: UIScrollView!
+    @IBOutlet weak var hopperReviewPageControl: UIPageControl!
     
     
     override func viewDidLoad() {
@@ -19,9 +29,12 @@ class CafeTableViewController: UITableViewController {
         mapView.delegate = self
         
         cafeObject = createCafeObject()
+        updateSlider()
         updateLabel()
         updateMap()
-        updateReviewStatus()
+        updateRating()
+        updateBloggerReview()
+        updateHopperReview()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -38,12 +51,12 @@ class CafeTableViewController: UITableViewController {
     func createCafeObject() -> Cafe {
         let cafeName = selectedCafe["venue"]["name"].string
         let cafeAddress = selectedCafe["venue"]["location"]["formattedAddress"][0].string
-        let bloggerReview = 3.0
-        let hopperReview = 1.0
+        let bloggerRating = 3.0
+        let hopperRating = 1.0
         let latitude = selectedCafe["venue"]["location"]["lat"].double
         let longitude = selectedCafe["venue"]["location"]["lng"].double
         
-        return Cafe(name: cafeName!, address: cafeAddress!, bloggerReview: bloggerReview, hopperReview: hopperReview, latitude: latitude!, longitude: longitude!)
+        return Cafe(name: cafeName!, address: cafeAddress!, bloggerRating: bloggerRating, hopperRating: hopperRating, latitude: latitude!, longitude: longitude!)
     }
 
     func updateLabel() {
@@ -64,17 +77,101 @@ class CafeTableViewController: UITableViewController {
         mapView.addAnnotation(mapAnnotation)
     }
     
-    func updateReviewStatus() {
-        if let rating = cafeObject.bloggerReview {
+    func updateRating() {
+        if let rating = cafeObject.bloggerRating {
             for index in 0..<Int(rating) {
-                bloggerReviewStars[index].alpha = 1
+                bloggerRatingStars[index].alpha = 1
             }
         }
         
-        if let rating = cafeObject.hopperReview {
+        if let rating = cafeObject.hopperRating {
             for index in 0..<Int(rating) {
-                hopperReviewStars[index].alpha = 1
+                hopperRatingStars[index].alpha = 1
             }
+        }
+    }
+    
+    func updateSlider() {
+        sliderPageControl.numberOfPages = cafeObject.images.count
+        
+        for index in 0..<cafeObject.images.count {
+            frame.origin.x = sliderScrollView.frame.size.width * CGFloat(index)
+            frame.size = sliderScrollView.frame.size
+            
+            let image = UIImageView(frame: frame)
+            image.contentMode = .scaleAspectFill
+            image.image = UIImage(named: cafeObject.images[index])
+            sliderScrollView.addSubview(image)
+        }
+        sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(cafeObject.images.count), height: sliderScrollView.frame.size.height)
+        sliderScrollView.delegate = self
+    }
+    
+    func updateBloggerReview() {
+        bloggerReviewPageControl.numberOfPages = bloggerReviews.count
+        
+        for index in 0..<bloggerReviews.count {
+            frame.origin.x = bloggerReviewScrollView.frame.size.width * CGFloat(index)
+            frame.size = bloggerReviewScrollView.frame.size
+            
+            //title label
+            let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height/2)
+            let titleLabel = UILabel(frame: titleLabelFrame)
+            titleLabel.text = bloggerReviews[index].name
+            titleLabel.numberOfLines = 1
+            titleLabel.textAlignment = .center
+            bloggerReviewScrollView.addSubview(titleLabel)
+            
+            //descriptions label
+            let descriptionLabelFrame = CGRect(x: frame.origin.x, y: frame.height / 2, width: frame.width, height: frame.height / 2)
+            let descriptionLabel = UILabel(frame: descriptionLabelFrame)
+            descriptionLabel.text = bloggerReviews[index].description
+            descriptionLabel.numberOfLines = 0
+            descriptionLabel.textAlignment = .justified
+            bloggerReviewScrollView.addSubview(descriptionLabel)
+        }
+        bloggerReviewScrollView.contentSize = CGSize(width: bloggerReviewScrollView.frame.size.width * CGFloat(bloggerReviews.count), height: bloggerReviewScrollView.frame.size.height)
+        bloggerReviewScrollView.delegate = self
+    }
+    
+    func updateHopperReview() {
+        hopperReviewPageControl.numberOfPages = hopperReviews.count
+        
+        for index in 0..<hopperReviews.count {
+            frame.origin.x = hopperReviewScrollView.frame.size.width * CGFloat(index)
+            frame.size = hopperReviewScrollView.frame.size
+            
+            //title label
+            let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height/4)
+            let titleLabel = UILabel(frame: titleLabelFrame)
+            titleLabel.text = hopperReviews[index].name
+            titleLabel.numberOfLines = 1
+            hopperReviewScrollView.addSubview(titleLabel)
+            
+            //descriptions label
+            let descriptionLabelFrame = CGRect(x: frame.origin.x, y: frame.height / 2, width: frame.width, height: frame.height / 2)
+            let descriptionLabel = UILabel(frame: descriptionLabelFrame)
+            descriptionLabel.text = hopperReviews[index].description
+            descriptionLabel.numberOfLines = 0
+            descriptionLabel.textAlignment = .justified
+            hopperReviewScrollView.addSubview(descriptionLabel)
+        }
+        hopperReviewScrollView.contentSize = CGSize(width: hopperReviewScrollView.frame.size.width * CGFloat(hopperReviews.count), height: hopperReviewScrollView.frame.size.height)
+        hopperReviewScrollView.delegate = self
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageNumber = scrollView.contentOffset.x / scrollView.frame.size.width
+        
+        switch scrollView {
+        case sliderScrollView:
+            sliderPageControl.currentPage = Int(pageNumber)
+        case bloggerReviewScrollView:
+            bloggerReviewPageControl.currentPage = Int(pageNumber)
+        case hopperReviewScrollView:
+            hopperReviewPageControl.currentPage = Int(pageNumber)
+        default:
+            break
         }
     }
     
@@ -101,6 +198,28 @@ class CafeTableViewController: UITableViewController {
         task.resume()
     }
 
+    @IBAction func pageChanged(_ sender: UIPageControl) {
+        let pageNumber = sender.currentPage
+        
+        if sender == sliderPageControl {
+            var frame = sliderScrollView.frame
+            frame.origin.x = frame.size.width * CGFloat(pageNumber)
+            frame.origin.y = 0
+            sliderScrollView.scrollRectToVisible(frame, animated: true)
+        }
+        else if sender == bloggerReviewPageControl {
+            var frame = bloggerReviewScrollView.frame
+            frame.origin.x = frame.size.width * CGFloat(pageNumber)
+            frame.origin.y = 0
+            bloggerReviewScrollView.scrollRectToVisible(frame, animated: true)
+        }
+        else if sender == hopperReviewPageControl {
+            var frame = hopperReviewScrollView.frame
+            frame.origin.x = frame.size.width * CGFloat(pageNumber)
+            frame.origin.y = 0
+            hopperReviewScrollView.scrollRectToVisible(frame, animated: true)
+        }
+    }
     /*
     // MARK: - Navigation
 

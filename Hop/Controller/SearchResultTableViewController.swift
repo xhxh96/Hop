@@ -74,10 +74,10 @@ class SearchResultTableViewController: UITableViewController {
         // to implement guard for input in URL
         
         if let searchExist = formattedSearchInput {
-            url = "https://api.foursquare.com/v2/search/recommendations?near=\(searchExist)&radius=100&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+            url = "https://api.foursquare.com/v2/search/recommendations?near=\(searchExist)&radius=1500&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
         }
         else {
-            url = "https://api.foursquare.com/v2/search/recommendations?ll=\(currentLocation!.latitude),\(currentLocation!.longitude)&radius=100&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+            url = "https://api.foursquare.com/v2/search/recommendations?ll=\(currentLocation!.latitude),\(currentLocation!.longitude)&radius=1500&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
         }
         
         let request = NSMutableURLRequest(url: URL(string: url)!)

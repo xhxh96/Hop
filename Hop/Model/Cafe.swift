@@ -22,22 +22,22 @@ enum Amenities: Int {
 }
 
 class Cafe {
-    //var images: [UIImage]
+    var images: [String] = ["dummy-0", "dummy-1", "dummy-2"]  // For testing purposes - actual collection will be of URL or Data type
     var name: String
     var address: String
-    var bloggerReview: Double?
-    var hopperReview: Double?
+    var bloggerRating: Double?
+    var hopperRating: Double?
     //var priceRange: Int
     //var amenities: [Bool]
     var latitude: Double
     var longitude: Double
     
-    init(name: String, address: String, bloggerReview: Double?, hopperReview: Double?, latitude: Double, longitude: Double) {
+    init(name: String, address: String, bloggerRating: Double?, hopperRating: Double?, latitude: Double, longitude: Double) {
         //self.images = images
         self.name = name
         self.address = address
-        self.bloggerReview = bloggerReview
-        self.hopperReview = hopperReview
+        self.bloggerRating = bloggerRating
+        self.hopperRating = hopperRating
         //self.priceRange = priceRange
         //self.amenities = amenities
         self.latitude = latitude
