@@ -5,6 +5,7 @@ class CafeTableViewController: UITableViewController {
     var selectedCafe: JSON!
     var cafeObject: Cafe!
     var rawCafeHours = [JSON]()
+    var databaseCafeData = [JSON]()
     
     var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
     var bloggerReviews: [Reviews] = [Reviews(name: "Lady Iron Chef", description: "Lady Iron Chef's description", date: Date.init(), url: nil), Reviews(name: "Daniel Food Diary", description: "Daniel Food Diary's description", date: Date.init(), url: nil)]
@@ -28,6 +29,8 @@ class CafeTableViewController: UITableViewController {
         tableView.allowsSelection = false
         mapView.delegate = self
         
+        print(selectedCafe["venue"]["id"])
+        loadCafeFromDatabase(fsVenueId: selectedCafe["venue"]["id"].string!)
         cafeObject = createCafeObject()
         updateSlider()
         updateLabel()
@@ -48,6 +51,26 @@ class CafeTableViewController: UITableViewController {
     }
     
     // MARK: - Helper Functions
+    func loadCafeFromDatabase(fsVenueId: String) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe?fsVenueId=\(fsVenueId)"
+        print(url)
+        let request = NSMutableURLRequest(url: URL(string: url)!)
+        let session = URLSession.shared
+        
+        request.httpMethod = "GET"
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
+            // fix internet connection error
+            let json = JSON(data: data!)
+            print(json)
+        })
+        
+        task.resume()
+    }
+    
     func createCafeObject() -> Cafe {
         let cafeName = selectedCafe["venue"]["name"].string
         let cafeAddress = selectedCafe["venue"]["location"]["formattedAddress"][0].string
@@ -229,6 +252,7 @@ class CafeTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
 
 }
 
