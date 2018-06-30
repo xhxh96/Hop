@@ -25,8 +25,10 @@ class SearchResultTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
-
+    
+    
+    
+    // MARK: - Table View Data Source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -66,8 +68,10 @@ class SearchResultTableViewController: UITableViewController {
         return cell
     }
     
-    // MARK: - Helper Functions
     
+    
+    
+    // MARK: - Helper Functions
     func searchForCoffee() {
         var url: String
         let formattedSearchInput = searchKeyword?.replacingOccurrences(of: " ", with: "-")
@@ -137,6 +141,8 @@ class SearchResultTableViewController: UITableViewController {
     }
     */
 
+    
+    
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

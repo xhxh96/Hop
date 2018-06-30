@@ -51,7 +51,7 @@ class Cafe {
     }
     
     static func getAmenities(cardPayment: Bool, halal: Bool, openBooking: Bool, parking: Bool, phoneBooking: Bool, powerPlug: Bool, transit: Bool, vegetarian: Bool, water: Bool, wifi: Bool) -> [Bool] {
-        var amenities = Array(repeating: false, count: Amenities.count)
+        var amenities = [Bool].init(repeating: false, count: Amenities.count)
         
         amenities[Amenities.cardPayment.rawValue] = cardPayment
         amenities[Amenities.halal.rawValue] = halal

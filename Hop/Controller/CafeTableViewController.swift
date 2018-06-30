@@ -1,6 +1,21 @@
 import UIKit
 import MapKit
 
+enum ScrollView: Int {
+    case slider
+    case bloggerReview
+    case hopperReview
+    
+    static let count: Int = {
+        var max: Int = 0
+        while let _ = ScrollView(rawValue: max) {
+            max += 1
+        }
+        return max
+    }()
+}
+
+
 class CafeTableViewController: UITableViewController {
     var selectedCafe: JSON!
     var cafeObject: Cafe!
@@ -8,6 +23,7 @@ class CafeTableViewController: UITableViewController {
     var databaseCafeData = [JSON]()
     
     var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+    var updateScrollView = [Bool].init(repeating: false, count: ScrollView.count)
     var bloggerReviews: [Reviews] = [Reviews(name: "Lady Iron Chef", description: "Lady Iron Chef's description", date: Date.init(), url: nil), Reviews(name: "Daniel Food Diary", description: "Daniel Food Diary's description", date: Date.init(), url: nil)]
     var hopperReviews: [Reviews] = [Reviews(name: "John", description: "John's Review", date: Date.init(), url: nil), Reviews(name: "Mary", description: "Mary's Review", date: Date.init(), url: nil)]
     
@@ -16,6 +32,9 @@ class CafeTableViewController: UITableViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var bloggerRatingStars: [UIImageView]!
     @IBOutlet var hopperRatingStars: [UIImageView]!
+    
+    
+    @IBOutlet weak var sliderContentView: UIView!
     @IBOutlet weak var sliderScrollView: UIScrollView!
     @IBOutlet weak var sliderPageControl: UIPageControl!
     @IBOutlet weak var bloggerReviewScrollView: UIScrollView!
@@ -32,12 +51,9 @@ class CafeTableViewController: UITableViewController {
         print(selectedCafe["venue"]["id"])
         loadCafeFromDatabase(cafeName: selectedCafe["venue"]["name"].string!)
         cafeObject = createCafeObject()
-        updateSlider()
         updateLabel()
         updateMap()
         updateRating()
-        updateBloggerReview()
-        updateHopperReview()
         
         // autoSlider Timer
         Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(autoSlider), userInfo: nil, repeats: true)
@@ -47,6 +63,23 @@ class CafeTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func viewDidLayoutSubviews() {
+        if updateScrollView[ScrollView.slider.rawValue] == false {
+            updateSlider()
+            updateScrollView[ScrollView.slider.rawValue] = true
+        }
+        
+        if updateScrollView[ScrollView.bloggerReview.rawValue] == false {
+            updateBloggerReview()
+            updateScrollView[ScrollView.bloggerReview.rawValue] = true
+        }
+        
+        if updateScrollView[ScrollView.hopperReview.rawValue] == false {
+            updateHopperReview()
+            updateScrollView[ScrollView.hopperReview.rawValue] = true
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,8 +91,12 @@ class CafeTableViewController: UITableViewController {
     func loadCafeFromDatabase(cafeName: String) {
         let formattedSearchInput = cafeName.replacingOccurrences(of: " ", with: "%20")
         let url: String = "https://hopdbserver.herokuapp.com/cafe?name=\(formattedSearchInput)"
-        print(url)
-        let request = NSMutableURLRequest(url: URL(string: url)!)
+        
+        guard let formattedURL = URL(string: url) else {
+            return
+        }
+        
+        let request = NSMutableURLRequest(url: formattedURL)
         let session = URLSession.shared
         
         request.httpMethod = "GET"
@@ -121,10 +158,10 @@ class CafeTableViewController: UITableViewController {
     
     func updateSlider() {
         sliderPageControl.numberOfPages = cafeObject.images.count
+        print(sliderScrollView.frame.size.width)
         
         for index in 0..<cafeObject.images.count {
             frame.origin.x = sliderScrollView.frame.size.width * CGFloat(index)
-            print(sliderScrollView.frame.size.width)
             frame.size = sliderScrollView.frame.size
             
             let image = UIImageView(frame: frame)
@@ -190,21 +227,6 @@ class CafeTableViewController: UITableViewController {
         hopperReviewScrollView.delegate = self
     }
     
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let pageNumber = scrollView.contentOffset.x / scrollView.frame.size.width
-        
-        switch scrollView {
-        case sliderScrollView:
-            sliderPageControl.currentPage = Int(pageNumber)
-        case bloggerReviewScrollView:
-            bloggerReviewPageControl.currentPage = Int(pageNumber)
-        case hopperReviewScrollView:
-            hopperReviewPageControl.currentPage = Int(pageNumber)
-        default:
-            break
-        }
-    }
-    
     @objc func autoSlider() {
         let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(cafeObject.images.count)
         let contentOffset: CGFloat = sliderScrollView.contentOffset.x
@@ -239,7 +261,25 @@ class CafeTableViewController: UITableViewController {
         
         task.resume()
     }
+    
+    // MARK: - Delegates
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageNumber = scrollView.contentOffset.x / scrollView.frame.size.width
+        
+        switch scrollView {
+        case sliderScrollView:
+            sliderPageControl.currentPage = Int(pageNumber)
+        case bloggerReviewScrollView:
+            bloggerReviewPageControl.currentPage = Int(pageNumber)
+        case hopperReviewScrollView:
+            hopperReviewPageControl.currentPage = Int(pageNumber)
+        default:
+            break
+        }
+    }
 
+    
+    // MARK: - Action Outlets
     @IBAction func pageChanged(_ sender: UIPageControl) {
         let pageNumber = sender.currentPage
         
