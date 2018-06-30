@@ -3,10 +3,10 @@ import UIKit
 enum Amenities: Int {
     case cardPayment
     case halal
-    case openBooking
+    case studying
     case parking
-    case phoneBooking
-    case powerPlug
+    case reservations
+    case powerSocket
     case transit
     case vegetarian
     case water
@@ -22,15 +22,21 @@ enum Amenities: Int {
 }
 
 class Cafe {
+    //var fsVenueId: String
     var images: [String] = ["dummy-0", "dummy-1", "dummy-2"]  // For testing purposes - actual collection will be of URL or Data type
     var name: String
     var address: String
+    //var url: URL?
+    //var contactNo: String?
+    //var contactEmail: String?
     var bloggerRating: Double?
     var hopperRating: Double?
     //var priceRange: Int
     //var amenities: [Bool]
     var latitude: Double
     var longitude: Double
+    //var bloggerReviews: [Reviews]
+    //var hopperReviews: [Reviews]
     
     init(name: String, address: String, bloggerRating: Double?, hopperRating: Double?, latitude: Double, longitude: Double) {
         //self.images = images
@@ -49,10 +55,10 @@ class Cafe {
         
         amenities[Amenities.cardPayment.rawValue] = cardPayment
         amenities[Amenities.halal.rawValue] = halal
-        amenities[Amenities.openBooking.rawValue] = openBooking
+        amenities[Amenities.studying.rawValue] = openBooking
         amenities[Amenities.parking.rawValue] = parking
-        amenities[Amenities.phoneBooking.rawValue] = phoneBooking
-        amenities[Amenities.powerPlug.rawValue] = powerPlug
+        amenities[Amenities.reservations.rawValue] = phoneBooking
+        amenities[Amenities.powerSocket.rawValue] = powerPlug
         amenities[Amenities.transit.rawValue] = transit
         amenities[Amenities.vegetarian.rawValue] = vegetarian
         amenities[Amenities.water.rawValue] = water
