@@ -38,6 +38,10 @@ class CafeTableViewController: UITableViewController {
         updateRating()
         updateBloggerReview()
         updateHopperReview()
+        
+        // autoSlider Timer
+        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(autoSlider), userInfo: nil, repeats: true)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -119,6 +123,7 @@ class CafeTableViewController: UITableViewController {
         
         for index in 0..<cafeObject.images.count {
             frame.origin.x = sliderScrollView.frame.size.width * CGFloat(index)
+            print(sliderScrollView.frame.size.width)
             frame.size = sliderScrollView.frame.size
             
             let image = UIImageView(frame: frame)
@@ -128,6 +133,7 @@ class CafeTableViewController: UITableViewController {
         }
         sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(cafeObject.images.count), height: sliderScrollView.frame.size.height)
         sliderScrollView.delegate = self
+        sliderPageControl.currentPage = 0
     }
     
     func updateBloggerReview() {
@@ -196,6 +202,18 @@ class CafeTableViewController: UITableViewController {
         default:
             break
         }
+    }
+    
+    @objc func autoSlider() {
+        let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(cafeObject.images.count)
+        let contentOffset: CGFloat = sliderScrollView.contentOffset.x
+        var slideToX = sliderScrollView.frame.width + contentOffset
+        
+        if  sliderScrollView.frame.width + contentOffset >= maxWidth {
+            slideToX = 0
+        }
+        
+        sliderScrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width: sliderScrollView.frame.width, height:sliderScrollView.frame.height), animated: true)
     }
     
     func listOpeningHours() {
