@@ -30,7 +30,7 @@ class CafeTableViewController: UITableViewController {
         mapView.delegate = self
         
         print(selectedCafe["venue"]["id"])
-        loadCafeFromDatabase(fsVenueId: selectedCafe["venue"]["id"].string!)
+        loadCafeFromDatabase(cafeName: selectedCafe["venue"]["name"].string!)
         cafeObject = createCafeObject()
         updateSlider()
         updateLabel()
@@ -55,8 +55,9 @@ class CafeTableViewController: UITableViewController {
     }
     
     // MARK: - Helper Functions
-    func loadCafeFromDatabase(fsVenueId: String) {
-        let url: String = "https://hopdbserver.herokuapp.com/cafe?fsVenueId=\(fsVenueId)"
+    func loadCafeFromDatabase(cafeName: String) {
+        let formattedSearchInput = cafeName.replacingOccurrences(of: " ", with: "%20")
+        let url: String = "https://hopdbserver.herokuapp.com/cafe?name=\(formattedSearchInput)"
         print(url)
         let request = NSMutableURLRequest(url: URL(string: url)!)
         let session = URLSession.shared
@@ -69,7 +70,7 @@ class CafeTableViewController: UITableViewController {
         let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
             // fix internet connection error
             let json = JSON(data: data!)
-            print(json)
+            self.databaseCafeData = json.arrayValue
         })
         
         task.resume()
