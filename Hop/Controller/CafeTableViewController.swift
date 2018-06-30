@@ -91,6 +91,7 @@ class CafeTableViewController: UITableViewController {
     func loadCafeFromDatabase(cafeName: String) {
         let formattedSearchInput = cafeName.replacingOccurrences(of: " ", with: "%20")
         let url: String = "https://hopdbserver.herokuapp.com/cafe?name=\(formattedSearchInput)"
+        print(url)
         
         guard let formattedURL = URL(string: url) else {
             return
@@ -158,7 +159,6 @@ class CafeTableViewController: UITableViewController {
     
     func updateSlider() {
         sliderPageControl.numberOfPages = cafeObject.images.count
-        print(sliderScrollView.frame.size.width)
         
         for index in 0..<cafeObject.images.count {
             frame.origin.x = sliderScrollView.frame.size.width * CGFloat(index)
