@@ -195,6 +195,7 @@ class CafeTableViewController: UITableViewController {
             descriptionLabel.text = bloggerReviews[index].description
             descriptionLabel.numberOfLines = 0
             descriptionLabel.textAlignment = .justified
+            descriptionLabel.font = UIFont.systemFont(ofSize: 12)
             bloggerReviewScrollView.addSubview(descriptionLabel)
         }
         bloggerReviewScrollView.contentSize = CGSize(width: bloggerReviewScrollView.frame.size.width * CGFloat(bloggerReviews.count), height: bloggerReviewScrollView.frame.size.height)
@@ -213,6 +214,7 @@ class CafeTableViewController: UITableViewController {
             let titleLabel = UILabel(frame: titleLabelFrame)
             titleLabel.text = hopperReviews[index].name
             titleLabel.numberOfLines = 1
+            titleLabel.textAlignment = .center
             hopperReviewScrollView.addSubview(titleLabel)
             
             //descriptions label
@@ -221,6 +223,7 @@ class CafeTableViewController: UITableViewController {
             descriptionLabel.text = hopperReviews[index].description
             descriptionLabel.numberOfLines = 0
             descriptionLabel.textAlignment = .justified
+            descriptionLabel.font = UIFont.systemFont(ofSize: 10)
             hopperReviewScrollView.addSubview(descriptionLabel)
         }
         hopperReviewScrollView.contentSize = CGSize(width: hopperReviewScrollView.frame.size.width * CGFloat(hopperReviews.count), height: hopperReviewScrollView.frame.size.height)
@@ -302,15 +305,24 @@ class CafeTableViewController: UITableViewController {
             hopperReviewScrollView.scrollRectToVisible(frame, animated: true)
         }
     }
-    /*
+    
+    @IBAction func unwindToCafeTableViewController(segue: UIStoryboardSegue) {
+        
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "hopperReview" {
+            let hopperReviewTableViewController = segue.destination as! HopperReviewTableViewController
+            hopperReviewTableViewController.reviews = hopperReviews
+        }
     }
-    */
+    
+    
     
 
 }
