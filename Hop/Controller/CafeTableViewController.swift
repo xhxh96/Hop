@@ -20,12 +20,14 @@ class CafeTableViewController: UITableViewController {
     var selectedCafe: JSON!
     var cafeObject: Cafe!
     var rawCafeHours = [JSON]()
-    var databaseCafeData = [JSON]()
+    var databaseCafeData: JSON!
     
     var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
     var updateScrollView = [Bool].init(repeating: false, count: ScrollView.count)
     var bloggerReviews: [Reviews] = [Reviews(name: "Lady Iron Chef", description: "Lady Iron Chef's description", date: Date.init(), url: nil), Reviews(name: "Daniel Food Diary", description: "Daniel Food Diary's description", date: Date.init(), url: nil)]
     var hopperReviews: [Reviews] = [Reviews(name: "John", description: "John's Review", date: Date.init(), url: nil), Reviews(name: "Mary", description: "Mary's Review", date: Date.init(), url: nil)]
+    
+    var databaseDidLoad: Bool = false
     
     @IBOutlet weak var cafeNameLabel: UILabel!
     @IBOutlet weak var cafeAddressLabel: UILabel!
@@ -42,18 +44,16 @@ class CafeTableViewController: UITableViewController {
     @IBOutlet weak var hopperReviewScrollView: UIScrollView!
     @IBOutlet weak var hopperReviewPageControl: UIPageControl!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.allowsSelection = false
         mapView.delegate = self
         
-        print(selectedCafe["venue"]["id"])
-        loadCafeFromDatabase(cafeName: selectedCafe["venue"]["name"].string!)
-        cafeObject = createCafeObject()
-        updateLabel()
-        updateMap()
-        updateRating()
+        self.createCafeObject()
+        
+        self.updateLabel()
+        self.updateMap()
+        self.updateRating()
         
         // autoSlider Timer
         Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(autoSlider), userInfo: nil, repeats: true)
@@ -66,6 +66,8 @@ class CafeTableViewController: UITableViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
         if updateScrollView[ScrollView.slider.rawValue] == false {
             updateSlider()
             updateScrollView[ScrollView.slider.rawValue] = true
@@ -87,17 +89,17 @@ class CafeTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Helper Functions
-    func loadCafeFromDatabase(cafeName: String) {
-        let formattedSearchInput = cafeName.replacingOccurrences(of: " ", with: "%20")
-        let url: String = "https://hopdbserver.herokuapp.com/cafe?name=\(formattedSearchInput)"
+    // MARK: - Helper Function
+    func loadCafeFromDatabase() {
+        let venueId = selectedCafe["venue"]["id"].string
+        let url: String = "https://hopdbserver.herokuapp.com/cafe?fsVenueId=\(venueId!)"
         print(url)
         
-        guard let formattedURL = URL(string: url) else {
+        guard let requestURL = URL(string: url) else {
             return
         }
         
-        let request = NSMutableURLRequest(url: formattedURL)
+        let request = NSMutableURLRequest(url: requestURL)
         let session = URLSession.shared
         
         request.httpMethod = "GET"
@@ -108,21 +110,25 @@ class CafeTableViewController: UITableViewController {
         let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
             // fix internet connection error
             let json = JSON(data: data!)
-            self.databaseCafeData = json.arrayValue
+            self.databaseCafeData = json
         })
         
         task.resume()
     }
     
-    func createCafeObject() -> Cafe {
+    func createCafeObject() {
         let cafeName = selectedCafe["venue"]["name"].string
+        //let cafeName = databaseCafeData["cafeData"]["name"].string
         let cafeAddress = selectedCafe["venue"]["location"]["formattedAddress"][0].string
+        //let cafeAddress = databaseCafeData["cafeData"]["location"]["address"].string
         let bloggerRating = 3.0
         let hopperRating = 1.0
         let latitude = selectedCafe["venue"]["location"]["lat"].double
+        //let latitude = databaseCafeData["cafeData"]["location"]["latitude"].double
         let longitude = selectedCafe["venue"]["location"]["lng"].double
+        //let longitude = databaseCafeData["cafeData"]["location"]["longitude"].double
         
-        return Cafe(name: cafeName!, address: cafeAddress!, bloggerRating: bloggerRating, hopperRating: hopperRating, latitude: latitude!, longitude: longitude!)
+        cafeObject = Cafe(name: cafeName!, address: cafeAddress!, bloggerRating: bloggerRating, hopperRating: hopperRating, latitude: latitude!, longitude: longitude!)
     }
 
     func updateLabel() {
