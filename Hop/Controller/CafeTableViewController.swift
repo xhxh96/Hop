@@ -27,8 +27,6 @@ class CafeTableViewController: UITableViewController {
     var bloggerReviews: [Reviews] = [Reviews(name: "Lady Iron Chef", description: "Lady Iron Chef's description", date: Date.init(), url: nil), Reviews(name: "Daniel Food Diary", description: "Daniel Food Diary's description", date: Date.init(), url: nil)]
     var hopperReviews: [Reviews] = [Reviews(name: "John", description: "John's Review", date: Date.init(), url: nil), Reviews(name: "Mary", description: "Mary's Review", date: Date.init(), url: nil)]
     
-    var databaseDidLoad: Bool = false
-    
     @IBOutlet weak var cafeNameLabel: UILabel!
     @IBOutlet weak var cafeAddressLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
@@ -49,14 +47,18 @@ class CafeTableViewController: UITableViewController {
         tableView.allowsSelection = false
         mapView.delegate = self
         
-        self.createCafeObject()
-        
-        self.updateLabel()
-        self.updateMap()
-        self.updateRating()
+        fetchCafeFromDatabase { (cafe) in
+            print(cafe)
+            //self.cafeObject = cafe
+            DispatchQueue.main.async {
+                self.updateLabel(cafeObject: cafe)
+                self.updateMap(cafeObject: cafe)
+            }
+            
+        }
         
         // autoSlider Timer
-        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(autoSlider), userInfo: nil, repeats: true)
+        //Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(autoSlider), userInfo: nil, repeats: true)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -90,9 +92,9 @@ class CafeTableViewController: UITableViewController {
     }
     
     // MARK: - Helper Function
-    func loadCafeFromDatabase() {
+    func fetchCafeFromDatabase(completion: @escaping (Cafe) -> Void) {
         let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe?fsVenueId=\(venueId!)"
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/data?fsVenueId=\(venueId!)"
         print(url)
         
         guard let requestURL = URL(string: url) else {
@@ -111,11 +113,22 @@ class CafeTableViewController: UITableViewController {
             // fix internet connection error
             let json = JSON(data: data!)
             self.databaseCafeData = json
+            
+            let jsonDecoder = JSONDecoder.init()
+            if let data = data, let cafeObject = try? jsonDecoder.decode(Cafe.self, from: data) {
+                completion(cafeObject)
+            }
+            else {
+                print("No JSON Object found, or unable to map JSON Object to model")
+                return
+            }
         })
         
         task.resume()
     }
     
+
+    /*
     func createCafeObject() {
         let cafeName = selectedCafe["venue"]["name"].string
         //let cafeName = databaseCafeData["cafeData"]["name"].string
@@ -130,13 +143,15 @@ class CafeTableViewController: UITableViewController {
         
         cafeObject = Cafe(name: cafeName!, address: cafeAddress!, bloggerRating: bloggerRating, hopperRating: hopperRating, latitude: latitude!, longitude: longitude!)
     }
+     */
+ 
 
-    func updateLabel() {
+    func updateLabel(cafeObject: Cafe) {
         cafeNameLabel.text = cafeObject.name
         cafeAddressLabel.text = cafeObject.address
     }
     
-    func updateMap() {
+    func updateMap(cafeObject: Cafe) {
         let latitude = cafeObject.latitude
         let longitude = cafeObject.longitude
         
@@ -163,19 +178,23 @@ class CafeTableViewController: UITableViewController {
         }
     }
     
+    
+    // Replace 3 with cafeObject.image.count
     func updateSlider() {
-        sliderPageControl.numberOfPages = cafeObject.images.count
+        sliderPageControl.numberOfPages = 3
         
-        for index in 0..<cafeObject.images.count {
+        for index in 0..<3 {
             frame.origin.x = sliderScrollView.frame.size.width * CGFloat(index)
             frame.size = sliderScrollView.frame.size
             
             let image = UIImageView(frame: frame)
             image.contentMode = .scaleAspectFill
-            image.image = UIImage(named: cafeObject.images[index])
+            
+            let images = ["dummy-0", "dummy-1", "dummy-2"]
+            image.image = UIImage(named: images[index])
             sliderScrollView.addSubview(image)
         }
-        sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(cafeObject.images.count), height: sliderScrollView.frame.size.height)
+        sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(3), height: sliderScrollView.frame.size.height)
         sliderScrollView.delegate = self
         sliderPageControl.currentPage = 0
     }
@@ -235,9 +254,10 @@ class CafeTableViewController: UITableViewController {
         hopperReviewScrollView.contentSize = CGSize(width: hopperReviewScrollView.frame.size.width * CGFloat(hopperReviews.count), height: hopperReviewScrollView.frame.size.height)
         hopperReviewScrollView.delegate = self
     }
+ 
     
     @objc func autoSlider() {
-        let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(cafeObject.images.count)
+        let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(3)
         let contentOffset: CGFloat = sliderScrollView.contentOffset.x
         var slideToX = sliderScrollView.frame.width + contentOffset
         
@@ -270,6 +290,7 @@ class CafeTableViewController: UITableViewController {
         
         task.resume()
     }
+ 
     
     // MARK: - Delegates
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {

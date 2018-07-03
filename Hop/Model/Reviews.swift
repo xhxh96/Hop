@@ -1,6 +1,5 @@
 import Foundation
 
-
 class Reviews {
     var name: String
     var description: String
