@@ -711,10 +711,12 @@
                     <connections>
                         <outlet property="bloggerReviewPageControl" destination="3bc-kr-vkx" id="Qv6-FY-dz3"/>
                         <outlet property="bloggerReviewScrollView" destination="01y-Uo-WQk" id="pzM-B7-iy7"/>
+                        <outlet property="bloggerReviewShowAllButton" destination="9q8-gv-yGL" id="gS7-1q-Gmb"/>
                         <outlet property="cafeAddressLabel" destination="Fvh-jN-3Ek" id="LN8-Ei-w6y"/>
                         <outlet property="cafeNameLabel" destination="hci-eg-ij3" id="P4a-2v-MtS"/>
                         <outlet property="hopperReviewPageControl" destination="F8U-NB-z9i" id="cXf-tS-z3l"/>
                         <outlet property="hopperReviewScrollView" destination="X89-KL-6GM" id="4PK-uA-Y35"/>
+                        <outlet property="hopperReviewShowAllButton" destination="anH-nX-CyH" id="bWN-1b-g7A"/>
                         <outlet property="mapView" destination="hNW-vM-AJk" id="rjU-I1-IU1"/>
                         <outlet property="sliderContentView" destination="3ed-CX-Fgd" id="SDg-Le-erT"/>
                         <outlet property="sliderPageControl" destination="xAM-Em-8Um" id="VC5-xv-6Pz"/>
@@ -959,7 +961,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="dateLabel" destination="xEh-zj-DNv" id="wHH-mz-y4D"/>
-                                    <outlet property="hopperUserIDLabel" destination="vnk-qh-dXU" id="GY7-Sc-YB7"/>
+                                    <outlet property="hopperUserNameLabel" destination="vnk-qh-dXU" id="xkM-IZ-XNW"/>
                                     <outlet property="reviewContentLabel" destination="PUa-WQ-oT1" id="ZsP-7c-Ni5"/>
                                 </connections>
                             </tableViewCell>

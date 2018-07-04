@@ -11,20 +11,17 @@ import UIKit
 class HopperReviewTableViewCell: UITableViewCell {
     @IBOutlet weak var reviewContentLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var hopperUserIDLabel: UILabel!
+    @IBOutlet weak var hopperUserNameLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    func update(reviews: Reviews) {
-        reviewContentLabel.text = reviews.description
-        hopperUserIDLabel.text = reviews.name
-        
-        let dateFormatter = DateFormatter.init()
-        dateFormatter.dateStyle = .short
-        dateLabel.text = dateFormatter.string(from: reviews.date)
+    func update(reviews: HopperReview) {
+        reviewContentLabel.text = reviews.extract
+        hopperUserNameLabel.text = reviews.userName
+        dateLabel.text = reviews.reviewDate
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

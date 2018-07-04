@@ -24,8 +24,6 @@ class CafeTableViewController: UITableViewController {
     
     var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
     var updateScrollView = [Bool].init(repeating: false, count: ScrollView.count)
-    var bloggerReviews: [Reviews] = [Reviews(name: "Lady Iron Chef", description: "Lady Iron Chef's description", date: Date.init(), url: nil), Reviews(name: "Daniel Food Diary", description: "Daniel Food Diary's description", date: Date.init(), url: nil)]
-    var hopperReviews: [Reviews] = [Reviews(name: "John", description: "John's Review", date: Date.init(), url: nil), Reviews(name: "Mary", description: "Mary's Review", date: Date.init(), url: nil)]
     
     @IBOutlet weak var cafeNameLabel: UILabel!
     @IBOutlet weak var cafeAddressLabel: UILabel!
@@ -39,8 +37,10 @@ class CafeTableViewController: UITableViewController {
     @IBOutlet weak var sliderPageControl: UIPageControl!
     @IBOutlet weak var bloggerReviewScrollView: UIScrollView!
     @IBOutlet weak var bloggerReviewPageControl: UIPageControl!
+    @IBOutlet weak var bloggerReviewShowAllButton: UIButton!
     @IBOutlet weak var hopperReviewScrollView: UIScrollView!
     @IBOutlet weak var hopperReviewPageControl: UIPageControl!
+    @IBOutlet weak var hopperReviewShowAllButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,8 +57,14 @@ class CafeTableViewController: UITableViewController {
             
         }
         
+        fetchBloggerReviewFromDatabase { (bloggerReview) in
+            DispatchQueue.main.async {
+                self.updateBloggerReview(reviews: bloggerReview)
+            }
+        }
+        
         // autoSlider Timer
-        //Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(autoSlider), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(autoSlider), userInfo: nil, repeats: true)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -75,6 +81,7 @@ class CafeTableViewController: UITableViewController {
             updateScrollView[ScrollView.slider.rawValue] = true
         }
         
+        /*
         if updateScrollView[ScrollView.bloggerReview.rawValue] == false {
             updateBloggerReview()
             updateScrollView[ScrollView.bloggerReview.rawValue] = true
@@ -84,6 +91,7 @@ class CafeTableViewController: UITableViewController {
             updateHopperReview()
             updateScrollView[ScrollView.hopperReview.rawValue] = true
         }
+         */
     }
 
     override func didReceiveMemoryWarning() {
@@ -98,22 +106,11 @@ class CafeTableViewController: UITableViewController {
         print(url)
         
         guard let requestURL = URL(string: url) else {
+            print("Invalid request")
             return
         }
         
-        let request = NSMutableURLRequest(url: requestURL)
-        let session = URLSession.shared
-        
-        request.httpMethod = "GET"
-        
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
-            // fix internet connection error
-            let json = JSON(data: data!)
-            self.databaseCafeData = json
-            
+        let task = URLSession.shared.dataTask(with: requestURL) {data, response, error -> Void in
             let jsonDecoder = JSONDecoder.init()
             if let data = data, let cafeObject = try? jsonDecoder.decode(Cafe.self, from: data) {
                 completion(cafeObject)
@@ -122,29 +119,32 @@ class CafeTableViewController: UITableViewController {
                 print("No JSON Object found, or unable to map JSON Object to model")
                 return
             }
-        })
+        }
         
         task.resume()
     }
     
-
-    /*
-    func createCafeObject() {
-        let cafeName = selectedCafe["venue"]["name"].string
-        //let cafeName = databaseCafeData["cafeData"]["name"].string
-        let cafeAddress = selectedCafe["venue"]["location"]["formattedAddress"][0].string
-        //let cafeAddress = databaseCafeData["cafeData"]["location"]["address"].string
-        let bloggerRating = 3.0
-        let hopperRating = 1.0
-        let latitude = selectedCafe["venue"]["location"]["lat"].double
-        //let latitude = databaseCafeData["cafeData"]["location"]["latitude"].double
-        let longitude = selectedCafe["venue"]["location"]["lng"].double
-        //let longitude = databaseCafeData["cafeData"]["location"]["longitude"].double
+    func fetchBloggerReviewFromDatabase(completion: @escaping ([BloggerReview]) -> Void) {
+        let venueId = selectedCafe["venue"]["id"].string
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review?fsVenueId=\(venueId!)"
         
-        cafeObject = Cafe(name: cafeName!, address: cafeAddress!, bloggerRating: bloggerRating, hopperRating: hopperRating, latitude: latitude!, longitude: longitude!)
+        guard let requestURL = URL(string: url) else {
+            print("Invalid request")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: requestURL) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            if let data = data, let bloggerReview = try? jsonDecoder.decode([BloggerReview].self, from: data) {
+                completion(bloggerReview)
+            }
+            else {
+                print("No JSON Object found, or unable to map JSON Object to model")
+                return
+            }
+        }
+        task.resume()
     }
-     */
- 
 
     func updateLabel(cafeObject: Cafe) {
         cafeNameLabel.text = cafeObject.name
@@ -199,17 +199,35 @@ class CafeTableViewController: UITableViewController {
         sliderPageControl.currentPage = 0
     }
     
-    func updateBloggerReview() {
-        bloggerReviewPageControl.numberOfPages = bloggerReviews.count
+    
+    func updateBloggerReview(reviews: [BloggerReview]) {
+        guard reviews.count > 0 else {
+            bloggerReviewPageControl.isHidden = true
+            bloggerReviewShowAllButton.isHidden = true
+            frame.origin.x = 0
+            frame.size = bloggerReviewScrollView.frame.size
+            
+            let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height)
+            let titleLabel = UILabel(frame: titleLabelFrame)
+            titleLabel.text = "No reviews from bloggers for this café yet ..."
+            titleLabel.numberOfLines = 0
+            titleLabel.textAlignment = .center
+            titleLabel.font = UIFont.systemFont(ofSize: 14)
+            bloggerReviewScrollView.addSubview(titleLabel)
+            
+            return
+        }
         
-        for index in 0..<bloggerReviews.count {
+        bloggerReviewPageControl.numberOfPages = reviews.count
+        
+        for index in 0..<reviews.count {
             frame.origin.x = bloggerReviewScrollView.frame.size.width * CGFloat(index)
             frame.size = bloggerReviewScrollView.frame.size
             
             //title label
             let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height/2)
             let titleLabel = UILabel(frame: titleLabelFrame)
-            titleLabel.text = bloggerReviews[index].name
+            titleLabel.text = reviews[index].reviewSite
             titleLabel.numberOfLines = 1
             titleLabel.textAlignment = .center
             bloggerReviewScrollView.addSubview(titleLabel)
@@ -217,27 +235,45 @@ class CafeTableViewController: UITableViewController {
             //descriptions label
             let descriptionLabelFrame = CGRect(x: frame.origin.x, y: frame.height / 2, width: frame.width, height: frame.height / 2)
             let descriptionLabel = UILabel(frame: descriptionLabelFrame)
-            descriptionLabel.text = bloggerReviews[index].description
+            descriptionLabel.text = reviews[index].extract
             descriptionLabel.numberOfLines = 0
             descriptionLabel.textAlignment = .justified
             descriptionLabel.font = UIFont.systemFont(ofSize: 12)
             bloggerReviewScrollView.addSubview(descriptionLabel)
         }
-        bloggerReviewScrollView.contentSize = CGSize(width: bloggerReviewScrollView.frame.size.width * CGFloat(bloggerReviews.count), height: bloggerReviewScrollView.frame.size.height)
+        bloggerReviewScrollView.contentSize = CGSize(width: bloggerReviewScrollView.frame.size.width * CGFloat(reviews.count), height: bloggerReviewScrollView.frame.size.height)
         bloggerReviewScrollView.delegate = self
     }
     
-    func updateHopperReview() {
-        hopperReviewPageControl.numberOfPages = hopperReviews.count
+    
+     func updateHopperReview(reviews: [HopperReview]) {
+        guard reviews.count > 0 else {
+            hopperReviewPageControl.isHidden = true
+            hopperReviewShowAllButton.isHidden = true
+            frame.origin.x = 0
+            frame.size = hopperReviewScrollView.frame.size
+            
+            let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height)
+            let titleLabel = UILabel(frame: titleLabelFrame)
+            titleLabel.text = "No reviews from bloggers for this café yet ..."
+            titleLabel.numberOfLines = 0
+            titleLabel.textAlignment = .center
+            titleLabel.font = UIFont.systemFont(ofSize: 14)
+            hopperReviewScrollView.addSubview(titleLabel)
+            
+            return
+        }
         
-        for index in 0..<hopperReviews.count {
+        hopperReviewPageControl.numberOfPages = reviews.count
+        
+        for index in 0..<reviews.count {
             frame.origin.x = hopperReviewScrollView.frame.size.width * CGFloat(index)
             frame.size = hopperReviewScrollView.frame.size
             
             //title label
             let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height/4)
             let titleLabel = UILabel(frame: titleLabelFrame)
-            titleLabel.text = hopperReviews[index].name
+            titleLabel.text = reviews[index].userName
             titleLabel.numberOfLines = 1
             titleLabel.textAlignment = .center
             hopperReviewScrollView.addSubview(titleLabel)
@@ -245,15 +281,16 @@ class CafeTableViewController: UITableViewController {
             //descriptions label
             let descriptionLabelFrame = CGRect(x: frame.origin.x, y: frame.height / 2, width: frame.width, height: frame.height / 2)
             let descriptionLabel = UILabel(frame: descriptionLabelFrame)
-            descriptionLabel.text = hopperReviews[index].description
+            descriptionLabel.text = reviews[index].extract
             descriptionLabel.numberOfLines = 0
             descriptionLabel.textAlignment = .justified
             descriptionLabel.font = UIFont.systemFont(ofSize: 10)
             hopperReviewScrollView.addSubview(descriptionLabel)
         }
-        hopperReviewScrollView.contentSize = CGSize(width: hopperReviewScrollView.frame.size.width * CGFloat(hopperReviews.count), height: hopperReviewScrollView.frame.size.height)
+        hopperReviewScrollView.contentSize = CGSize(width: hopperReviewScrollView.frame.size.width * CGFloat(reviews.count), height: hopperReviewScrollView.frame.size.height)
         hopperReviewScrollView.delegate = self
     }
+    
  
     
     @objc func autoSlider() {
@@ -344,14 +381,10 @@ class CafeTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "hopperReview" {
-            let hopperReviewTableViewController = segue.destination as! HopperReviewTableViewController
-            hopperReviewTableViewController.reviews = hopperReviews
+            //let hopperReviewTableViewController = segue.destination as! HopperReviewTableViewController
+            //hopperReviewTableViewController.reviews = hopperReviews
         }
     }
-    
-    
-    
-
 }
 
 extension CafeTableViewController: MKMapViewDelegate {

@@ -9,7 +9,7 @@
 import UIKit
 
 class HopperReviewTableViewController: UITableViewController {
-    var reviews: [Reviews]!
+    var reviews: [HopperReview]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
