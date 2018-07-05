@@ -1,23 +1,34 @@
 import Foundation
 
 class HopperReview: Codable {
-    var userID: String
-    var userName: String
+    var fsVenueId: String
+    var userId: String
     var reviewDate: String
-    var extract: String
+    var rating: Int
+    var content: String
     
     enum CodingKeys: String, CodingKey {
-        case userID
-        case userName
+        case fsVenueId
+        case userId = "reviewerId"
         case reviewDate
-        case extract
+        case rating
+        case content
     }
     
     required init(from decoder: Decoder) throws {
         let valueContainer = try decoder.container(keyedBy: CodingKeys.self)
-        userID = try valueContainer.decode(String.self, forKey: CodingKeys.userID)
-        userName = try valueContainer.decode(String.self, forKey: CodingKeys.userName)
+        fsVenueId = try valueContainer.decode(String.self, forKey: CodingKeys.fsVenueId)
+        userId = try valueContainer.decode(String.self, forKey: CodingKeys.userId)
         reviewDate = try valueContainer.decode(String.self, forKey: CodingKeys.reviewDate)
-        extract = try valueContainer.decode(String.self, forKey: CodingKeys.extract)
+        rating = try valueContainer.decode(Int.self, forKey: CodingKeys.rating)
+        content = try valueContainer.decode(String.self, forKey: CodingKeys.content)
+    }
+    
+    init(fsVenueId: String, userId: String, reviewDate: String, rating: Int, content: String) {
+        self.fsVenueId = fsVenueId
+        self.userId = userId
+        self.reviewDate = reviewDate
+        self.rating = rating
+        self.content = content
     }
 }

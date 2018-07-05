@@ -19,8 +19,8 @@ class HopperReviewTableViewCell: UITableViewCell {
     }
     
     func update(reviews: HopperReview) {
-        reviewContentLabel.text = reviews.extract
-        hopperUserNameLabel.text = reviews.userName
+        reviewContentLabel.text = reviews.content
+        hopperUserNameLabel.text = reviews.userId
         dateLabel.text = reviews.reviewDate
     }
 

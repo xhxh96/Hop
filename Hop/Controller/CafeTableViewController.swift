@@ -49,6 +49,7 @@ class CafeTableViewController: UITableViewController {
         
         fetchCafeFromDatabase { (cafe) in
             print(cafe)
+            self.cafeObject = cafe
             //self.cafeObject = cafe
             DispatchQueue.main.async {
                 self.updateLabel(cafeObject: cafe)
@@ -126,7 +127,7 @@ class CafeTableViewController: UITableViewController {
     
     func fetchBloggerReviewFromDatabase(completion: @escaping ([BloggerReview]) -> Void) {
         let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review?fsVenueId=\(venueId!)"
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/blogger&fsVenueId=\(venueId!)"
         
         guard let requestURL = URL(string: url) else {
             print("Invalid request")
@@ -137,6 +138,28 @@ class CafeTableViewController: UITableViewController {
             let jsonDecoder = JSONDecoder.init()
             if let data = data, let bloggerReview = try? jsonDecoder.decode([BloggerReview].self, from: data) {
                 completion(bloggerReview)
+            }
+            else {
+                print("No JSON Object found, or unable to map JSON Object to model")
+                return
+            }
+        }
+        task.resume()
+    }
+    
+    func fetchHopperReviewFromDatabase(completion: @escaping ([HopperReview]) -> Void) {
+        let venueId = selectedCafe["venue"]["id"].string
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper&fsVenueId=\(venueId!)"
+        
+        guard let requestURL = URL(string: url) else {
+            print("Invalid request")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: requestURL) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            if let data = data, let hopperReview = try? jsonDecoder.decode([HopperReview].self, from: data) {
+                completion(hopperReview)
             }
             else {
                 print("No JSON Object found, or unable to map JSON Object to model")
@@ -192,6 +215,15 @@ class CafeTableViewController: UITableViewController {
             
             let images = ["dummy-0", "dummy-1", "dummy-2"]
             image.image = UIImage(named: images[index])
+            
+            /*
+            let imageURL = URL(string: "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CmRaAAAA10yYfIiZtWt0FxqBn7v78NTbvTdBrAM46zxZEDyQN41PBNyEuUkJZWrgGoERINRLeVzqse51GXkbwvp5wqQnj70afEJ5-KUxAwqT50O2baJyu1BSb-P40LLzyYY6tOsxEhDvmPR9Y9hREBx9pf5nUp9gGhQ160aZhbv28YeRQSp_rUtyBVG-xg&key=AIzaSyBC27_6Izl4kLVnVH4mU2O588Kn8eL-uXg")
+            
+            let imageData = try? Data(contentsOf: imageURL!)
+            image.image = UIImage(data: imageData!)
+             */
+ 
+            
             sliderScrollView.addSubview(image)
         }
         sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(3), height: sliderScrollView.frame.size.height)
@@ -273,7 +305,7 @@ class CafeTableViewController: UITableViewController {
             //title label
             let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height/4)
             let titleLabel = UILabel(frame: titleLabelFrame)
-            titleLabel.text = reviews[index].userName
+            titleLabel.text = reviews[index].userId
             titleLabel.numberOfLines = 1
             titleLabel.textAlignment = .center
             hopperReviewScrollView.addSubview(titleLabel)
@@ -281,7 +313,7 @@ class CafeTableViewController: UITableViewController {
             //descriptions label
             let descriptionLabelFrame = CGRect(x: frame.origin.x, y: frame.height / 2, width: frame.width, height: frame.height / 2)
             let descriptionLabel = UILabel(frame: descriptionLabelFrame)
-            descriptionLabel.text = reviews[index].extract
+            descriptionLabel.text = reviews[index].content
             descriptionLabel.numberOfLines = 0
             descriptionLabel.textAlignment = .justified
             descriptionLabel.font = UIFont.systemFont(ofSize: 10)
@@ -383,6 +415,11 @@ class CafeTableViewController: UITableViewController {
         if segue.identifier == "hopperReview" {
             //let hopperReviewTableViewController = segue.destination as! HopperReviewTableViewController
             //hopperReviewTableViewController.reviews = hopperReviews
+        }
+        else if segue.identifier == "submitReview" {
+            let navigationController = segue.destination as? UINavigationController
+            let submitReviewTableViewController = navigationController?.viewControllers.first as! SubmitReviewTableViewController
+            submitReviewTableViewController.cafeObject = cafeObject
         }
     }
 }

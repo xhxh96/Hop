@@ -1,21 +1,14 @@
-//
-//  SubmitReviewTableViewController.swift
-//  Hop
-//
-//  Created by macOS on 2/7/18.
-//  Copyright © 2018 NUS. All rights reserved.
-//
-
 import UIKit
 
 class SubmitReviewTableViewController: UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
-    @IBOutlet weak var reviewSlider: UISlider!
+    @IBOutlet weak var ratingSlider: UISlider!
     @IBOutlet weak var reviewTextView: UITextView!
     
-    var cafeName: String!
+    var cafeObject: Cafe!
+    var userID = "elstonayx"
     
     let dateLabelIndexPath = IndexPath(row: 1, section: 0)
     let datePickerIndexPath = IndexPath(row: 2, section: 0)
@@ -29,6 +22,7 @@ class SubmitReviewTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateLabel()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -42,6 +36,10 @@ class SubmitReviewTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func updateLabel() {
+        titleLabel.text = cafeObject.name
+    }
+    
     func updateDateView() {
         datePicker.maximumDate = Date.init()
         
@@ -49,6 +47,44 @@ class SubmitReviewTableViewController: UITableViewController {
         dateFormatter.dateStyle = .medium
         
         dateLabel.text = dateFormatter.string(from: datePicker.date)
+    }
+    
+    func submitReview(review: HopperReview, completion:((Error?) -> Void)?) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review"
+        
+        guard let requestURL = URL(string: url) else {
+            print("Invalid request")
+            return
+        }
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let jsonEncoder = JSONEncoder.init()
+        
+        do {
+            let data = try jsonEncoder.encode(review)
+            request.httpBody = data
+            print("jsonData:", String(data: request.httpBody!, encoding: .utf8) ?? "no body data")
+        }
+        catch {
+            completion?(error)
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard error == nil else {
+                completion?(error!)
+                return
+            }
+            
+            if let data = data, let utf8Representation = String(data: data, encoding: .utf8) {
+                print("response: ", utf8Representation)
+            } else {
+                print("no readable data received in response")
+            }
+        }
+        task.resume()
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -88,6 +124,19 @@ class SubmitReviewTableViewController: UITableViewController {
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+        let review = HopperReview(fsVenueId: cafeObject.fsVenueId,userId: userID, reviewDate: dateLabel.text!, rating: Int(ratingSlider.value), content: reviewTextView.text)
+        
+        submitReview(review: review) { (error) in
+            if let error = error {
+                fatalError(error.localizedDescription)
+            }
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     
     @IBAction func datePickerValueChanged(_ sender: UIDatePicker) {
         updateDateView()

@@ -1,11 +1,3 @@
-//
-//  HopperReviewTableViewController.swift
-//  Hop
-//
-//  Created by macOS on 1/7/18.
-//  Copyright © 2018 NUS. All rights reserved.
-//
-
 import UIKit
 
 class HopperReviewTableViewController: UITableViewController {

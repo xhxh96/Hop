@@ -35,9 +35,6 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BRZ-SX-RuI">
                                 <rect key="frame" x="166" y="367" width="42" height="30"/>
                                 <state key="normal" title="Log In"/>
-                                <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="cSM-xh-cKS"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YbV-0u-bAV">
                                 <rect key="frame" x="108" y="412" width="158" height="30"/>
@@ -75,6 +72,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0GR-4G-Zef">
+                                <rect key="frame" x="98" y="457" width="178" height="30"/>
+                                <state key="normal" title="Continue without Account"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="Rq7-Ze-38k"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -89,7 +93,9 @@
                             <constraint firstItem="eRd-cz-yD8" firstAttribute="top" secondItem="Z12-bE-Hli" secondAttribute="bottom" constant="8.5" id="avQ-Ye-Twk"/>
                             <constraint firstItem="YbV-0u-bAV" firstAttribute="top" secondItem="BRZ-SX-RuI" secondAttribute="bottom" constant="15" id="awd-7p-omE"/>
                             <constraint firstItem="Z12-bE-Hli" firstAttribute="centerX" secondItem="eRd-cz-yD8" secondAttribute="centerX" id="dB4-jQ-EMA"/>
+                            <constraint firstItem="0GR-4G-Zef" firstAttribute="centerX" secondItem="YbV-0u-bAV" secondAttribute="centerX" id="exi-3g-Leo"/>
                             <constraint firstItem="65b-PD-PVf" firstAttribute="centerX" secondItem="FMz-E7-kgn" secondAttribute="centerX" id="iwA-Y2-hAA"/>
+                            <constraint firstItem="0GR-4G-Zef" firstAttribute="top" secondItem="YbV-0u-bAV" secondAttribute="bottom" constant="15" id="lle-ZL-on6"/>
                             <constraint firstItem="Z12-bE-Hli" firstAttribute="top" secondItem="d2e-m9-eKD" secondAttribute="bottom" constant="13" id="ntk-m6-8JE"/>
                             <constraint firstItem="Z12-bE-Hli" firstAttribute="centerX" secondItem="d2e-m9-eKD" secondAttribute="centerX" id="r40-4y-i8Y"/>
                             <constraint firstItem="seU-qn-zH7" firstAttribute="bottom" secondItem="9hU-eK-xIb" secondAttribute="bottom" id="tUp-UB-4kc"/>
@@ -681,7 +687,7 @@
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="Submit a Review"/>
                                                             <connections>
-                                                                <segue destination="4gg-U9-PrW" kind="presentation" id="vcM-Tm-oKD"/>
+                                                                <segue destination="4gg-U9-PrW" kind="presentation" identifier="submitReview" id="vcM-Tm-oKD"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tl2-63-hJS">
@@ -859,7 +865,6 @@
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4rf-Tj-CBe">
                                                     <rect key="frame" x="16" y="11" width="343" height="183"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
@@ -890,12 +895,16 @@
                                 <action selector="cancelButtonTapped:" destination="Olb-XM-3HJ" id="cFZ-Wg-MKh"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="5K1-gH-roa"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="5K1-gH-roa">
+                            <connections>
+                                <action selector="doneButtonTapped:" destination="Olb-XM-3HJ" id="zGW-gh-Xey"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="dateLabel" destination="aEz-w5-qxs" id="9Nm-hy-YBU"/>
                         <outlet property="datePicker" destination="NGk-mn-CSV" id="4JG-CY-pjG"/>
-                        <outlet property="reviewSlider" destination="Fy7-vs-nqz" id="WS2-rE-rNG"/>
+                        <outlet property="ratingSlider" destination="Fy7-vs-nqz" id="Pa2-jf-lwL"/>
                         <outlet property="reviewTextView" destination="4rf-Tj-CBe" id="rCj-dj-hIA"/>
                         <outlet property="titleLabel" destination="L5J-C9-Xud" id="gFB-ay-g4F"/>
                     </connections>
@@ -974,7 +983,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C4d-Jq-Lgp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2628" y="151.57421289355324"/>
+            <point key="canvasLocation" x="2788" y="606"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Zws-1U-715">
