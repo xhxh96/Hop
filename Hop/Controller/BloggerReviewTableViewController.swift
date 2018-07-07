@@ -1,11 +1,12 @@
 import UIKit
+import SafariServices
 
-class HopperReviewTableViewController: UITableViewController {
-    var reviews: [HopperReview]!
-
+class BloggerReviewTableViewController: UITableViewController {
+    var reviews: [BloggerReview]!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Hopper's Review"
+        self.title = "Blogger Reviews"
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -20,16 +21,23 @@ class HopperReviewTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return reviews.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HopperReviewCell", for: indexPath) as! HopperReviewTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BloggerReviewCell", for: indexPath) as! BloggerReviewTableViewCell
         cell.update(reviews: reviews[indexPath.row])
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let safariViewController = SFSafariViewController(url: reviews[indexPath.row].url)
+        present(safariViewController, animated: true, completion: nil)
     }
     
 

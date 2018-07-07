@@ -28,7 +28,7 @@ struct Cafe: Codable {
     var bloggerRating: Int?
     var hopperRating: Int?
     var priceRange: Int?
-    //var images: [String]
+    var images: [String]
     var url: URL?
     var contactNo: String?
     var contactEmail: String?
@@ -44,7 +44,7 @@ struct Cafe: Codable {
         case bloggerRating
         case hopperRating
         case priceRange
-        //case images
+        case images
         case url
         case contactNo
         case contactEmail
@@ -62,6 +62,7 @@ struct Cafe: Codable {
         bloggerRating = try? valueContainer.decode(Int.self, forKey: CodingKeys.bloggerRating)
         hopperRating = try? valueContainer.decode(Int.self, forKey: CodingKeys.hopperRating)
         priceRange = try? valueContainer.decode(Int.self, forKey: CodingKeys.priceRange)
+        images = try valueContainer.decode([String].self, forKey: CodingKeys.images)
         url = try? valueContainer.decode(URL.self, forKey: CodingKeys.url)
         contactNo = try? valueContainer.decode(String.self, forKey: CodingKeys.contactNo)
         contactEmail = try? valueContainer.decode(String.self, forKey: CodingKeys.contactEmail)

@@ -591,6 +591,9 @@
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9q8-gv-yGL">
                                                                     <rect key="frame" x="246" y="0.0" width="97" height="24"/>
                                                                     <state key="normal" title="Show All"/>
+                                                                    <connections>
+                                                                        <segue destination="9cJ-rS-1Ld" kind="show" identifier="bloggerReview" id="3eu-ef-ks2"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                         </stackView>
@@ -913,10 +916,10 @@
             </objects>
             <point key="canvasLocation" x="1888.8" y="972.86356821589209"/>
         </scene>
-        <!--Hopper's Review-->
+        <!--Hopper Review Table View Controller-->
         <scene sceneID="OVd-kp-2gc">
             <objects>
-                <tableViewController title="Hopper's Review" id="UP7-jC-M8U" customClass="HopperReviewTableViewController" customModule="Hop" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="UP7-jC-M8U" customClass="HopperReviewTableViewController" customModule="Hop" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="B3m-Hq-iWz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -929,11 +932,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="124.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3iu-d4-hQO">
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="3iu-d4-hQO">
                                             <rect key="frame" x="16" y="11" width="343" height="103"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review Content" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUa-WQ-oT1">
-                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="87"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="67"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1021,6 +1024,78 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m3E-KW-CXm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="949.60000000000002" y="972.86356821589209"/>
+        </scene>
+        <!--Blogger Review Table View Controller-->
+        <scene sceneID="b0Q-RX-k26">
+            <objects>
+                <tableViewController id="9cJ-rS-1Ld" customClass="BloggerReviewTableViewController" customModule="Hop" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="1yk-YF-cV1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BloggerReviewCell" rowHeight="125" id="pfJ-Ov-P4X" customClass="BloggerReviewTableViewCell" customModule="Hop" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="125"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pfJ-Ov-P4X" id="Zc4-nF-4bX">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="DIe-eL-gSj">
+                                            <rect key="frame" x="16" y="11" width="343" height="103"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review Content" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCY-NO-zhW">
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="67"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAg-q1-HBS">
+                                                    <rect key="frame" x="0.0" y="87" width="343" height="16"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3GA-gX-ao4">
+                                                            <rect key="frame" x="0.0" y="0.0" width="295.5" height="16"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Blogger" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzK-dN-uxH">
+                                                            <rect key="frame" x="295.5" y="0.0" width="47.5" height="16"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="QbB-F6-0hb"/>
+                                            </constraints>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="DIe-eL-gSj" secondAttribute="trailing" id="2Eu-mB-jgB"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="DIe-eL-gSj" secondAttribute="bottom" id="2Vj-6C-5oJ"/>
+                                        <constraint firstItem="DIe-eL-gSj" firstAttribute="leading" secondItem="Zc4-nF-4bX" secondAttribute="leadingMargin" id="PG1-Kf-bZf"/>
+                                        <constraint firstItem="DIe-eL-gSj" firstAttribute="top" secondItem="Zc4-nF-4bX" secondAttribute="topMargin" id="V2E-Wf-2Cg"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="bloggerNameLabel" destination="zzK-dN-uxH" id="dfu-eS-DPG"/>
+                                    <outlet property="dateLabel" destination="3GA-gX-ao4" id="7y0-Fs-snH"/>
+                                    <outlet property="reviewContentLabel" destination="SCY-NO-zhW" id="JNm-pS-pm6"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="9cJ-rS-1Ld" id="iw2-vQ-uGI"/>
+                            <outlet property="delegate" destination="9cJ-rS-1Ld" id="cgO-hj-hGn"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xhF-nk-YOg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2788" y="-63"/>
         </scene>
     </scenes>
     <resources>

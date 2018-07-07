@@ -19,11 +19,10 @@ enum ScrollView: Int {
 class CafeTableViewController: UITableViewController {
     var selectedCafe: JSON!
     var cafeObject: Cafe!
-    var rawCafeHours = [JSON]()
-    var databaseCafeData: JSON!
+    var bloggerReview: [BloggerReview]?
+    var hopperReview: [HopperReview]?
     
     var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-    var updateScrollView = [Bool].init(repeating: false, count: ScrollView.count)
     
     @IBOutlet weak var cafeNameLabel: UILabel!
     @IBOutlet weak var cafeAddressLabel: UILabel!
@@ -46,26 +45,33 @@ class CafeTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.allowsSelection = false
         mapView.delegate = self
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
         fetchCafeFromDatabase { (cafe) in
-            print(cafe)
             self.cafeObject = cafe
-            //self.cafeObject = cafe
             DispatchQueue.main.async {
-                self.updateLabel(cafeObject: cafe)
-                self.updateMap(cafeObject: cafe)
+                self.title = self.cafeObject.name
+                self.updateSlider()
+                self.updateLabel()
+                self.updateMap()
+                
+                // autoSlider Timer
+                Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.autoSlider), userInfo: nil, repeats: true)
             }
-            
-        }
-        
-        fetchBloggerReviewFromDatabase { (bloggerReview) in
-            DispatchQueue.main.async {
-                self.updateBloggerReview(reviews: bloggerReview)
+            self.fetchBloggerReviewFromDatabase { (bloggerReview) in
+                self.bloggerReview = bloggerReview
+                DispatchQueue.main.async {
+                    self.updateBloggerReview()
+                }
+                self.fetchHopperReviewFromDatabase { (hopperReview) in
+                    self.hopperReview = hopperReview
+                    DispatchQueue.main.async {
+                        self.updateHopperReview()
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    }
+                }
             }
         }
-        
-        // autoSlider Timer
-        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(autoSlider), userInfo: nil, repeats: true)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -74,27 +80,6 @@ class CafeTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if updateScrollView[ScrollView.slider.rawValue] == false {
-            updateSlider()
-            updateScrollView[ScrollView.slider.rawValue] = true
-        }
-        
-        /*
-        if updateScrollView[ScrollView.bloggerReview.rawValue] == false {
-            updateBloggerReview()
-            updateScrollView[ScrollView.bloggerReview.rawValue] = true
-        }
-        
-        if updateScrollView[ScrollView.hopperReview.rawValue] == false {
-            updateHopperReview()
-            updateScrollView[ScrollView.hopperReview.rawValue] = true
-        }
-         */
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -107,17 +92,19 @@ class CafeTableViewController: UITableViewController {
         print(url)
         
         guard let requestURL = URL(string: url) else {
-            print("Invalid request")
+            print("FETCH CAFE DATA ERROR: Invalid request")
             return
         }
         
         let task = URLSession.shared.dataTask(with: requestURL) {data, response, error -> Void in
             let jsonDecoder = JSONDecoder.init()
-            if let data = data, let cafeObject = try? jsonDecoder.decode(Cafe.self, from: data) {
+            if let data = data {
+                let cafeObject = try! jsonDecoder.decode(Cafe.self, from: data)
+                print(cafeObject)
                 completion(cafeObject)
             }
             else {
-                print("No JSON Object found, or unable to map JSON Object to model")
+                print("FETCH CAFE DATA WARNING: No JSON Object found, or unable to map JSON Object to model")
                 return
             }
         }
@@ -125,12 +112,12 @@ class CafeTableViewController: UITableViewController {
         task.resume()
     }
     
-    func fetchBloggerReviewFromDatabase(completion: @escaping ([BloggerReview]) -> Void) {
+    func fetchBloggerReviewFromDatabase(completion: @escaping ([BloggerReview]?) -> Void) {
         let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/blogger&fsVenueId=\(venueId!)"
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/blogger?fsVenueId=\(venueId!)"
         
         guard let requestURL = URL(string: url) else {
-            print("Invalid request")
+            print("FETCH BLOGGER REVIEW ERROR: Invalid request")
             return
         }
         
@@ -140,19 +127,19 @@ class CafeTableViewController: UITableViewController {
                 completion(bloggerReview)
             }
             else {
-                print("No JSON Object found, or unable to map JSON Object to model")
-                return
+                print("FETCH BLOGGER REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
+                completion(nil)
             }
         }
         task.resume()
     }
     
-    func fetchHopperReviewFromDatabase(completion: @escaping ([HopperReview]) -> Void) {
+    func fetchHopperReviewFromDatabase(completion: @escaping ([HopperReview]?) -> Void) {
         let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper&fsVenueId=\(venueId!)"
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?fsVenueId=\(venueId!)"
         
         guard let requestURL = URL(string: url) else {
-            print("Invalid request")
+            print("FETCH HOPPER REVIEW ERROR: Invalid request")
             return
         }
         
@@ -162,26 +149,26 @@ class CafeTableViewController: UITableViewController {
                 completion(hopperReview)
             }
             else {
-                print("No JSON Object found, or unable to map JSON Object to model")
-                return
+                print("FETCH HOPPER REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
+                completion(nil)
             }
         }
         task.resume()
     }
 
-    func updateLabel(cafeObject: Cafe) {
+    func updateLabel() {
         cafeNameLabel.text = cafeObject.name
         cafeAddressLabel.text = cafeObject.address
     }
     
-    func updateMap(cafeObject: Cafe) {
+    func updateMap() {
         let latitude = cafeObject.latitude
         let longitude = cafeObject.longitude
         
         let location = CLLocation(latitude: latitude, longitude: longitude)
         let regionRadius: CLLocationDistance = 250
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius, regionRadius)
-        let mapAnnotation = MapAnnotation(title: cafeNameLabel.text!, address: cafeAddressLabel.text!, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+        let mapAnnotation = MapAnnotation(title: cafeObject.name, address: cafeObject.address, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
         
         mapView.setRegion(coordinateRegion, animated: true)
         mapView.addAnnotation(mapAnnotation)
@@ -201,39 +188,32 @@ class CafeTableViewController: UITableViewController {
         }
     }
     
-    
-    // Replace 3 with cafeObject.image.count
     func updateSlider() {
-        sliderPageControl.numberOfPages = 3
+        sliderPageControl.numberOfPages = cafeObject.images.count
         
-        for index in 0..<3 {
+        for index in 0..<cafeObject.images.count {
             frame.origin.x = sliderScrollView.frame.size.width * CGFloat(index)
             frame.size = sliderScrollView.frame.size
             
             let image = UIImageView(frame: frame)
             image.contentMode = .scaleAspectFill
             
-            let images = ["dummy-0", "dummy-1", "dummy-2"]
-            image.image = UIImage(named: images[index])
-            
-            /*
-            let imageURL = URL(string: "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CmRaAAAA10yYfIiZtWt0FxqBn7v78NTbvTdBrAM46zxZEDyQN41PBNyEuUkJZWrgGoERINRLeVzqse51GXkbwvp5wqQnj70afEJ5-KUxAwqT50O2baJyu1BSb-P40LLzyYY6tOsxEhDvmPR9Y9hREBx9pf5nUp9gGhQ160aZhbv28YeRQSp_rUtyBVG-xg&key=AIzaSyBC27_6Izl4kLVnVH4mU2O588Kn8eL-uXg")
-            
+            let imageURL = URL(string: cafeObject.images[index])
             let imageData = try? Data(contentsOf: imageURL!)
             image.image = UIImage(data: imageData!)
-             */
+ 
  
             
             sliderScrollView.addSubview(image)
         }
-        sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(3), height: sliderScrollView.frame.size.height)
+        sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(cafeObject.images.count), height: sliderScrollView.frame.size.height)
         sliderScrollView.delegate = self
         sliderPageControl.currentPage = 0
     }
     
     
-    func updateBloggerReview(reviews: [BloggerReview]) {
-        guard reviews.count > 0 else {
+    func updateBloggerReview() {
+        guard let reviews = bloggerReview, reviews.count > 0 else {
             bloggerReviewPageControl.isHidden = true
             bloggerReviewShowAllButton.isHidden = true
             frame.origin.x = 0
@@ -264,7 +244,7 @@ class CafeTableViewController: UITableViewController {
             titleLabel.textAlignment = .center
             bloggerReviewScrollView.addSubview(titleLabel)
             
-            //descriptions label
+            //description label
             let descriptionLabelFrame = CGRect(x: frame.origin.x, y: frame.height / 2, width: frame.width, height: frame.height / 2)
             let descriptionLabel = UILabel(frame: descriptionLabelFrame)
             descriptionLabel.text = reviews[index].extract
@@ -278,8 +258,8 @@ class CafeTableViewController: UITableViewController {
     }
     
     
-     func updateHopperReview(reviews: [HopperReview]) {
-        guard reviews.count > 0 else {
+     func updateHopperReview() {
+        guard let reviews = hopperReview, reviews.count > 0 else {
             hopperReviewPageControl.isHidden = true
             hopperReviewShowAllButton.isHidden = true
             frame.origin.x = 0
@@ -287,7 +267,7 @@ class CafeTableViewController: UITableViewController {
             
             let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height)
             let titleLabel = UILabel(frame: titleLabelFrame)
-            titleLabel.text = "No reviews from bloggers for this café yet ..."
+            titleLabel.text = "No reviews from hoppers for this café yet ..."
             titleLabel.numberOfLines = 0
             titleLabel.textAlignment = .center
             titleLabel.font = UIFont.systemFont(ofSize: 14)
@@ -310,7 +290,7 @@ class CafeTableViewController: UITableViewController {
             titleLabel.textAlignment = .center
             hopperReviewScrollView.addSubview(titleLabel)
             
-            //descriptions label
+            //description label
             let descriptionLabelFrame = CGRect(x: frame.origin.x, y: frame.height / 2, width: frame.width, height: frame.height / 2)
             let descriptionLabel = UILabel(frame: descriptionLabelFrame)
             descriptionLabel.text = reviews[index].content
@@ -326,7 +306,7 @@ class CafeTableViewController: UITableViewController {
  
     
     @objc func autoSlider() {
-        let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(3)
+        let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(cafeObject.images.count)
         let contentOffset: CGFloat = sliderScrollView.contentOffset.x
         var slideToX = sliderScrollView.frame.width + contentOffset
         
@@ -335,29 +315,6 @@ class CafeTableViewController: UITableViewController {
         }
         
         sliderScrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width: sliderScrollView.frame.width, height:sliderScrollView.frame.height), animated: true)
-    }
-    
-    func listOpeningHours() {
-        let venueId = selectedCafe["venue"]["id"].string!
-        
-        let url = "https://api.foursquare.com/v2/venues/\(venueId)/hours?client_id=\(client_id)&client_secret=\(client_secret)"
-        
-        let request = NSMutableURLRequest(url: URL(string: url)!)
-        let session = URLSession.shared
-        
-        request.httpMethod = "GET"
-        
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
-            
-            let json = JSON(data: data!)
-            print(json)
-            self.rawCafeHours = json["response"]["hours"]["timeframes"].arrayValue
-        })
-        
-        task.resume()
     }
  
     
@@ -413,8 +370,12 @@ class CafeTableViewController: UITableViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "hopperReview" {
-            //let hopperReviewTableViewController = segue.destination as! HopperReviewTableViewController
-            //hopperReviewTableViewController.reviews = hopperReviews
+            let hopperReviewTableViewController = segue.destination as! HopperReviewTableViewController
+            hopperReviewTableViewController.reviews = hopperReview!
+        }
+        else if segue.identifier == "bloggerReview" {
+            let bloggerReviewTableViewController = segue.destination as! BloggerReviewTableViewController
+            bloggerReviewTableViewController.reviews = bloggerReview!
         }
         else if segue.identifier == "submitReview" {
             let navigationController = segue.destination as? UINavigationController

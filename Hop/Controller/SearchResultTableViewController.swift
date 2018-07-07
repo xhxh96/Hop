@@ -69,10 +69,10 @@ class SearchResultTableViewController: UITableViewController {
     }
     
     
-    
-    
     // MARK: - Helper Functions
     func searchForCoffee() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         var url: String
         let formattedSearchInput = searchKeyword?.replacingOccurrences(of: " ", with: "-")
         // to implement guard for input in URL
@@ -98,6 +98,7 @@ class SearchResultTableViewController: UITableViewController {
             self.cafeResults = json["response"]["group"]["results"].arrayValue
             
             DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.tableView.isHidden = false
                 self.tableView.reloadData()
             }

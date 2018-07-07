@@ -126,13 +126,13 @@ class SubmitReviewTableViewController: UITableViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        let review = HopperReview(fsVenueId: cafeObject.fsVenueId,userId: userID, reviewDate: dateLabel.text!, rating: Int(ratingSlider.value), content: reviewTextView.text)
-        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        let review = HopperReview(fsVenueId: cafeObject.fsVenueId, userId: userID, reviewDate: dateLabel.text!, rating: Int(ratingSlider.value), content: reviewTextView.text)
         submitReview(review: review) { (error) in
             if let error = error {
                 fatalError(error.localizedDescription)
             }
-            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.dismiss(animated: true, completion: nil)
         }
     }

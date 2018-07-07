@@ -18,6 +18,8 @@
 		22E53E0E20E653C8005CD8CC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E53E0D20E653C8005CD8CC /* LoginViewController.swift */; };
 		22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */; };
 		22F2D32F20ECC36F0097753B /* HopperReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F2D32E20ECC36F0097753B /* HopperReview.swift */; };
+		284B012020F0B71C00FEA89B /* BloggerReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284B011F20F0B71C00FEA89B /* BloggerReviewTableViewController.swift */; };
+		284B012220F0B88E00FEA89B /* BloggerReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */; };
 		28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0220D2A562002781FF /* AppDelegate.swift */; };
 		28CA2C0520D2A562002781FF /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0420D2A562002781FF /* InitialViewController.swift */; };
 		28CA2C0820D2A562002781FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0620D2A562002781FF /* Main.storyboard */; };
@@ -39,6 +41,8 @@
 		22E53E0D20E653C8005CD8CC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		22F2D32E20ECC36F0097753B /* HopperReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HopperReview.swift; sourceTree = "<group>"; };
+		284B011F20F0B71C00FEA89B /* BloggerReviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggerReviewTableViewController.swift; sourceTree = "<group>"; };
+		284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggerReviewTableViewCell.swift; sourceTree = "<group>"; };
 		28CA2BFF20D2A562002781FF /* Hop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28CA2C0220D2A562002781FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28CA2C0420D2A562002781FF /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +84,7 @@
 				28CA2C0420D2A562002781FF /* InitialViewController.swift */,
 				22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */,
 				22D1BD8520E92D3E00A9EA7B /* HopperReviewTableViewController.swift */,
+				284B011F20F0B71C00FEA89B /* BloggerReviewTableViewController.swift */,
 				22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */,
 			);
 			path = Controller;
@@ -90,6 +95,7 @@
 			children = (
 				22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */,
 				22D1BD8720E92EFC00A9EA7B /* HopperReviewTableViewCell.swift */,
+				284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -203,6 +209,7 @@
 				28CA2C0520D2A562002781FF /* InitialViewController.swift in Sources */,
 				28D9657D20D7BE9D00158318 /* MapAnnotation.swift in Sources */,
 				28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */,
+				284B012220F0B88E00FEA89B /* BloggerReviewTableViewCell.swift in Sources */,
 				22D1BD8620E92D3E00A9EA7B /* HopperReviewTableViewController.swift in Sources */,
 				89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */,
 				22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */,
@@ -210,6 +217,7 @@
 				22CFD6A520E645B9002646A8 /* BloggerReview.swift in Sources */,
 				22115A8620D2BB17002F5CB9 /* Cafe.swift in Sources */,
 				22D1BD8820E92EFC00A9EA7B /* HopperReviewTableViewCell.swift in Sources */,
+				284B012020F0B71C00FEA89B /* BloggerReviewTableViewController.swift in Sources */,
 				22E53E0E20E653C8005CD8CC /* LoginViewController.swift in Sources */,
 				22115A8B20D2BB5A002F5CB9 /* SearchResultTableViewController.swift in Sources */,
 				2260B63B20E9403500B1DFA8 /* SubmitReviewTableViewController.swift in Sources */,
