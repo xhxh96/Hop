@@ -33,9 +33,10 @@ struct Cafe: Codable {
     var contactNo: String?
     var contactEmail: String?
     var address: String
+    var postalCode: String
     var latitude: Double
     var longitude: Double
-    //var amenities: [Bool]
+    var amenities: [Bool]
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -49,9 +50,10 @@ struct Cafe: Codable {
         case contactNo
         case contactEmail
         case address
+        case postalCode
         case latitude
         case longitude
-        //case amenities
+        case amenities
     }
     
     init(from decoder: Decoder) throws {
@@ -67,10 +69,11 @@ struct Cafe: Codable {
         contactNo = try? valueContainer.decode(String.self, forKey: CodingKeys.contactNo)
         contactEmail = try? valueContainer.decode(String.self, forKey: CodingKeys.contactEmail)
         address = try valueContainer.decode(String.self, forKey: CodingKeys.address)
+        postalCode = try valueContainer.decode(String.self, forKey: CodingKeys.postalCode)
         latitude = try valueContainer.decode(Double.self, forKey: CodingKeys.latitude)
         longitude = try valueContainer.decode(Double.self, forKey: CodingKeys.longitude)
+        amenities = try valueContainer.decode([Bool].self, forKey: CodingKeys.amenities)
     }
-    
     
     static func getAmenities(cardPayment: Bool, halal: Bool, openBooking: Bool, parking: Bool, phoneBooking: Bool, powerPlug: Bool, transit: Bool, vegetarian: Bool, water: Bool, wifi: Bool) -> [Bool] {
         var amenities = [Bool].init(repeating: false, count: Amenities.count)

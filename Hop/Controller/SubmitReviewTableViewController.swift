@@ -50,7 +50,7 @@ class SubmitReviewTableViewController: UITableViewController {
     }
     
     func submitReview(review: HopperReview, completion:((Error?) -> Void)?) {
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review"
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper"
         
         guard let requestURL = URL(string: url) else {
             print("Invalid request")
@@ -66,7 +66,7 @@ class SubmitReviewTableViewController: UITableViewController {
         do {
             let data = try jsonEncoder.encode(review)
             request.httpBody = data
-            print("jsonData:", String(data: request.httpBody!, encoding: .utf8) ?? "no body data")
+            print("JSONData:", String(data: request.httpBody!, encoding: .utf8) ?? "JSON object is not created")
         }
         catch {
             completion?(error)
@@ -78,10 +78,23 @@ class SubmitReviewTableViewController: UITableViewController {
                 return
             }
             
-            if let data = data, let utf8Representation = String(data: data, encoding: .utf8) {
-                print("response: ", utf8Representation)
-            } else {
-                print("no readable data received in response")
+            if let data = data, let acknowledgment = String(data: data, encoding: .utf8) {
+                print("SUBMIT REVIEW SERVER RESPONSE: ", acknowledgment)
+            }
+            else {
+                print("SUBMIT REVIEW SERVER WARNING: No data response received from server")
+            }
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                
+                let alertController = UIAlertController(title: "Thanks For Your Review", message: "Your review review has been successfully submitted.", preferredStyle: .alert)
+                let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
+                    self.dismiss(animated: true, completion: nil)
+                })
+                alertController.addAction(dismissAction)
+                
+                self.present(alertController, animated: true, completion: nil)
             }
         }
         task.resume()
@@ -126,14 +139,11 @@ class SubmitReviewTableViewController: UITableViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let review = HopperReview(fsVenueId: cafeObject.fsVenueId, userId: userID, reviewDate: dateLabel.text!, rating: Int(ratingSlider.value), content: reviewTextView.text)
         submitReview(review: review) { (error) in
             if let error = error {
                 fatalError(error.localizedDescription)
             }
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            self.dismiss(animated: true, completion: nil)
         }
     }
     

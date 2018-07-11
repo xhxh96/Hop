@@ -2,6 +2,7 @@ import UIKit
 import CoreLocation
 
 class InitialViewController: UIViewController, CLLocationManagerDelegate {
+    var token: String?
     let locationManager = CLLocationManager.init()
     var currentLocation: CLLocationCoordinate2D?
     
@@ -16,7 +17,6 @@ class InitialViewController: UIViewController, CLLocationManagerDelegate {
         
         updateSearchNearYouStatus()
         updateSearchButton()
-        
         // Do any additional setup after loading the view, typically from a nib.
     }
 

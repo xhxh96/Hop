@@ -1,22 +1,7 @@
 import UIKit
 import MapKit
 
-enum ScrollView: Int {
-    case slider
-    case bloggerReview
-    case hopperReview
-    
-    static let count: Int = {
-        var max: Int = 0
-        while let _ = ScrollView(rawValue: max) {
-            max += 1
-        }
-        return max
-    }()
-}
-
-
-class CafeTableViewController: UITableViewController {
+class CafeTableViewController: UITableViewController, CLLocationManagerDelegate {
     var selectedCafe: JSON!
     var cafeObject: Cafe!
     var bloggerReview: [BloggerReview]?
@@ -29,6 +14,7 @@ class CafeTableViewController: UITableViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet var bloggerRatingStars: [UIImageView]!
     @IBOutlet var hopperRatingStars: [UIImageView]!
+    @IBOutlet var amenitiesIndicator: [UIImageView]!
     
     
     @IBOutlet weak var sliderContentView: UIView!
@@ -43,16 +29,22 @@ class CafeTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.allowsSelection = false
+        
         mapView.delegate = self
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage.init(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage.init()
+        
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
         fetchCafeFromDatabase { (cafe) in
             self.cafeObject = cafe
             DispatchQueue.main.async {
-                self.title = self.cafeObject.name
                 self.updateSlider()
                 self.updateLabel()
+                self.updateAmenities()
                 self.updateMap()
                 
                 // autoSlider Timer
@@ -80,6 +72,11 @@ class CafeTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -100,7 +97,6 @@ class CafeTableViewController: UITableViewController {
             let jsonDecoder = JSONDecoder.init()
             if let data = data {
                 let cafeObject = try! jsonDecoder.decode(Cafe.self, from: data)
-                print(cafeObject)
                 completion(cafeObject)
             }
             else {
@@ -184,6 +180,17 @@ class CafeTableViewController: UITableViewController {
         if let rating = cafeObject.hopperRating {
             for index in 0..<Int(rating) {
                 hopperRatingStars[index].alpha = 1
+            }
+        }
+    }
+    
+    func updateAmenities() {
+        for index in 0..<cafeObject.amenities.count {
+            if cafeObject.amenities[index] {
+                amenitiesIndicator[index].alpha = 1
+            }
+            else {
+                amenitiesIndicator[index].alpha = 0.2
             }
         }
     }
@@ -330,7 +337,21 @@ class CafeTableViewController: UITableViewController {
         case hopperReviewScrollView:
             hopperReviewPageControl.currentPage = Int(pageNumber)
         default:
-            break
+            var offset = scrollView.contentOffset.y / 150
+            
+            if offset > 1 {
+                offset = 1
+                let color = UIColor(red: 1, green: 1, blue: 1, alpha: offset)
+                self.title = cafeObject.name
+                self.navigationController?.navigationBar.backgroundColor = color
+                UIApplication.shared.statusBarView?.backgroundColor = color
+            }
+            else {
+                let color = UIColor(red: 1, green: 1, blue: 1, alpha: offset)
+                self.title = String.init()
+                self.navigationController?.navigationBar.backgroundColor = color
+                UIApplication.shared.statusBarView?.backgroundColor = color
+            }
         }
     }
 
@@ -382,6 +403,11 @@ class CafeTableViewController: UITableViewController {
             let submitReviewTableViewController = navigationController?.viewControllers.first as! SubmitReviewTableViewController
             submitReviewTableViewController.cafeObject = cafeObject
         }
+        else if segue.identifier == "suggestEdit" {
+            let navigationController = segue.destination as? UINavigationController
+            let suggestEditTableViewController = navigationController?.viewControllers.first as! SuggestEditTableViewController
+            suggestEditTableViewController.cafeObject = cafeObject
+        }
     }
 }
 
@@ -402,7 +428,6 @@ extension CafeTableViewController: MKMapViewDelegate {
         else {
             view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             view.canShowCallout = true
-            //view.calloutOffset = CGPoint(x: -5, y: 5)
             view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         }
         return view
