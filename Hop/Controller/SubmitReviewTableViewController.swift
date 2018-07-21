@@ -1,18 +1,22 @@
 import UIKit
+import HCSStarRatingView
 
 class SubmitReviewTableViewController: UITableViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
-    @IBOutlet weak var ratingSlider: UISlider!
+    @IBOutlet weak var ratingSlider: HCSStarRatingView!
     @IBOutlet weak var reviewTextView: UITextView!
     
     var cafeObject: Cafe!
     var userID = "elstonayx"
+    var token: String!
     
     let dateLabelIndexPath = IndexPath(row: 1, section: 0)
     let datePickerIndexPath = IndexPath(row: 2, section: 0)
     let reviewTextViewIndexPath = IndexPath(row: 1, section: 1)
+    
+    let dateFormatter = DateFormatter.init()
     
     var datePickerIsShown: Bool = false {
         didSet {
@@ -38,66 +42,17 @@ class SubmitReviewTableViewController: UITableViewController {
     
     func updateLabel() {
         titleLabel.text = cafeObject.name
+        
+        dateFormatter.locale = Locale(identifier: "en_GB")
+        dateFormatter.dateStyle = .medium
+        dateLabel.text = dateFormatter.string(from: Date.init())
+        
     }
     
     func updateDateView() {
         datePicker.maximumDate = Date.init()
         
-        let dateFormatter = DateFormatter.init()
-        dateFormatter.dateStyle = .medium
-        
         dateLabel.text = dateFormatter.string(from: datePicker.date)
-    }
-    
-    func submitReview(review: HopperReview, completion:((Error?) -> Void)?) {
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper"
-        
-        guard let requestURL = URL(string: url) else {
-            print("Invalid request")
-            return
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let jsonEncoder = JSONEncoder.init()
-        
-        do {
-            let data = try jsonEncoder.encode(review)
-            request.httpBody = data
-            print("JSONData:", String(data: request.httpBody!, encoding: .utf8) ?? "JSON object is not created")
-        }
-        catch {
-            completion?(error)
-        }
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard error == nil else {
-                completion?(error!)
-                return
-            }
-            
-            if let data = data, let acknowledgment = String(data: data, encoding: .utf8) {
-                print("SUBMIT REVIEW SERVER RESPONSE: ", acknowledgment)
-            }
-            else {
-                print("SUBMIT REVIEW SERVER WARNING: No data response received from server")
-            }
-            
-            DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                
-                let alertController = UIAlertController(title: "Thanks For Your Review", message: "Your review review has been successfully submitted.", preferredStyle: .alert)
-                let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
-                    self.dismiss(animated: true, completion: nil)
-                })
-                alertController.addAction(dismissAction)
-                
-                self.present(alertController, animated: true, completion: nil)
-            }
-        }
-        task.resume()
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -139,10 +94,32 @@ class SubmitReviewTableViewController: UITableViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        let review = HopperReview(fsVenueId: cafeObject.fsVenueId, userId: userID, reviewDate: dateLabel.text!, rating: Int(ratingSlider.value), content: reviewTextView.text)
-        submitReview(review: review) { (error) in
-            if let error = error {
-                fatalError(error.localizedDescription)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+        let review = HopperReview(fsVenueId: cafeObject.fsVenueId, userId: userID, reviewDate: datePicker.date.timeIntervalSince1970, rating: Int(ratingSlider.value), content: reviewTextView.text)
+ 
+        NetworkController.shared.submitReview(review: review, with: token) { (response) in
+            if let response = response, response.success {
+                DispatchQueue.main.async {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
+                    let alertController = UIAlertController(title: "Thanks For Your Review", message: "Your review review has been successfully submitted.", preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
+                        self.dismiss(animated: true, completion: nil)
+                    })
+                    alertController.addAction(dismissAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+            else {
+                DispatchQueue.main.async {
+                    let alertController = UIAlertController(title: "Submission Error", message: "Your review could not be submitted. Please try again later.", preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(dismissAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
         }
     }

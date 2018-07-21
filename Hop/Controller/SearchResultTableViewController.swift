@@ -5,6 +5,9 @@ let client_id = "NAT0ERZ20UEDFBBYWC3LFXTT0QPGH2GU4WEZ1PNI3QO22GRD"
 let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
 
 class SearchResultTableViewController: UITableViewController {
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    var token: String!
     var searchKeyword: String?
     var cafeResults = [JSON]()
     var currentLocation: CLLocationCoordinate2D?
@@ -12,7 +15,18 @@ class SearchResultTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchForCoffee()
+        //searchForCoffee()
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        NetworkController.shared.fetchFromFourSquare(keyword: searchKeyword, location: currentLocation) { (data) in
+            self.cafeResults = data["response"]["group"]["results"].arrayValue
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.tableView.isHidden = false
+                self.tableView.reloadData()
+            }
+        }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -29,10 +43,6 @@ class SearchResultTableViewController: UITableViewController {
     
     
     // MARK: - Table View Data Source
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cafeResults.count
     }
@@ -40,72 +50,37 @@ class SearchResultTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! SearchResultTableViewCell
-        //getURLFromVenueId(venueId: venueId)
         
+        let name = cafeResults[indexPath.row]["venue"]["name"].string
+        let address = cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string
         
-        // Start of Image Retrieval and Image Encoding
-        var imageURL: URL?
-        var imageData: Data?
-        
-        if let prefixURL = cafeResults[indexPath.row]["photo"]["prefix"].string, let suffixURL = cafeResults[indexPath.row]["photo"]["suffix"].string {
-            imageURL = URL(string: prefixURL + "90x90" + suffixURL)
-        }
-        else {
-            imageURL = nil
+        guard let thumbnailURL = generateThumbnailURL(at: indexPath) else {
+            cell.updateLabel(thumbnail: nil, name: name, address: address)
+            return cell
         }
         
-        if let imageURL = imageURL {
-            imageData = try? Data(contentsOf: imageURL)
+        NetworkController.shared.fetchThumbnail(url: thumbnailURL) { (image) in
+            DispatchQueue.main.async {
+                if let currentIndexPath = tableView.indexPath(for: cell), currentIndexPath != indexPath {
+                    return
+                }
+                cell.updateLabel(thumbnail: image, name: name, address: address)
+            }
         }
-        else {
-            imageData = nil
-        }
-        // End of Image Retrieval and Image Encoding
-        
-        cell.update(thumbnail: imageData, name: cafeResults[indexPath.row]["venue"]["name"].string, address: cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string)
-        
-
         return cell
     }
     
-    
-    // MARK: - Helper Functions
-    func searchForCoffee() {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        var url: String
-        let formattedSearchInput = searchKeyword?.replacingOccurrences(of: " ", with: "-")
-        // to implement guard for input in URL
-        
-        if let searchExist = formattedSearchInput {
-            url = "https://api.foursquare.com/v2/search/recommendations?near=\(searchExist)&radius=1500&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+    func generateThumbnailURL(at indexPath: IndexPath) -> URL? {
+        if let prefixURL = cafeResults[indexPath.row]["photo"]["prefix"].string, let suffixURL = cafeResults[indexPath.row]["photo"]["suffix"].string, let imageURL = URL(string: prefixURL + "90x90" + suffixURL) {
+            
+            return imageURL
         }
         else {
-            url = "https://api.foursquare.com/v2/search/recommendations?ll=\(currentLocation!.latitude),\(currentLocation!.longitude)&radius=1500&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+            return nil
         }
-        
-        let request = NSMutableURLRequest(url: URL(string: url)!)
-        let session = URLSession.shared
-        
-        request.httpMethod = "GET"
-        
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, err -> Void in
-            // fix internet connection error
-            let json = JSON(data: data!)
-            self.cafeResults = json["response"]["group"]["results"].arrayValue
-            
-            DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                self.tableView.isHidden = false
-                self.tableView.reloadData()
-            }
-        })
-        
-        task.resume()
     }
+    
+    // MARK: - Helper Functions
     
     /*
     // Override to support conditional editing of the table view.
@@ -142,8 +117,9 @@ class SearchResultTableViewController: UITableViewController {
     }
     */
 
-    
-    
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -152,6 +128,7 @@ class SearchResultTableViewController: UITableViewController {
             let indexPath = tableView.indexPathForSelectedRow!
             let selectedCafe = cafeResults[indexPath.row]
             cafeTableViewController.selectedCafe = selectedCafe
+            cafeTableViewController.token = token
         }
     }
     

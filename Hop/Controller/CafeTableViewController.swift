@@ -2,6 +2,7 @@ import UIKit
 import MapKit
 
 class CafeTableViewController: UITableViewController, CLLocationManagerDelegate {
+    var token: String!
     var selectedCafe: JSON!
     var cafeObject: Cafe!
     var bloggerReview: [BloggerReview]?
@@ -15,7 +16,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     @IBOutlet var bloggerRatingStars: [UIImageView]!
     @IBOutlet var hopperRatingStars: [UIImageView]!
     @IBOutlet var amenitiesIndicator: [UIImageView]!
-    
     
     @IBOutlet weak var sliderContentView: UIView!
     @IBOutlet weak var sliderScrollView: UIScrollView!
@@ -38,8 +38,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         self.navigationController?.navigationBar.shadowImage = UIImage.init()
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        fetchCafeFromDatabase { (cafe) in
+        NetworkController.shared.fetchCafeFromDatabase(cafe: selectedCafe, with: token) { (cafe) in
             self.cafeObject = cafe
             DispatchQueue.main.async {
                 self.updateSlider()
@@ -50,20 +49,23 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
                 // autoSlider Timer
                 Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.autoSlider), userInfo: nil, repeats: true)
             }
-            self.fetchBloggerReviewFromDatabase { (bloggerReview) in
+            
+            NetworkController.shared.fetchBloggerReviewFromDatabase(cafe: self.selectedCafe, with: self.token, completion: { (bloggerReview) in
                 self.bloggerReview = bloggerReview
                 DispatchQueue.main.async {
                     self.updateBloggerReview()
                 }
-                self.fetchHopperReviewFromDatabase { (hopperReview) in
+                
+                NetworkController.shared.fetchHopperReviewFromDatabase(cafe: self.selectedCafe, with: self.token, completion: { (hopperReview) in
                     self.hopperReview = hopperReview
                     DispatchQueue.main.async {
                         self.updateHopperReview()
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     }
-                }
-            }
+                })
+            })
         }
+        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -83,75 +85,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
     
     // MARK: - Helper Function
-    func fetchCafeFromDatabase(completion: @escaping (Cafe) -> Void) {
-        let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/data?fsVenueId=\(venueId!)"
-        print(url)
-        
-        guard let requestURL = URL(string: url) else {
-            print("FETCH CAFE DATA ERROR: Invalid request")
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: requestURL) {data, response, error -> Void in
-            let jsonDecoder = JSONDecoder.init()
-            if let data = data {
-                let cafeObject = try! jsonDecoder.decode(Cafe.self, from: data)
-                completion(cafeObject)
-            }
-            else {
-                print("FETCH CAFE DATA WARNING: No JSON Object found, or unable to map JSON Object to model")
-                return
-            }
-        }
-        
-        task.resume()
-    }
-    
-    func fetchBloggerReviewFromDatabase(completion: @escaping ([BloggerReview]?) -> Void) {
-        let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/blogger?fsVenueId=\(venueId!)"
-        
-        guard let requestURL = URL(string: url) else {
-            print("FETCH BLOGGER REVIEW ERROR: Invalid request")
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: requestURL) { (data, response, error) in
-            let jsonDecoder = JSONDecoder.init()
-            if let data = data, let bloggerReview = try? jsonDecoder.decode([BloggerReview].self, from: data) {
-                completion(bloggerReview)
-            }
-            else {
-                print("FETCH BLOGGER REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
-                completion(nil)
-            }
-        }
-        task.resume()
-    }
-    
-    func fetchHopperReviewFromDatabase(completion: @escaping ([HopperReview]?) -> Void) {
-        let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?fsVenueId=\(venueId!)"
-        
-        guard let requestURL = URL(string: url) else {
-            print("FETCH HOPPER REVIEW ERROR: Invalid request")
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: requestURL) { (data, response, error) in
-            let jsonDecoder = JSONDecoder.init()
-            if let data = data, let hopperReview = try? jsonDecoder.decode([HopperReview].self, from: data) {
-                completion(hopperReview)
-            }
-            else {
-                print("FETCH HOPPER REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
-                completion(nil)
-            }
-        }
-        task.resume()
-    }
-
     func updateLabel() {
         cafeNameLabel.text = cafeObject.name
         cafeAddressLabel.text = cafeObject.address
@@ -185,8 +118,10 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
     
     func updateAmenities() {
-        for index in 0..<cafeObject.amenities.count {
-            if cafeObject.amenities[index] {
+        let amenities = cafeObject.serializeAmenities()
+        
+        for index in 0..<amenities.count {
+            if amenities[index] == 2 {
                 amenitiesIndicator[index].alpha = 1
             }
             else {
@@ -242,6 +177,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         for index in 0..<reviews.count {
             frame.origin.x = bloggerReviewScrollView.frame.size.width * CGFloat(index)
             frame.size = bloggerReviewScrollView.frame.size
+            
             
             //title label
             let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height/2)
@@ -338,16 +274,15 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
             hopperReviewPageControl.currentPage = Int(pageNumber)
         default:
             var offset = scrollView.contentOffset.y / 150
+            let color = UIColor(red: 0.780, green: 0.698, blue: 0.600, alpha: offset)
             
             if offset > 1 {
                 offset = 1
-                let color = UIColor(red: 1, green: 1, blue: 1, alpha: offset)
                 self.title = cafeObject.name
                 self.navigationController?.navigationBar.backgroundColor = color
                 UIApplication.shared.statusBarView?.backgroundColor = color
             }
             else {
-                let color = UIColor(red: 1, green: 1, blue: 1, alpha: offset)
                 self.title = String.init()
                 self.navigationController?.navigationBar.backgroundColor = color
                 UIApplication.shared.statusBarView?.backgroundColor = color
@@ -402,11 +337,13 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
             let navigationController = segue.destination as? UINavigationController
             let submitReviewTableViewController = navigationController?.viewControllers.first as! SubmitReviewTableViewController
             submitReviewTableViewController.cafeObject = cafeObject
+            submitReviewTableViewController.token = token
         }
         else if segue.identifier == "suggestEdit" {
             let navigationController = segue.destination as? UINavigationController
             let suggestEditTableViewController = navigationController?.viewControllers.first as! SuggestEditTableViewController
             suggestEditTableViewController.cafeObject = cafeObject
+            suggestEditTableViewController.token = token
         }
     }
 }

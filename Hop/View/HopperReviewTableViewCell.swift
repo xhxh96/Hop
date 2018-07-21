@@ -21,7 +21,12 @@ class HopperReviewTableViewCell: UITableViewCell {
     func update(reviews: HopperReview) {
         reviewContentLabel.text = reviews.content
         hopperUserNameLabel.text = reviews.userId
-        dateLabel.text = reviews.reviewDate
+        
+        let date = Date(timeIntervalSince1970: reviews.reviewDate)
+        let dateFormatter = DateFormatter.init()
+        dateFormatter.locale = Locale(identifier: "en_GB")
+        dateFormatter.dateStyle = .medium
+        dateLabel.text = dateFormatter.string(from: date)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

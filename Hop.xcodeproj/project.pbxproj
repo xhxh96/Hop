@@ -12,24 +12,42 @@
 		22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */; };
 		2260B63B20E9403500B1DFA8 /* SubmitReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2260B63A20E9403500B1DFA8 /* SubmitReviewTableViewController.swift */; };
 		22A5FBB820EBC07D0020E502 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A5FBB720EBC07D0020E502 /* Extension.swift */; };
-		22CFD6A520E645B9002646A8 /* BloggerReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFD6A420E645B9002646A8 /* BloggerReview.swift */; };
 		22D1BD8620E92D3E00A9EA7B /* HopperReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D1BD8520E92D3E00A9EA7B /* HopperReviewTableViewController.swift */; };
 		22D1BD8820E92EFC00A9EA7B /* HopperReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D1BD8720E92EFC00A9EA7B /* HopperReviewTableViewCell.swift */; };
 		22E53E0E20E653C8005CD8CC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E53E0D20E653C8005CD8CC /* LoginViewController.swift */; };
 		22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */; };
-		22F2D32F20ECC36F0097753B /* HopperReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F2D32E20ECC36F0097753B /* HopperReview.swift */; };
+		22F2D32F20ECC36F0097753B /* Reviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F2D32E20ECC36F0097753B /* Reviews.swift */; };
+		281E988F20F910BB009D5861 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E988E20F910BB009D5861 /* CardView.swift */; };
+		281E989120F92258009D5861 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E989020F92258009D5861 /* NetworkController.swift */; };
+		281EAAF320F765C400AD7CA0 /* HCSStarRatingView.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 281EAAF120F765C400AD7CA0 /* HCSStarRatingView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		282CA01820F9E8170020E1A7 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282CA01720F9E8170020E1A7 /* Response.swift */; };
 		284B012020F0B71C00FEA89B /* BloggerReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284B011F20F0B71C00FEA89B /* BloggerReviewTableViewController.swift */; };
 		284B012220F0B88E00FEA89B /* BloggerReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */; };
+		2867901B20FA53350028E06B /* MDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867901A20FA53350028E06B /* MDButton.swift */; };
 		287B2E9B20F2811800C53CAA /* SuggestEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287B2E9A20F2811800C53CAA /* SuggestEditTableViewController.swift */; };
 		28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0220D2A562002781FF /* AppDelegate.swift */; };
-		28CA2C0520D2A562002781FF /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0420D2A562002781FF /* InitialViewController.swift */; };
+		28CA2C0520D2A562002781FF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0420D2A562002781FF /* SearchViewController.swift */; };
 		28CA2C0820D2A562002781FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0620D2A562002781FF /* Main.storyboard */; };
 		28CA2C0A20D2A563002781FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0920D2A563002781FF /* Assets.xcassets */; };
 		28CA2C0D20D2A563002781FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0B20D2A563002781FF /* LaunchScreen.storyboard */; };
 		28D5F79D20F334C60023CE05 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5F79C20F334C60023CE05 /* Users.swift */; };
+		28D7700820F6229B00FEF210 /* CreateAccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7700720F6229B00FEF210 /* CreateAccountTableViewController.swift */; };
 		28D9657D20D7BE9D00158318 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D9657C20D7BE9D00158318 /* MapAnnotation.swift */; };
 		89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		281EAAD920F762C500AD7CA0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				281EAAF320F765C400AD7CA0 /* HCSStarRatingView.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		22115A8520D2BB17002F5CB9 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
@@ -37,23 +55,28 @@
 		22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeTableViewController.swift; sourceTree = "<group>"; };
 		2260B63A20E9403500B1DFA8 /* SubmitReviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitReviewTableViewController.swift; sourceTree = "<group>"; };
 		22A5FBB720EBC07D0020E502 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		22CFD6A420E645B9002646A8 /* BloggerReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggerReview.swift; sourceTree = "<group>"; };
 		22D1BD8520E92D3E00A9EA7B /* HopperReviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HopperReviewTableViewController.swift; sourceTree = "<group>"; };
 		22D1BD8720E92EFC00A9EA7B /* HopperReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HopperReviewTableViewCell.swift; sourceTree = "<group>"; };
 		22E53E0D20E653C8005CD8CC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
-		22F2D32E20ECC36F0097753B /* HopperReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HopperReview.swift; sourceTree = "<group>"; };
+		22F2D32E20ECC36F0097753B /* Reviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reviews.swift; sourceTree = "<group>"; };
+		281E988E20F910BB009D5861 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		281E989020F92258009D5861 /* NetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
+		281EAAF120F765C400AD7CA0 /* HCSStarRatingView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HCSStarRatingView.framework; path = Carthage/Build/iOS/HCSStarRatingView.framework; sourceTree = "<group>"; };
+		282CA01720F9E8170020E1A7 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		284B011F20F0B71C00FEA89B /* BloggerReviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggerReviewTableViewController.swift; sourceTree = "<group>"; };
 		284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggerReviewTableViewCell.swift; sourceTree = "<group>"; };
+		2867901A20FA53350028E06B /* MDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDButton.swift; sourceTree = "<group>"; };
 		287B2E9A20F2811800C53CAA /* SuggestEditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestEditTableViewController.swift; sourceTree = "<group>"; };
 		28CA2BFF20D2A562002781FF /* Hop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28CA2C0220D2A562002781FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		28CA2C0420D2A562002781FF /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		28CA2C0420D2A562002781FF /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		28CA2C0720D2A562002781FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		28CA2C0920D2A563002781FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28CA2C0C20D2A563002781FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		28CA2C0E20D2A563002781FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		28D5F79C20F334C60023CE05 /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
+		28D7700720F6229B00FEF210 /* CreateAccountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountTableViewController.swift; sourceTree = "<group>"; };
 		28D9657C20D7BE9D00158318 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,8 +98,8 @@
 				22115A8520D2BB17002F5CB9 /* Cafe.swift */,
 				28D9657C20D7BE9D00158318 /* MapAnnotation.swift */,
 				28D5F79C20F334C60023CE05 /* Users.swift */,
-				22CFD6A420E645B9002646A8 /* BloggerReview.swift */,
-				22F2D32E20ECC36F0097753B /* HopperReview.swift */,
+				22F2D32E20ECC36F0097753B /* Reviews.swift */,
+				282CA01720F9E8170020E1A7 /* Response.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -85,13 +108,15 @@
 			isa = PBXGroup;
 			children = (
 				22E53E0D20E653C8005CD8CC /* LoginViewController.swift */,
-				28CA2C0420D2A562002781FF /* InitialViewController.swift */,
+				28CA2C0420D2A562002781FF /* SearchViewController.swift */,
 				22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */,
 				22D1BD8520E92D3E00A9EA7B /* HopperReviewTableViewController.swift */,
 				284B011F20F0B71C00FEA89B /* BloggerReviewTableViewController.swift */,
 				22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */,
 				2260B63A20E9403500B1DFA8 /* SubmitReviewTableViewController.swift */,
 				287B2E9A20F2811800C53CAA /* SuggestEditTableViewController.swift */,
+				28D7700720F6229B00FEF210 /* CreateAccountTableViewController.swift */,
+				281E989020F92258009D5861 /* NetworkController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -102,6 +127,8 @@
 				22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */,
 				22D1BD8720E92EFC00A9EA7B /* HopperReviewTableViewCell.swift */,
 				284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */,
+				281E988E20F910BB009D5861 /* CardView.swift */,
+				2867901A20FA53350028E06B /* MDButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -111,6 +138,7 @@
 			children = (
 				28CA2C0120D2A562002781FF /* Hop */,
 				28CA2C0020D2A562002781FF /* Products */,
+				281EAAF120F765C400AD7CA0 /* HCSStarRatingView.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -149,6 +177,8 @@
 				28CA2BFB20D2A562002781FF /* Sources */,
 				28CA2BFC20D2A562002781FF /* Frameworks */,
 				28CA2BFD20D2A562002781FF /* Resources */,
+				281EAAD820F75F2300AD7CA0 /* ShellScript */,
+				281EAAD920F762C500AD7CA0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -205,28 +235,50 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		281EAAD820F75F2300AD7CA0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/HCSStarRatingView.framework",
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/HCSStarRatingView.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		28CA2BFB20D2A562002781FF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				281E989120F92258009D5861 /* NetworkController.swift in Sources */,
 				22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */,
 				22A5FBB820EBC07D0020E502 /* Extension.swift in Sources */,
 				287B2E9B20F2811800C53CAA /* SuggestEditTableViewController.swift in Sources */,
-				28CA2C0520D2A562002781FF /* InitialViewController.swift in Sources */,
+				28CA2C0520D2A562002781FF /* SearchViewController.swift in Sources */,
 				28D9657D20D7BE9D00158318 /* MapAnnotation.swift in Sources */,
+				28D7700820F6229B00FEF210 /* CreateAccountTableViewController.swift in Sources */,
 				28D5F79D20F334C60023CE05 /* Users.swift in Sources */,
+				281E988F20F910BB009D5861 /* CardView.swift in Sources */,
 				28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */,
 				284B012220F0B88E00FEA89B /* BloggerReviewTableViewCell.swift in Sources */,
 				22D1BD8620E92D3E00A9EA7B /* HopperReviewTableViewController.swift in Sources */,
 				89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */,
 				22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */,
-				22F2D32F20ECC36F0097753B /* HopperReview.swift in Sources */,
-				22CFD6A520E645B9002646A8 /* BloggerReview.swift in Sources */,
+				2867901B20FA53350028E06B /* MDButton.swift in Sources */,
+				22F2D32F20ECC36F0097753B /* Reviews.swift in Sources */,
 				22115A8620D2BB17002F5CB9 /* Cafe.swift in Sources */,
 				22D1BD8820E92EFC00A9EA7B /* HopperReviewTableViewCell.swift in Sources */,
 				284B012020F0B71C00FEA89B /* BloggerReviewTableViewController.swift in Sources */,
 				22E53E0E20E653C8005CD8CC /* LoginViewController.swift in Sources */,
+				282CA01820F9E8170020E1A7 /* Response.swift in Sources */,
 				22115A8B20D2BB5A002F5CB9 /* SearchResultTableViewController.swift in Sources */,
 				2260B63B20E9403500B1DFA8 /* SubmitReviewTableViewController.swift in Sources */,
 			);
@@ -373,6 +425,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Hop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -381,7 +437,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nus.Hop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -390,6 +446,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Hop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -398,7 +458,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nus.Hop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

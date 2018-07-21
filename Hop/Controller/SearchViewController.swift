@@ -1,7 +1,7 @@
 import UIKit
 import CoreLocation
 
-class InitialViewController: UIViewController, CLLocationManagerDelegate {
+class SearchViewController: UIViewController, CLLocationManagerDelegate {
     var token: String?
     let locationManager = CLLocationManager.init()
     var currentLocation: CLLocationCoordinate2D?
@@ -45,16 +45,13 @@ class InitialViewController: UIViewController, CLLocationManagerDelegate {
         updateSearchButton()
     }
     
-    @IBAction func unwindToInitialViewController(segue: UIStoryboardSegue) {
-        
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "beginSearch" {
             let navigationController = segue.destination as? UINavigationController
             let searchResultTableViewController = navigationController?.viewControllers.first as! SearchResultTableViewController
             let searchKeyword = searchInput.text!
             searchResultTableViewController.searchKeyword = searchKeyword
+            searchResultTableViewController.token = token
         }
         else if segue.identifier == "beginNearbySearch" {
             let navigationController = segue.destination as? UINavigationController

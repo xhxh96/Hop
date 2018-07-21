@@ -5,12 +5,14 @@ class SuggestEditTableViewController: UITableViewController {
     @IBOutlet weak var cafeAddressTextField: UITextField!
     @IBOutlet weak var cafePostalCodeTextField: UITextField!
     
+    var token: String!
     var cafeObject: Cafe!
+    var amenities = [Int].init()
     let amenitiesIndexSection = 2
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        amenities = cafeObject.serializeAmenities()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -28,12 +30,11 @@ class SuggestEditTableViewController: UITableViewController {
         cafeAddressTextField.text = cafeObject.address
         cafePostalCodeTextField.text = cafeObject.postalCode
         
-        
-        for index in 0..<cafeObject.amenities.count {
+        for index in 0..<amenities.count {
             let indexPath = IndexPath(row: index, section: amenitiesIndexSection)
             let cell = tableView.cellForRow(at: indexPath)
             
-            if cafeObject.amenities[index] {
+            if amenities[index] == 2 {
                 cell?.accessoryType = .checkmark
             }
             else {
@@ -43,59 +44,6 @@ class SuggestEditTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func submitEdit(cafe: Cafe, completion: ((Error?) -> Void)?) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/data"
-        
-        guard let requestURL = URL(string: url) else {
-            print("Invalid request")
-            return
-        }
-        
-        var request = URLRequest(url: requestURL)
-        request.httpMethod = "PATCH"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let jsonEncoder = JSONEncoder.init()
-        
-        do {
-            let data = try jsonEncoder.encode(cafe)
-            request.httpBody = data
-            print("JSONData:", String(data: request.httpBody!, encoding: .utf8) ?? "JSON object is not created")
-        }
-        catch {
-            completion?(error)
-        }
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            guard error == nil else {
-                completion?(error!)
-                return
-            }
-            
-            if let data = data, let acknowledgment = String(data: data, encoding: .utf8) {
-                print("SUGGEST EDIT SERVER Response: ", acknowledgment)
-            }
-            else {
-                print("SUGGEST EDIT SERVER WARNING: No data response received from server.")
-            }
-            
-            DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                
-                let alertController = UIAlertController(title: "Thanks For Your Updates", message: "Your updates will be reviewed and verified by our staffs.", preferredStyle: .alert)
-                let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
-                    self.dismiss(animated: true, completion: nil)
-                })
-                alertController.addAction(dismissAction)
-                
-                self.present(alertController, animated: true, completion: nil)
-            }
-        }
-        task.resume()
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -103,15 +51,16 @@ class SuggestEditTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
         if indexPath.section == amenitiesIndexSection {
             let cell = tableView.cellForRow(at: indexPath)
             
-            if cafeObject.amenities[indexPath.row] {
-                cafeObject.amenities[indexPath.row] = false
+            if amenities[indexPath.row] == 2{
+                amenities[indexPath.row] = 1
                 cell?.accessoryType = .none
             }
             else {
-                cafeObject.amenities[indexPath.row] = true
+                amenities[indexPath.row] = 2
                 cell?.accessoryType = .checkmark
             }
             tableView.reloadData()
@@ -126,60 +75,38 @@ class SuggestEditTableViewController: UITableViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        //UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        submitEdit(cafe: cafeObject) { (error) in
-            if let error = error {
-                print("error present")
-                fatalError(error.localizedDescription)
+        cafeObject.deserializeAmenities(with: amenities)
+        
+        NetworkController.shared.submitEdit(cafe: cafeObject, with: token) { (response) in
+            if let response = response, response.success {
+                DispatchQueue.main.async {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
+                    let alertController = UIAlertController(title: "Submission Success", message: "Your updates will be reviewed and verified by our staffs.", preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
+                        self.dismiss(animated: true, completion: nil)
+                    })
+                    alertController.addAction(dismissAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+            else {
+                DispatchQueue.main.async {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    
+                    let alertController = UIAlertController(title: "Submission Error", message: "Your updates could not be submitted. Please try again later.", preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(dismissAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
         }
     }
     
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     /*
     // MARK: - Navigation

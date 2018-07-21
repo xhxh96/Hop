@@ -1,26 +1,5 @@
 import Foundation
 
-enum Amenities: Int {
-    case cardPayment
-    case halal
-    case studying
-    case parking
-    case reservations
-    case powerSocket
-    case transit
-    case vegetarian
-    case water
-    case wifi
-    
-    static let count: Int = {
-        var max: Int = 0
-        while let _ = Amenities(rawValue: max) {
-            max += 1
-        }
-        return max
-    }()
-}
-
 struct Cafe: Codable {
     var name: String
     var databaseId: String
@@ -36,7 +15,7 @@ struct Cafe: Codable {
     var postalCode: String
     var latitude: Double
     var longitude: Double
-    var amenities: [Bool]
+    var amenities: [String: Int]
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -72,23 +51,67 @@ struct Cafe: Codable {
         postalCode = try valueContainer.decode(String.self, forKey: CodingKeys.postalCode)
         latitude = try valueContainer.decode(Double.self, forKey: CodingKeys.latitude)
         longitude = try valueContainer.decode(Double.self, forKey: CodingKeys.longitude)
-        amenities = try valueContainer.decode([Bool].self, forKey: CodingKeys.amenities)
+        amenities = try valueContainer.decode([String: Int].self, forKey: CodingKeys.amenities)
     }
     
-    static func getAmenities(cardPayment: Bool, halal: Bool, openBooking: Bool, parking: Bool, phoneBooking: Bool, powerPlug: Bool, transit: Bool, vegetarian: Bool, water: Bool, wifi: Bool) -> [Bool] {
-        var amenities = [Bool].init(repeating: false, count: Amenities.count)
+    func serializeAmenities() -> [Int] {
+        var amenitiesArray = [Int].init(repeating: 0, count: 10)
         
-        amenities[Amenities.cardPayment.rawValue] = cardPayment
-        amenities[Amenities.halal.rawValue] = halal
-        amenities[Amenities.studying.rawValue] = openBooking
-        amenities[Amenities.parking.rawValue] = parking
-        amenities[Amenities.reservations.rawValue] = phoneBooking
-        amenities[Amenities.powerSocket.rawValue] = powerPlug
-        amenities[Amenities.transit.rawValue] = transit
-        amenities[Amenities.vegetarian.rawValue] = vegetarian
-        amenities[Amenities.water.rawValue] = water
-        amenities[Amenities.wifi.rawValue] = wifi
-        
-        return amenities
+        for key in amenities.keys {
+            switch key {
+            case "cardPayment":
+                amenitiesArray[0] = amenities["cardPayment"]!
+            case "halal":
+                amenitiesArray[1] = amenities["halal"]!
+            case "studying":
+                amenitiesArray[2] = amenities["studying"]!
+            case "parking":
+                amenitiesArray[3] = amenities["parking"]!
+            case "reservations":
+                amenitiesArray[4] = amenities["reservations"]!
+            case "powerSocket":
+                amenitiesArray[5] = amenities["powerSocket"]!
+            case "transit":
+                amenitiesArray[6] = amenities["transit"]!
+            case "vegetarian":
+                amenitiesArray[7] = amenities["vegetarian"]!
+            case "water":
+                amenitiesArray[8] = amenities["water"]!
+            case "wifi":
+                amenitiesArray[9] = amenities["wifi"]!
+            default:
+                break
+            }
+        }
+        return amenitiesArray
+    }
+    
+    mutating func deserializeAmenities(with amenitiesArray: [Int]) {
+        for index in 0..<amenitiesArray.count {
+            switch index {
+            case 0:
+                amenities["cardPayment"] = amenitiesArray[0]
+            case 1:
+                amenities["halal"] = amenitiesArray[1]
+            case 2:
+                amenities["studying"] = amenitiesArray[2]
+            case 3:
+                amenities["parking"] = amenitiesArray[3]
+            case 4:
+                amenities["reservations"] = amenitiesArray[4]
+            case 5:
+                amenities["powerSocket"] = amenitiesArray[5]
+            case 6:
+                amenities["transit"] = amenitiesArray[6]
+            case 7:
+                amenities["vegetarian"] = amenitiesArray[7]
+            case 8:
+                amenities["water"] = amenitiesArray[8]
+            case 9:
+                amenities["wifi"] = amenitiesArray[9]
+            default:
+                break
+            }
+        }
     }
 }

@@ -10,12 +10,16 @@ class SearchResultTableViewCell: UITableViewCell {
         // Initialization code
     }
     
-    func update(thumbnail: Data?, name: String?, address: String?) {
-        if let thumbnail = thumbnail {
-            cafeThumbnail.image = UIImage(data: thumbnail)
-        }
+    func updateLabel(thumbnail: UIImage?, name: String?, address: String?) {
         cafeNameLabel.text = name
         cafeAddressLabel.text = address
+        
+        if let thumbnail = thumbnail {
+            cafeThumbnail.image = thumbnail
+        }
+        else {
+            cafeThumbnail.image = UIImage(named: "thumbnail-placeholder")
+        }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
