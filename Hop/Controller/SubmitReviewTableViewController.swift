@@ -9,8 +9,6 @@ class SubmitReviewTableViewController: UITableViewController {
     @IBOutlet weak var reviewTextView: UITextView!
     
     var cafeObject: Cafe!
-    var userID = "elstonayx"
-    var token: String!
     
     let dateLabelIndexPath = IndexPath(row: 1, section: 0)
     let datePickerIndexPath = IndexPath(row: 2, section: 0)
@@ -96,14 +94,14 @@ class SubmitReviewTableViewController: UITableViewController {
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        let review = HopperReview(fsVenueId: cafeObject.fsVenueId, userId: userID, reviewDate: datePicker.date.timeIntervalSince1970, rating: Int(ratingSlider.value), content: reviewTextView.text)
+        let review = HopperReview(fsVenueId: cafeObject.fsVenueId, userId: (NetworkSession.shared.user?.userId)!, reviewDate: datePicker.date.timeIntervalSince1970, rating: Int(ratingSlider.value), content: reviewTextView.text)
  
-        NetworkController.shared.submitReview(review: review, with: token) { (response) in
+        NetworkController.shared.submitReview(review: review, with: NetworkSession.shared.token!) { (response) in
             if let response = response, response.success {
                 DispatchQueue.main.async {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     
-                    let alertController = UIAlertController(title: "Thanks For Your Review", message: "Your review review has been successfully submitted.", preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Thanks For Your Review", message: "Your review has been successfully submitted.", preferredStyle: .alert)
                     let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
                         self.dismiss(animated: true, completion: nil)
                     })

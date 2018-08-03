@@ -34,13 +34,15 @@ struct HopperReview: Codable {
 }
 
 struct BloggerReview: Codable {
+    var title: String
     var reviewSite: String
-    var reviewerName: String
-    var reviewDate: String
+    var reviewerName: String?
+    var reviewDate: String?
     var extract: String
     var url: URL
     
     enum CodingKeys: String, CodingKey {
+        case title
         case reviewSite
         case reviewerName
         case reviewDate
@@ -50,10 +52,15 @@ struct BloggerReview: Codable {
     
     init(from decoder: Decoder) throws {
         let valueContainer = try decoder.container(keyedBy: CodingKeys.self)
+        title = try valueContainer.decode(String.self, forKey: CodingKeys.title)
         reviewSite = try valueContainer.decode(String.self, forKey: CodingKeys.reviewSite)
-        reviewerName = try valueContainer.decode(String.self, forKey: CodingKeys.reviewerName)
-        reviewDate = try valueContainer.decode(String.self, forKey: CodingKeys.reviewDate)
+        reviewerName = try? valueContainer.decode(String.self, forKey: CodingKeys.reviewerName)
+        reviewDate = try? valueContainer.decode(String.self, forKey: CodingKeys.reviewDate)
         extract = try valueContainer.decode(String.self, forKey: CodingKeys.extract)
         url = try valueContainer.decode(URL.self, forKey: CodingKeys.url)
+    }
+    
+    static func removeNewLine(review: inout BloggerReview) {
+        review.extract = review.extract.replacingOccurrences(of: "\n", with: "")
     }
 }

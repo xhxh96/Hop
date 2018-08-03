@@ -51,7 +51,11 @@ class SearchViewController: UIViewController, CLLocationManagerDelegate {
             let searchResultTableViewController = navigationController?.viewControllers.first as! SearchResultTableViewController
             let searchKeyword = searchInput.text!
             searchResultTableViewController.searchKeyword = searchKeyword
-            searchResultTableViewController.token = token
+            
+            if let location = locationManager.location {
+                currentLocation = location.coordinate
+            }
+            searchResultTableViewController.currentLocation = currentLocation
         }
         else if segue.identifier == "beginNearbySearch" {
             let navigationController = segue.destination as? UINavigationController

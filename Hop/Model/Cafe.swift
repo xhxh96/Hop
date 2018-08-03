@@ -1,12 +1,18 @@
 import Foundation
 
+struct ShopHours: Codable {
+    var isOpened: Bool
+    var open: String
+    var closed: String
+}
+
 struct Cafe: Codable {
     var name: String
     var databaseId: String
     var fsVenueId: String
-    var bloggerRating: Int?
-    var hopperRating: Int?
-    var priceRange: Int?
+    var bloggerRating: Double?
+    var hopperRating: Double?
+    var priceRange: Int
     var images: [String]
     var url: URL?
     var contactNo: String?
@@ -16,6 +22,7 @@ struct Cafe: Codable {
     var latitude: Double
     var longitude: Double
     var amenities: [String: Int]
+    var shopHours: [ShopHours]
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -33,6 +40,7 @@ struct Cafe: Codable {
         case latitude
         case longitude
         case amenities
+        case shopHours
     }
     
     init(from decoder: Decoder) throws {
@@ -40,9 +48,9 @@ struct Cafe: Codable {
         name = try valueContainer.decode(String.self, forKey: CodingKeys.name)
         databaseId = try valueContainer.decode(String.self, forKey: CodingKeys.databaseId)
         fsVenueId = try valueContainer.decode(String.self, forKey: CodingKeys.fsVenueId)
-        bloggerRating = try? valueContainer.decode(Int.self, forKey: CodingKeys.bloggerRating)
-        hopperRating = try? valueContainer.decode(Int.self, forKey: CodingKeys.hopperRating)
-        priceRange = try? valueContainer.decode(Int.self, forKey: CodingKeys.priceRange)
+        bloggerRating = try? valueContainer.decode(Double.self, forKey: CodingKeys.bloggerRating)
+        hopperRating = try? valueContainer.decode(Double.self, forKey: CodingKeys.hopperRating)
+        priceRange = try valueContainer.decode(Int.self, forKey: CodingKeys.priceRange)
         images = try valueContainer.decode([String].self, forKey: CodingKeys.images)
         url = try? valueContainer.decode(URL.self, forKey: CodingKeys.url)
         contactNo = try? valueContainer.decode(String.self, forKey: CodingKeys.contactNo)
@@ -52,6 +60,7 @@ struct Cafe: Codable {
         latitude = try valueContainer.decode(Double.self, forKey: CodingKeys.latitude)
         longitude = try valueContainer.decode(Double.self, forKey: CodingKeys.longitude)
         amenities = try valueContainer.decode([String: Int].self, forKey: CodingKeys.amenities)
+        shopHours = try valueContainer.decode([ShopHours].self, forKey: CodingKeys.shopHours)
     }
     
     func serializeAmenities() -> [Int] {

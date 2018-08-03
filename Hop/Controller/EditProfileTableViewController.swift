@@ -1,27 +1,31 @@
 import UIKit
 
-class CreateAccountTableViewController: UITableViewController {
+class EditProfileTableViewController: UITableViewController {
+
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
+    
     @IBOutlet weak var emailAddressTextField: UITextField!
     @IBOutlet weak var contactNumberTextField: UITextField!
-    @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var rePasswordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateTextField()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func updateTextField() {
+        firstNameTextField.text = NetworkSession.shared.user?.firstName
+        lastNameTextField.text = NetworkSession.shared.user?.lastName
+        emailAddressTextField.text = NetworkSession.shared.user?.contact["email"]
+        contactNumberTextField.text = NetworkSession.shared.user?.contact["phone"]
     }
     
     func checkPassword() {
@@ -49,62 +53,75 @@ class CreateAccountTableViewController: UITableViewController {
             present(alertController, animated: true, completion: nil)
         }
     }
-    
-    func checkFieldsFilled() {
-        if firstNameTextField.text == nil || lastNameTextField.text == nil || emailAddressTextField.text == nil || contactNumberTextField.text == nil || userNameTextField.text == nil || passwordTextField.text == nil || rePasswordTextField.text == nil {
-            let alertController = UIAlertController(title: "Missing Fields", message: "Please ensure that all fields are filled in before submitting.", preferredStyle: .alert)
-            let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(dismissAction)
-            present(alertController, animated: true, completion: nil)
-        }
-    }
+
     @IBAction func passwordEditingDidEnd(_ sender: UITextField) {
         checkPassword()
     }
     
-    @IBAction func rePasswordEditingDidEnd(_ sender: UITextField) {
+    @IBAction func rePasswordEditingEnd(_ sender: UITextField) {
         checkRePassword()
     }
     
-    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func doneButtonTapped(_ sender: UIButton) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        let contact = ["email": emailAddressTextField.text!, "phone": contactNumberTextField.text!]
-        let account = User(userId: userNameTextField.text!, password: passwordTextField.text!, firstName: firstNameTextField.text!, lastName: lastNameTextField.text!, contact: contact, reviewCount: 0, accountCreatedOn: Date.init())
+    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+        var updatedData = [String: String].init()
         
-        NetworkController.shared.createAccount(account: account) { (response) in
+        updatedData["userId"] = NetworkSession.shared.user?.userId
+        
+        if let firstName = firstNameTextField.text, !firstName.isEmpty {
+            NetworkSession.shared.user?.firstName = firstName
+            updatedData["firstName"] = firstName
+        }
+        
+        if let lastName = lastNameTextField.text, !lastName.isEmpty {
+            NetworkSession.shared.user?.lastName = lastName
+            updatedData["lastName"] = lastName
+        }
+        
+        if let emailAddress = emailAddressTextField.text, !emailAddress.isEmpty {
+            NetworkSession.shared.user?.contact["email"] = emailAddress
+            updatedData["contact.email"] = emailAddress
+        }
+        
+        if let contact = contactNumberTextField.text, !contact.isEmpty {
+            NetworkSession.shared.user?.contact["phone"] = contact
+            updatedData["contact.phone"] = contact
+        }
+        
+        if let password = rePasswordTextField.text, !password.isEmpty {
+            updatedData["password"] = password
+        }
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        NetworkController.shared.updateProfile(updated: updatedData) { (response) in
             if let response = response, let status = response.statusCode {
                 switch status {
-                case 200:
+                case 400:
                     DispatchQueue.main.async {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                        let alertController = UIAlertController(title: "Account Created", message: "Please return to the main page to log in to your account.", preferredStyle: .alert)
-                        let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
-                            self.dismiss(animated: true, completion: nil)
-                        })
-                        alertController.addAction(dismissAction)
                         
-                        self.present(alertController, animated: true, completion: nil)
-                    }
-                case 401:
-                    DispatchQueue.main.async {
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                        let alertController = UIAlertController(title: "Username Already Registered", message: "This username has already been registered. Please try a new username.", preferredStyle: .alert)
+                        let alertController = UIAlertController(title: "Update Profile Error", message: "Your request could not be completed. Please try again later.", preferredStyle: .alert)
                         let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                         alertController.addAction(dismissAction)
                         
                         self.present(alertController, animated: true, completion: nil)
                     }
-                default: break
+                default:
+                    DispatchQueue.main.async {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        
+                        let alertController = UIAlertController(title: "Profile Updated", message: "Your profile has been successfully updated", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(dismissAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
             }
             else {
                 DispatchQueue.main.async {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    let alertController = UIAlertController(title: "Submission Error", message: "Your request could not be processed. Please try again later.", preferredStyle: .alert)
+                    
+                    let alertController = UIAlertController(title: "Update Profile Error", message: "Your request could not be completed. Please try again later.", preferredStyle: .alert)
                     let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                     alertController.addAction(dismissAction)
                     
@@ -114,14 +131,6 @@ class CreateAccountTableViewController: UITableViewController {
         }
     }
     
-    @IBAction func resetButtonTapped(_ sender: UIButton) {
-        firstNameTextField.text = String.init()
-        lastNameTextField.text = String.init()
-        emailAddressTextField.text = String.init()
-        contactNumberTextField.text = String.init()
-        passwordTextField.text = String.init()
-        rePasswordTextField.text = String.init()
-    }
     /*
     // MARK: - Navigation
 

@@ -7,7 +7,6 @@ let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
 class SearchResultTableViewController: UITableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var token: String!
     var searchKeyword: String?
     var cafeResults = [JSON]()
     var currentLocation: CLLocationCoordinate2D?
@@ -23,7 +22,6 @@ class SearchResultTableViewController: UITableViewController {
             
             DispatchQueue.main.async {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                self.tableView.isHidden = false
                 self.tableView.reloadData()
             }
         }
@@ -80,42 +78,26 @@ class SearchResultTableViewController: UITableViewController {
         }
     }
     
-    // MARK: - Helper Functions
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func fetchSearchResult() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        var searchKeyword: String?
+        
+        if (searchBar.text?.isEmpty)! {
+            searchKeyword = nil
+        }
+        else {
+            searchKeyword = searchBar.text
+        }
+        
+        NetworkController.shared.fetchFromFourSquare(keyword: searchKeyword, location: currentLocation) { (data) in
+            self.cafeResults = data["response"]["group"]["results"].arrayValue
+            
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.tableView.reloadData()
+            }
+        }
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
@@ -128,9 +110,14 @@ class SearchResultTableViewController: UITableViewController {
             let indexPath = tableView.indexPathForSelectedRow!
             let selectedCafe = cafeResults[indexPath.row]
             cafeTableViewController.selectedCafe = selectedCafe
-            cafeTableViewController.token = token
         }
     }
-    
+}
 
+extension SearchResultTableViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        fetchSearchResult()
+        searchBar.resignFirstResponder()
+    }
 }

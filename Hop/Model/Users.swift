@@ -9,6 +9,7 @@ struct User: Codable {
     //var accountType: Int
     var contact: [String: String]
     var reviewCount: Int
+    var accountCreatedOn: TimeInterval
     //var reward: [String: Int]
     
     enum CodingKeys: String, CodingKey {
@@ -19,6 +20,7 @@ struct User: Codable {
         //case accountType
         case contact
         case reviewCount
+        case accountCreatedOn
     }
     
     init(from decoder: Decoder) throws {
@@ -30,14 +32,22 @@ struct User: Codable {
         //accountType = try valueContainer.decode(Int.self, forKey: CodingKeys.accountType)
         contact = try valueContainer.decode([String: String].self, forKey: CodingKeys.contact)
         reviewCount = try valueContainer.decode(Int.self, forKey: CodingKeys.reviewCount)
+        accountCreatedOn = try valueContainer.decode(TimeInterval.self, forKey: CodingKeys.accountCreatedOn)
     }
     
-    init(userId: String, password: String, firstName: String, lastName: String, contact: [String: String], reviewCount: Int) {
+    init(userId: String, password: String, firstName: String, lastName: String, contact: [String: String], reviewCount: Int, accountCreatedOn: Date) {
         self.userId = userId
         self.password = password
         self.firstName = firstName
         self.lastName = lastName
         self.contact = contact
         self.reviewCount = reviewCount
+        self.accountCreatedOn = accountCreatedOn.timeIntervalSince1970
     }
+}
+
+
+struct UserLogin: Codable {
+    var userId: String
+    var password: String
 }

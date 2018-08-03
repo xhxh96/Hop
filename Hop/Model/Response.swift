@@ -21,6 +21,22 @@ struct ServerResponse: Codable {
 
 struct TokenResponse: Codable {
     var success: Bool
-    var statusCode: Int
-    var token: String
+    var statusCode: Int?
+    var token: String?
+    var data: User?
+    
+    enum CodingKeys: String, CodingKey {
+        case success
+        case statusCode
+        case token
+        case data
+    }
+    
+    init(from decoder: Decoder) throws {
+        let valueContainer = try decoder.container(keyedBy: CodingKeys.self)
+        success = try valueContainer.decode(Bool.self, forKey: CodingKeys.success)
+        statusCode = try? valueContainer.decode(Int.self, forKey: CodingKeys.statusCode)
+        token = try? valueContainer.decode(String.self, forKey: CodingKeys.token)
+        data = try? valueContainer.decode(User.self, forKey: CodingKeys.data)
+    }
 }

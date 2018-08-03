@@ -4,12 +4,15 @@ import MapKit
 class NetworkController {
     static let shared = NetworkController.init()
     
-    let baseURL = "https://hopdbserver.herokuapp.com/"
+    let client_id = "NAT0ERZ20UEDFBBYWC3LFXTT0QPGH2GU4WEZ1PNI3QO22GRD"
+    let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
+    
+    let baseURL = URL(string: "https://hopdbserver.herokuapp.com/")
     
     func fetchNoLoginToken(completion: @escaping (String?) -> Void) {
-        let url: String = "https://hopdbserver.herokuapp.com/nouserlogin"
+        let url = baseURL?.appendingPathComponent("nouserlogin")
         
-        guard let requestURL = URL(string: url) else {
+        guard let requestURL = url else {
             print("FETCH LOGIN TOKEN ERROR: Invalid request")
             return
         }
@@ -22,6 +25,36 @@ class NetworkController {
             }
             else {
                 print("FETCH LOGIN TOKEN WARNING: No JSON Object found")
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
+    
+    func fetchLoginToken(account: UserLogin, completion: @escaping (TokenResponse?) -> Void) {
+        let url = baseURL?.appendingPathComponent("login")
+        
+        guard let requestURL = url else {
+            print("LOGGING IN ERROR: Invalid request")
+            return
+        }
+        
+        let jsonEncoder = JSONEncoder.init()
+        let data = try? jsonEncoder.encode(account)
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = data
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            
+            if let data = data, let tokenResponse = try? jsonDecoder.decode(TokenResponse.self, from: data) {
+                completion(tokenResponse)
+            }
+            else {
+                print("LOGGING IN WARNING: No JSON Object found, or unable to map JSON Object to model")
                 completion(nil)
             }
         }
@@ -68,10 +101,28 @@ class NetworkController {
         task.resume()
     }
     
+    func fetchCafeOfTheDay(with token: String, completion: @escaping (Cafe) -> Void) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/random?token=\(token)"
+        
+        guard let requestURL = URL(string: url) else {
+            print("FETCH CAFE DATA ERROR: Invalid request")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: requestURL) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            if let data = data {
+                let cafeObject = try! jsonDecoder.decode(Cafe.self, from: data)
+                completion(cafeObject)
+            }
+        }
+        task.resume()
+    }
+    
     func fetchCafeFromDatabase(cafe selectedCafe: JSON, with token: String, completion: @escaping (Cafe) -> Void) {
         let venueId = selectedCafe["venue"]["id"].string
         let url: String = "https://hopdbserver.herokuapp.com/cafe/data?fsVenueId=\(venueId!)&token=\(token)"
-        print(url)
+        print("Cafe Database URL: \(url)")
         
         guard let requestURL = URL(string: url) else {
             print("FETCH CAFE DATA ERROR: Invalid request")
@@ -118,7 +169,7 @@ class NetworkController {
     func fetchHopperReviewFromDatabase(cafe selectedCafe: JSON, with token: String, completion: @escaping ([HopperReview]?) -> Void) {
         let venueId = selectedCafe["venue"]["id"].string
         let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?fsVenueId=\(venueId!)&token=\(token)"
-        print(url)
+        print("Hopper Review URL: \(url)")
         
         guard let requestURL = URL(string: url) else {
             print("FETCH HOPPER REVIEW ERROR: Invalid request")
@@ -200,9 +251,9 @@ class NetworkController {
     }
     
     func createAccount(account: User, completion: @escaping (ServerResponse?) -> Void) {
-        let url: String = "https://hopdbserver.herokuapp.com/newuser"
+        let url = baseURL?.appendingPathComponent("newuser")
         
-        guard let requestURL = URL(string: url) else {
+        guard let requestURL = url else {
             print("Invalid request")
             return
         }
@@ -221,6 +272,35 @@ class NetworkController {
             }
             else {
                 print("CREATE ACCOUNT WARNING: No JSON Object found, or unable to map JSON Object to model")
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
+    
+    func updateProfile(updated account: [String: String], completion: @escaping (ServerResponse?) -> Void) {
+        let url = baseURL?.appendingPathComponent("user")
+        
+        guard let requestURL = url else {
+            print("Invalid request")
+            return
+        }
+        
+        let jsonEncoder = JSONEncoder.init()
+        let data = try? jsonEncoder.encode(account)
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = data
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            if let data = data, let serverResponse = try? jsonDecoder.decode(ServerResponse.self, from: data) {
+                completion(serverResponse)
+            }
+            else {
+                print("UPDATE ACCOUNT WARNING: No JSON Object found, or unable to map JSON Object to model")
                 completion(nil)
             }
         }

@@ -5,7 +5,6 @@ class SuggestEditTableViewController: UITableViewController {
     @IBOutlet weak var cafeAddressTextField: UITextField!
     @IBOutlet weak var cafePostalCodeTextField: UITextField!
     
-    var token: String!
     var cafeObject: Cafe!
     var amenities = [Int].init()
     let amenitiesIndexSection = 2
@@ -79,7 +78,7 @@ class SuggestEditTableViewController: UITableViewController {
         
         cafeObject.deserializeAmenities(with: amenities)
         
-        NetworkController.shared.submitEdit(cafe: cafeObject, with: token) { (response) in
+        NetworkController.shared.submitEdit(cafe: cafeObject, with: NetworkSession.shared.token!) { (response) in
             if let response = response, response.success {
                 DispatchQueue.main.async {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false

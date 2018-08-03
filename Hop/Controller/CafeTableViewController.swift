@@ -2,7 +2,6 @@ import UIKit
 import MapKit
 
 class CafeTableViewController: UITableViewController, CLLocationManagerDelegate {
-    var token: String!
     var selectedCafe: JSON!
     var cafeObject: Cafe!
     var bloggerReview: [BloggerReview]?
@@ -13,6 +12,8 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     @IBOutlet weak var cafeNameLabel: UILabel!
     @IBOutlet weak var cafeAddressLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var priceRangeLabel: UILabel!
+    @IBOutlet weak var websiteButton: UIButton!
     @IBOutlet var bloggerRatingStars: [UIImageView]!
     @IBOutlet var hopperRatingStars: [UIImageView]!
     @IBOutlet var amenitiesIndicator: [UIImageView]!
@@ -26,6 +27,8 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     @IBOutlet weak var hopperReviewScrollView: UIScrollView!
     @IBOutlet weak var hopperReviewPageControl: UIPageControl!
     @IBOutlet weak var hopperReviewShowAllButton: UIButton!
+    @IBOutlet var shopHourLabels: [UILabel]!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,49 +37,47 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         
         mapView.delegate = self
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage.init(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage.init()
-        
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        NetworkController.shared.fetchCafeFromDatabase(cafe: selectedCafe, with: token) { (cafe) in
-            self.cafeObject = cafe
-            DispatchQueue.main.async {
-                self.updateSlider()
-                self.updateLabel()
-                self.updateAmenities()
-                self.updateMap()
+        let activityViewController = ActivityViewController(message: "Loading...")
+        present(activityViewController, animated: true) {
+            NetworkController.shared.fetchCafeFromDatabase(cafe: self.selectedCafe, with: NetworkSession.shared.token!) { (cafe) in
+                self.cafeObject = cafe
                 
-                // autoSlider Timer
-                Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.autoSlider), userInfo: nil, repeats: true)
-            }
-            
-            NetworkController.shared.fetchBloggerReviewFromDatabase(cafe: self.selectedCafe, with: self.token, completion: { (bloggerReview) in
-                self.bloggerReview = bloggerReview
                 DispatchQueue.main.async {
-                    self.updateBloggerReview()
+                    self.updateSlider()
+                    self.updateLabel()
+                    self.updateRating()
+                    self.updateAmenities()
+                    self.updateMap()
+                    
+                    // autoSlider Timer
+                    Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.autoSlider), userInfo: nil, repeats: true)
                 }
                 
-                NetworkController.shared.fetchHopperReviewFromDatabase(cafe: self.selectedCafe, with: self.token, completion: { (hopperReview) in
-                    self.hopperReview = hopperReview
+                NetworkController.shared.fetchBloggerReviewFromDatabase(cafe: self.selectedCafe, with: NetworkSession.shared.token!, completion: { (bloggerReview) in
+                    self.bloggerReview = bloggerReview
+                    
                     DispatchQueue.main.async {
-                        self.updateHopperReview()
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        self.updateBloggerReview()
                     }
+                    
+                    NetworkController.shared.fetchHopperReviewFromDatabase(cafe: self.selectedCafe, with: NetworkSession.shared.token!, completion: { (hopperReview) in
+                        self.hopperReview = hopperReview
+                        DispatchQueue.main.async {
+                            self.updateHopperReview()
+                            activityViewController.dismiss(animated: true, completion: nil)
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        }
+                    })
                 })
-            })
+            }
         }
-        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
     }
     
     override func didReceiveMemoryWarning() {
@@ -88,6 +89,30 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     func updateLabel() {
         cafeNameLabel.text = cafeObject.name
         cafeAddressLabel.text = cafeObject.address
+        
+        priceRangeLabel.text = cafeObject.priceRange == -1 ? "No data available" :  String(repeating: "💲", count: cafeObject.priceRange)
+        priceRangeLabel.font = cafeObject.priceRange == -1 ? UIFont.systemFont(ofSize: 17) : UIFont.systemFont(ofSize: 25)
+        
+        websiteButton.isHidden = cafeObject.url == nil ? true : false
+        
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let dayOfWeek = calendar.component(.weekday, from: today)
+        
+        for index in 0..<cafeObject.shopHours.count {
+            if cafeObject.shopHours[index].isOpened{
+                shopHourLabels[index].text = "\(cafeObject.shopHours[index].open) - \(cafeObject.shopHours[index].closed)"
+            }
+            else {
+                shopHourLabels[index].text = "Closed"
+            }
+            
+            if index == dayOfWeek - 1 {
+                shopHourLabels[index].font = UIFont.boldSystemFont(ofSize: 17)
+            }
+        }
+        
     }
     
     func updateMap() {
@@ -105,12 +130,21 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     
     func updateRating() {
         if let rating = cafeObject.bloggerRating {
+            guard rating != -1 else {
+                return
+            }
+            
             for index in 0..<Int(rating) {
                 bloggerRatingStars[index].alpha = 1
             }
         }
         
+        
         if let rating = cafeObject.hopperRating {
+            guard rating != -1 else {
+                return
+            }
+            
             for index in 0..<Int(rating) {
                 hopperRatingStars[index].alpha = 1
             }
@@ -143,8 +177,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
             let imageURL = URL(string: cafeObject.images[index])
             let imageData = try? Data(contentsOf: imageURL!)
             image.image = UIImage(data: imageData!)
- 
- 
             
             sliderScrollView.addSubview(image)
         }
@@ -155,7 +187,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     
     
     func updateBloggerReview() {
-        guard let reviews = bloggerReview, reviews.count > 0 else {
+        guard var reviews = bloggerReview, reviews.count > 0 else {
             bloggerReviewPageControl.isHidden = true
             bloggerReviewShowAllButton.isHidden = true
             frame.origin.x = 0
@@ -178,11 +210,13 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
             frame.origin.x = bloggerReviewScrollView.frame.size.width * CGFloat(index)
             frame.size = bloggerReviewScrollView.frame.size
             
+            BloggerReview.removeNewLine(review: &bloggerReview![index])
+            BloggerReview.removeNewLine(review: &reviews[index])
             
             //title label
             let titleLabelFrame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height/2)
             let titleLabel = UILabel(frame: titleLabelFrame)
-            titleLabel.text = reviews[index].reviewSite
+            titleLabel.text = reviews[index].title
             titleLabel.numberOfLines = 1
             titleLabel.textAlignment = .center
             bloggerReviewScrollView.addSubview(titleLabel)
@@ -246,8 +280,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         hopperReviewScrollView.delegate = self
     }
     
- 
-    
     @objc func autoSlider() {
         let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(cafeObject.images.count)
         let contentOffset: CGFloat = sliderScrollView.contentOffset.x
@@ -259,7 +291,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         
         sliderScrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width: sliderScrollView.frame.width, height:sliderScrollView.frame.height), animated: true)
     }
- 
+
     
     // MARK: - Delegates
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -273,20 +305,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         case hopperReviewScrollView:
             hopperReviewPageControl.currentPage = Int(pageNumber)
         default:
-            var offset = scrollView.contentOffset.y / 150
-            let color = UIColor(red: 0.780, green: 0.698, blue: 0.600, alpha: offset)
-            
-            if offset > 1 {
-                offset = 1
-                self.title = cafeObject.name
-                self.navigationController?.navigationBar.backgroundColor = color
-                UIApplication.shared.statusBarView?.backgroundColor = color
-            }
-            else {
-                self.title = String.init()
-                self.navigationController?.navigationBar.backgroundColor = color
-                UIApplication.shared.statusBarView?.backgroundColor = color
-            }
+            return
         }
     }
 
@@ -315,10 +334,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         }
     }
     
-    @IBAction func unwindToCafeTableViewController(segue: UIStoryboardSegue) {
-        
-    }
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -337,13 +352,16 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
             let navigationController = segue.destination as? UINavigationController
             let submitReviewTableViewController = navigationController?.viewControllers.first as! SubmitReviewTableViewController
             submitReviewTableViewController.cafeObject = cafeObject
-            submitReviewTableViewController.token = token
         }
         else if segue.identifier == "suggestEdit" {
             let navigationController = segue.destination as? UINavigationController
             let suggestEditTableViewController = navigationController?.viewControllers.first as! SuggestEditTableViewController
             suggestEditTableViewController.cafeObject = cafeObject
-            suggestEditTableViewController.token = token
+        }
+        else if segue.identifier == "logout" {
+            NetworkSession.shared.guest = true
+            NetworkSession.shared.token = nil
+            NetworkSession.shared.user = nil
         }
     }
 }
