@@ -14,7 +14,6 @@ class SearchResultTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //searchForCoffee()
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         NetworkController.shared.fetchFromFourSquare(keyword: searchKeyword, location: currentLocation) { (data) in

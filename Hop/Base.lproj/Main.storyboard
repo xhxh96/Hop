@@ -124,6 +124,7 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
                         <outlet property="cafeTextDescription" destination="DL5-Oe-6wW" id="5Vk-sd-lUi"/>
                         <outlet property="dateLabel" destination="ha6-CB-oTI" id="RpT-s3-Tml"/>
                         <outlet property="profileButton" destination="czk-bV-ZX7" id="97R-be-jKm"/>
+                        <outlet property="searchButton" destination="yl7-ds-0P4" id="nJP-M1-mQB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ytx-Wg-YUq" userLabel="First Responder" sceneMemberID="firstResponder"/>

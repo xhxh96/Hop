@@ -358,11 +358,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
             let suggestEditTableViewController = navigationController?.viewControllers.first as! SuggestEditTableViewController
             suggestEditTableViewController.cafeObject = cafeObject
         }
-        else if segue.identifier == "logout" {
-            NetworkSession.shared.guest = true
-            NetworkSession.shared.token = nil
-            NetworkSession.shared.user = nil
-        }
     }
 }
 

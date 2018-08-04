@@ -11,9 +11,11 @@ class MainPageViewController: UIViewController {
     @IBOutlet weak var cafeName: UILabel!
     @IBOutlet weak var cafeTextDescription: UILabel!
     @IBOutlet weak var profileButton: UIButton!
+    @IBOutlet weak var searchButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.requestWhenInUseAuthorization()
         
         NetworkController.shared.fetchCafeOfTheDay(with: NetworkSession.shared.token!) { (cafe) in
             self.cafe = cafe
@@ -38,10 +40,24 @@ class MainPageViewController: UIViewController {
         dateFormatter.dateStyle = .long
         dateLabel.text = dateFormatter.string(from: Date.init())
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateSearchButton()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updateSearchButton() {
+        if !CLLocationManager.locationServicesEnabled() || CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
+            searchButton.isEnabled = false
+        }
+        else {
+            searchButton.isEnabled = true
+        }
     }
     
 
@@ -57,6 +73,11 @@ class MainPageViewController: UIViewController {
                 currentLocation = location.coordinate
             }
             searchResultTableViewController?.currentLocation = currentLocation
+        }
+        else if segue.identifier == "logout" {
+            NetworkSession.shared.guest = true
+            NetworkSession.shared.token = nil
+            NetworkSession.shared.user = nil
         }
     }
  
