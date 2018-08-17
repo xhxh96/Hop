@@ -1,9 +1,10 @@
 import UIKit
 
-class HopperReviewTableViewCell: UITableViewCell {
+class ProfileReviewTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var reviewTitleLabel: UILabel!
     @IBOutlet weak var reviewContentLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var hopperUserNameLabel: UILabel!
+    @IBOutlet weak var reviewDateLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -11,14 +12,14 @@ class HopperReviewTableViewCell: UITableViewCell {
     }
     
     func update(reviews: HopperReview) {
+        reviewTitleLabel.text = reviews.cafeName
         reviewContentLabel.text = reviews.content
-        hopperUserNameLabel.text = reviews.userId
         
         let date = Date(timeIntervalSince1970: reviews.reviewDate)
         let dateFormatter = DateFormatter.init()
         dateFormatter.locale = Locale(identifier: "en_GB")
         dateFormatter.dateStyle = .medium
-        dateLabel.text = dateFormatter.string(from: date)
+        reviewDateLabel.text = dateFormatter.string(from: date)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

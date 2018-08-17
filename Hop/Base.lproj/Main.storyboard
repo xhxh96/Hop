@@ -132,6 +132,83 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
             </objects>
             <point key="canvasLocation" x="-690.39999999999998" y="164.16791604197903"/>
         </scene>
+        <!--Profile Review Table View Controller-->
+        <scene sceneID="bya-Pk-Ibe">
+            <objects>
+                <tableViewController id="nlQ-wk-m2i" customClass="ProfileReviewTableViewController" customModule="Hop" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Jk-sa-Gne">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.78039215689999997" green="0.69803921570000005" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reviewCell" editingAccessoryType="disclosureIndicator" rowHeight="144" id="1ji-gp-ICM" customClass="ProfileReviewTableViewCell" customModule="Hop" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="144"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1ji-gp-ICM" id="Au7-Bc-iR0">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="143.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Mbe-7O-cvA">
+                                            <rect key="frame" x="16" y="11" width="343" height="122"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wo8-gy-wET">
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="25"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Review Content" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5K-Aa-BiK">
+                                                    <rect key="frame" x="0.0" y="30" width="343" height="77.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="beb-9h-BUz">
+                                                    <rect key="frame" x="0.0" y="107.5" width="70" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="7MA-VH-7NG"/>
+                                                <constraint firstAttribute="trailing" secondItem="H5K-Aa-BiK" secondAttribute="trailing" id="BLh-4W-Spf"/>
+                                                <constraint firstAttribute="bottom" secondItem="beb-9h-BUz" secondAttribute="bottom" id="Hoi-5q-Dc3"/>
+                                                <constraint firstItem="Wo8-gy-wET" firstAttribute="top" secondItem="Mbe-7O-cvA" secondAttribute="top" id="MNo-au-VvE"/>
+                                                <constraint firstItem="beb-9h-BUz" firstAttribute="leading" secondItem="Mbe-7O-cvA" secondAttribute="leading" id="RRS-zw-F2w"/>
+                                                <constraint firstItem="H5K-Aa-BiK" firstAttribute="leading" secondItem="Mbe-7O-cvA" secondAttribute="leading" id="hnw-jf-Vfz"/>
+                                                <constraint firstAttribute="trailing" secondItem="Wo8-gy-wET" secondAttribute="trailing" id="i9F-8F-U3o"/>
+                                                <constraint firstItem="Wo8-gy-wET" firstAttribute="leading" secondItem="Mbe-7O-cvA" secondAttribute="leading" id="mc5-yY-7lM"/>
+                                                <constraint firstItem="H5K-Aa-BiK" firstAttribute="top" secondItem="Wo8-gy-wET" secondAttribute="bottom" id="qTu-ae-t51"/>
+                                            </constraints>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Mbe-7O-cvA" firstAttribute="leading" secondItem="Au7-Bc-iR0" secondAttribute="leadingMargin" id="90p-VT-5vf"/>
+                                        <constraint firstItem="Mbe-7O-cvA" firstAttribute="top" secondItem="Au7-Bc-iR0" secondAttribute="topMargin" id="E7g-3v-CUK"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Mbe-7O-cvA" secondAttribute="bottom" id="Iye-ij-UrP"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Mbe-7O-cvA" secondAttribute="trailing" id="fhe-VT-Hdz"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.78039215689999997" green="0.69803921570000005" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="reviewContentLabel" destination="H5K-Aa-BiK" id="ltT-dN-DOh"/>
+                                    <outlet property="reviewDateLabel" destination="beb-9h-BUz" id="Z66-Ql-dbE"/>
+                                    <outlet property="reviewTitleLabel" destination="Wo8-gy-wET" id="OtZ-WU-jYV"/>
+                                    <segue destination="4gg-U9-PrW" kind="showDetail" identifier="editReview" id="gDf-XT-e7y"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="nlQ-wk-m2i" id="bhp-Il-Ev9"/>
+                            <outlet property="delegate" destination="nlQ-wk-m2i" id="Fgi-IS-LtY"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hnm-NT-kgp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-525.60000000000002" y="-1324.5877061469266"/>
+        </scene>
         <!--User Profile View Controller-->
         <scene sceneID="lHy-kR-3vY">
             <objects>
@@ -171,6 +248,15 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PPf-b1-69s">
+                                <rect key="frame" x="93" y="398" width="189" height="30"/>
+                                <state key="normal" title="View All Submitted Reviews">
+                                    <color key="titleColor" red="0.30196078430000001" green="0.2274509804" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="viewAllReviewsTapped:" destination="aUs-4m-GZ8" eventType="touchUpInside" id="wOF-Yi-9Cv"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.78039215689999997" green="0.69803921570000005" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -185,6 +271,8 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
                             <constraint firstItem="iOe-1H-Q1i" firstAttribute="centerX" secondItem="e2z-PU-efj" secondAttribute="centerX" id="cZ6-v2-hyf"/>
                             <constraint firstItem="iOe-1H-Q1i" firstAttribute="top" secondItem="kAN-FH-82f" secondAttribute="bottom" constant="8" id="dOV-AF-9jZ"/>
                             <constraint firstItem="kAN-FH-82f" firstAttribute="top" secondItem="xif-Yj-UVb" secondAttribute="bottom" constant="8" id="iOv-U9-9Bi"/>
+                            <constraint firstItem="PPf-b1-69s" firstAttribute="centerX" secondItem="e2z-PU-efj" secondAttribute="centerX" id="mCw-Er-ScO"/>
+                            <constraint firstItem="PPf-b1-69s" firstAttribute="top" secondItem="iOe-1H-Q1i" secondAttribute="bottom" constant="25" id="vPG-qf-w0d"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2wr-gd-B4f"/>
                     </view>
@@ -204,11 +292,12 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
                         <outlet property="memberSinceTextLabel" destination="xif-Yj-UVb" id="vvj-do-OAn"/>
                         <outlet property="reviewsTextLabel" destination="iOe-1H-Q1i" id="zL8-Ml-FRf"/>
                         <outlet property="welcomeTextLabel" destination="OVz-XG-Y7c" id="dlS-Aa-3Xp"/>
+                        <segue destination="nlQ-wk-m2i" kind="show" identifier="userReviews" id="XCv-9F-ElU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MnM-sw-4kv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-538" y="-600"/>
+            <point key="canvasLocation" x="-538.39999999999998" y="-600.44977511244383"/>
         </scene>
         <!--Update Profile-->
         <scene sceneID="TqO-2i-2iW">
@@ -244,6 +333,7 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
                                                 <constraint firstItem="O8e-qE-Tuw" firstAttribute="centerY" secondItem="RBy-TO-CgB" secondAttribute="centerY" id="tR2-9m-ddI"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="RGh-Pi-ofY">
                                         <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
@@ -1933,6 +2023,7 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <connections>
+                        <outlet property="actionCell" destination="PfX-hk-7eD" id="6Dk-Nh-o4r"/>
                         <outlet property="bloggerReviewPageControl" destination="3bc-kr-vkx" id="Qv6-FY-dz3"/>
                         <outlet property="bloggerReviewScrollView" destination="01y-Uo-WQk" id="pzM-B7-iy7"/>
                         <outlet property="bloggerReviewShowAllButton" destination="9q8-gv-yGL" id="gS7-1q-Gmb"/>
@@ -2163,7 +2254,7 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fLe-hc-UZI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2718" y="909"/>
+            <point key="canvasLocation" x="2718" y="-1053"/>
         </scene>
         <!--Hopper Review Table View Controller-->
         <scene sceneID="OVd-kp-2gc">
@@ -2289,7 +2380,7 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m3E-KW-CXm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1793" y="909"/>
+            <point key="canvasLocation" x="1793" y="-600"/>
         </scene>
         <!--Blogger Review Table View Controller-->
         <scene sceneID="b0Q-RX-k26">
@@ -2457,4 +2548,7 @@ Pellentesque urna ex, consectetur eu sollicitudin ut, elementum auctor diam.</st
         <image name="water" width="64" height="64"/>
         <image name="wifi" width="64" height="64"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="vcM-Tm-oKD"/>
+    </inferredMetricsTieBreakers>
 </document>

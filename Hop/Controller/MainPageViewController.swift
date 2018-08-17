@@ -1,7 +1,7 @@
 import UIKit
 import CoreLocation
 
-class MainPageViewController: UIViewController {
+class MainPageViewController: UIViewController, CLLocationManagerDelegate {
     let locationManager = CLLocationManager.init()
     var currentLocation: CLLocationCoordinate2D?
     var cafe: Cafe!
@@ -15,7 +15,9 @@ class MainPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager.requestWhenInUseAuthorization()
+        
+        setupLocationManager()
+        setupInterface()
         
         NetworkController.shared.fetchCafeOfTheDay(with: NetworkSession.shared.token!) { (cafe) in
             self.cafe = cafe
@@ -24,21 +26,8 @@ class MainPageViewController: UIViewController {
             DispatchQueue.main.async {
                 self.cafeImage.image = UIImage(data: imageData!)
                 self.cafeName.text = cafe.name
-                
             }
         }
-        
-        if NetworkSession.shared.guest {
-            profileButton.isHidden = true
-        }
-        
-        cafeImage.layer.cornerRadius = 20.0
-        cafeImage.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        
-        let dateFormatter = DateFormatter.init()
-        dateFormatter.locale = Locale(identifier: "en_GB")
-        dateFormatter.dateStyle = .long
-        dateLabel.text = dateFormatter.string(from: Date.init())
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -60,12 +49,40 @@ class MainPageViewController: UIViewController {
         }
     }
     
+    func setupInterface() {
+        if NetworkSession.shared.guest {
+            profileButton.isHidden = true
+        }
+        
+        cafeImage.layer.cornerRadius = 20.0
+        cafeImage.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        
+        let dateFormatter = DateFormatter.init()
+        dateFormatter.locale = Locale(identifier: "en_GB")
+        dateFormatter.dateStyle = .long
+        dateLabel.text = dateFormatter.string(from: Date.init())
+    }
+    
+    func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        let authorizationStatus = CLLocationManager.authorizationStatus()
+        
+        if authorizationStatus == CLAuthorizationStatus.notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        else {
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "beginSearch" {
+            
             let navigationController = segue.destination as? UINavigationController
             let searchResultTableViewController = navigationController?.viewControllers.first as? SearchResultTableViewController
             

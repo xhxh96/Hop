@@ -28,7 +28,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     @IBOutlet weak var hopperReviewPageControl: UIPageControl!
     @IBOutlet weak var hopperReviewShowAllButton: UIButton!
     @IBOutlet var shopHourLabels: [UILabel]!
-    
+    @IBOutlet weak var actionCell: UITableViewCell!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +44,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
                 self.cafeObject = cafe
                 
                 DispatchQueue.main.async {
+                    self.title = self.cafeObject.name
                     self.updateSlider()
                     self.updateLabel()
                     self.updateRating()
@@ -307,6 +308,14 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         default:
             return
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let totalRows = super.tableView(tableView, numberOfRowsInSection: section)
+        
+        let rows = NetworkSession.shared.guest ? totalRows - 1 : totalRows
+        
+        return rows
     }
 
     

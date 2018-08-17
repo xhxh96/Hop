@@ -8,7 +8,8 @@ class SubmitReviewTableViewController: UITableViewController {
     @IBOutlet weak var ratingSlider: HCSStarRatingView!
     @IBOutlet weak var reviewTextView: UITextView!
     
-    var cafeObject: Cafe!
+    var cafeObject: Cafe?
+    var review: HopperReview?
     
     let dateLabelIndexPath = IndexPath(row: 1, section: 0)
     let datePickerIndexPath = IndexPath(row: 2, section: 0)
@@ -25,12 +26,6 @@ class SubmitReviewTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateLabel()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,17 +34,25 @@ class SubmitReviewTableViewController: UITableViewController {
     }
     
     func updateLabel() {
-        titleLabel.text = cafeObject.name
-        
         dateFormatter.locale = Locale(identifier: "en_GB")
         dateFormatter.dateStyle = .medium
-        dateLabel.text = dateFormatter.string(from: Date.init())
+        
+        if let cafeObject = cafeObject {
+            titleLabel.text = cafeObject.name
+            dateLabel.text = dateFormatter.string(from: Date.init())
+        }
+            
+        else if let review = review {
+            titleLabel.text = review.cafeName
+            dateLabel.text = dateFormatter.string(from: Date(timeIntervalSince1970: review.reviewDate))
+            ratingSlider.value = CGFloat(review.rating)
+            reviewTextView.text = review.content
+        }
         
     }
     
     func updateDateView() {
         datePicker.maximumDate = Date.init()
-        
         dateLabel.text = dateFormatter.string(from: datePicker.date)
     }
     
@@ -94,29 +97,63 @@ class SubmitReviewTableViewController: UITableViewController {
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        let review = HopperReview(fsVenueId: cafeObject.fsVenueId, userId: (NetworkSession.shared.user?.userId)!, reviewDate: datePicker.date.timeIntervalSince1970, rating: Int(ratingSlider.value), content: reviewTextView.text)
- 
-        NetworkController.shared.submitReview(review: review, with: NetworkSession.shared.token!) { (response) in
-            if let response = response, response.success {
-                DispatchQueue.main.async {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    
-                    let alertController = UIAlertController(title: "Thanks For Your Review", message: "Your review has been successfully submitted.", preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
-                        self.dismiss(animated: true, completion: nil)
-                    })
-                    alertController.addAction(dismissAction)
-                    
-                    self.present(alertController, animated: true, completion: nil)
+        if let cafeObject = cafeObject {
+            let review = HopperReview(fsVenueId: cafeObject.fsVenueId, cafeName: cafeObject.name, userId: (NetworkSession.shared.user?.userId)!, reviewDate: datePicker.date.timeIntervalSince1970, rating: Int(ratingSlider.value), content: reviewTextView.text)
+            
+            NetworkController.shared.submitReview(review: review, with: NetworkSession.shared.token!) { (response) in
+                if let response = response, response.success {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        
+                        let alertController = UIAlertController(title: "Thanks For Your Review", message: "Your review has been successfully submitted.", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                        alertController.addAction(dismissAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: "Submission Error", message: "Your review could not be submitted. Please try again later.", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(dismissAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
             }
-            else {
-                DispatchQueue.main.async {
-                    let alertController = UIAlertController(title: "Submission Error", message: "Your review could not be submitted. Please try again later.", preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                    alertController.addAction(dismissAction)
-                    
-                    self.present(alertController, animated: true, completion: nil)
+        }
+        else if let review = review {
+            //let updatedReview = HopperReview(fsVenueId: review.fsVenueId, cafeName: review.cafeName, userId: NetworkSession.shared.user!.userId, reviewDate: datePicker.date.timeIntervalSince1970, rating: Int(ratingSlider.value), content: reviewTextView.text)
+            var updatedReview = review
+            updatedReview.reviewDate = datePicker.date.timeIntervalSince1970
+            updatedReview.rating = Int(ratingSlider.value)
+            updatedReview.content = reviewTextView.text
+            
+            NetworkController.shared.updateReview(review: updatedReview, with: NetworkSession.shared.token!) { (response) in
+                if let response = response, response.success {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        
+                        let alertController = UIAlertController(title: "Thanks For Your Review", message: "Your review has been successfully submitted.", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "Dismiss", style: .default, handler: { (action) in
+                            self.dismiss(animated: true, completion: nil)
+                        })
+                        alertController.addAction(dismissAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: "Submission Error", message: "Your review could not be submitted. Please try again later.", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(dismissAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
             }
         }

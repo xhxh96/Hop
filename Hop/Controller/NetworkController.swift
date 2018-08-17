@@ -190,6 +190,31 @@ class NetworkController {
         task.resume()
     }
     
+    
+    func fetchHopperReviewForProfile(user: User, with token: String, completion: @escaping ([HopperReview]?) -> Void) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper/all?userId=\(user.userId)&token=\(token)"
+        print("Hopper Review URL: \(url)")
+        
+        guard let requestURL = URL(string: url) else {
+            print("FETCH HOPPER REVIEW ERROR: Invalid request")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: requestURL) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            
+            if let data = data, let hopperReview = try? jsonDecoder.decode([HopperReview].self, from: data) {
+                completion(hopperReview)
+            }
+            else {
+                print("FETCH HOPPER REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
+ 
+    
     func submitReview(review: HopperReview, with token: String, completion: @escaping (ServerResponse?) -> Void) {
         let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?token=\(token)"
         
@@ -203,6 +228,36 @@ class NetworkController {
         
         var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = data
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            
+            if let data = data, let serverResponse = try? jsonDecoder.decode(ServerResponse.self, from: data) {
+                completion(serverResponse)
+            }
+            else {
+                print("SUBMIT REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
+    
+    func updateReview(review: HopperReview, with token: String, completion: @escaping (ServerResponse?) -> Void) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?token=\(token)"
+        
+        guard let requestURL = URL(string: url) else {
+            print("SUBMIT REVIEW ERROR: Invalid request")
+            return
+        }
+        
+        let jsonEncoder = JSONEncoder.init()
+        let data = try? jsonEncoder.encode(review)
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "PATCH"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = data
         

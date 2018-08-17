@@ -2,6 +2,8 @@ import Foundation
 
 struct HopperReview: Codable {
     var fsVenueId: String
+    var reviewId: String?
+    var cafeName: String
     var userId: String
     var reviewDate: TimeInterval
     var rating: Int
@@ -9,6 +11,8 @@ struct HopperReview: Codable {
     
     enum CodingKeys: String, CodingKey {
         case fsVenueId
+        case reviewId = "_id"
+        case cafeName
         case userId = "reviewerId"
         case reviewDate
         case rating
@@ -18,14 +22,17 @@ struct HopperReview: Codable {
     init(from decoder: Decoder) throws {
         let valueContainer = try decoder.container(keyedBy: CodingKeys.self)
         fsVenueId = try valueContainer.decode(String.self, forKey: CodingKeys.fsVenueId)
+        reviewId = try? valueContainer.decode(String.self, forKey: CodingKeys.reviewId)
+        cafeName = try valueContainer.decode(String.self, forKey: CodingKeys.cafeName)
         userId = try valueContainer.decode(String.self, forKey: CodingKeys.userId)
         reviewDate = try valueContainer.decode(TimeInterval.self, forKey: CodingKeys.reviewDate)
         rating = try valueContainer.decode(Int.self, forKey: CodingKeys.rating)
         content = try valueContainer.decode(String.self, forKey: CodingKeys.content)
     }
     
-    init(fsVenueId: String, userId: String, reviewDate: TimeInterval, rating: Int, content: String) {
+    init(fsVenueId: String, cafeName: String, userId: String, reviewDate: TimeInterval, rating: Int, content: String) {
         self.fsVenueId = fsVenueId
+        self.cafeName = cafeName
         self.userId = userId
         self.reviewDate = reviewDate
         self.rating = rating

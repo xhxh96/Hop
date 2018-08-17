@@ -29,10 +29,12 @@
 		284B012220F0B88E00FEA89B /* BloggerReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */; };
 		28664AB0210D8DDC000B757A /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28664AAF210D8DDC000B757A /* LoadingViewController.swift */; };
 		2867901B20FA53350028E06B /* MDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2867901A20FA53350028E06B /* MDButton.swift */; };
+		286FA9EA2117571C00F2F72C /* ProfileReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286FA9E92117571C00F2F72C /* ProfileReviewTableViewCell.swift */; };
+		286FA9EC2117574E00F2F72C /* ProfileReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286FA9EB2117574E00F2F72C /* ProfileReviewTableViewController.swift */; };
 		287B2E9B20F2811800C53CAA /* SuggestEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287B2E9A20F2811800C53CAA /* SuggestEditTableViewController.swift */; };
 		28B96EFF2106443400CE65AA /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B96EFE2106443400CE65AA /* MainPageViewController.swift */; };
 		28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0220D2A562002781FF /* AppDelegate.swift */; };
-		28CA2C0520D2A562002781FF /* deprecated-SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0420D2A562002781FF /* deprecated-SearchViewController.swift */; };
+		28CA2C0520D2A562002781FF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CA2C0420D2A562002781FF /* SearchViewController.swift */; };
 		28CA2C0820D2A562002781FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0620D2A562002781FF /* Main.storyboard */; };
 		28CA2C0D20D2A563002781FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28CA2C0B20D2A563002781FF /* LaunchScreen.storyboard */; };
 		28D5F79D20F334C60023CE05 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5F79C20F334C60023CE05 /* Users.swift */; };
@@ -77,11 +79,13 @@
 		284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggerReviewTableViewCell.swift; sourceTree = "<group>"; };
 		28664AAF210D8DDC000B757A /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		2867901A20FA53350028E06B /* MDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDButton.swift; sourceTree = "<group>"; };
+		286FA9E92117571C00F2F72C /* ProfileReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileReviewTableViewCell.swift; sourceTree = "<group>"; };
+		286FA9EB2117574E00F2F72C /* ProfileReviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileReviewTableViewController.swift; sourceTree = "<group>"; };
 		287B2E9A20F2811800C53CAA /* SuggestEditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestEditTableViewController.swift; sourceTree = "<group>"; };
 		28B96EFE2106443400CE65AA /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		28CA2BFF20D2A562002781FF /* Hop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28CA2C0220D2A562002781FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		28CA2C0420D2A562002781FF /* deprecated-SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "deprecated-SearchViewController.swift"; sourceTree = "<group>"; };
+		28CA2C0420D2A562002781FF /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		28CA2C0720D2A562002781FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		28CA2C0C20D2A563002781FF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		28CA2C0E20D2A563002781FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				22E53E0D20E653C8005CD8CC /* LoginViewController.swift */,
+				286FA9EB2117574E00F2F72C /* ProfileReviewTableViewController.swift */,
 				28B96EFE2106443400CE65AA /* MainPageViewController.swift */,
 				22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */,
 				22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */,
@@ -131,14 +136,22 @@
 				281E989020F92258009D5861 /* NetworkController.swift */,
 				28664AAF210D8DDC000B757A /* LoadingViewController.swift */,
 				2825EFC22112E37200060D7C /* UserProfileViewController.swift */,
-				28CA2C0420D2A562002781FF /* deprecated-SearchViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		282D633A212730190019D5F3 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				28CA2C0420D2A562002781FF /* SearchViewController.swift */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		285DCFF720D94BAF006C6FAB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				286FA9E92117571C00F2F72C /* ProfileReviewTableViewCell.swift */,
 				22E5AC7120D5306E002DF7C6 /* SearchResultTableViewCell.swift */,
 				22D1BD8720E92EFC00A9EA7B /* HopperReviewTableViewCell.swift */,
 				284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */,
@@ -175,6 +188,7 @@
 				285DCFF720D94BAF006C6FAB /* View */,
 				22115A8C20D2BB62002F5CB9 /* Controller */,
 				22115A8920D2BB2C002F5CB9 /* Model */,
+				282D633A212730190019D5F3 /* Deprecated */,
 				28CA2C0B20D2A563002781FF /* LaunchScreen.storyboard */,
 				28CA2C0E20D2A563002781FF /* Info.plist */,
 				2817F93D2107A5CD003C8B79 /* Assets.xcassets */,
@@ -278,7 +292,7 @@
 				22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */,
 				22A5FBB820EBC07D0020E502 /* Extension.swift in Sources */,
 				287B2E9B20F2811800C53CAA /* SuggestEditTableViewController.swift in Sources */,
-				28CA2C0520D2A562002781FF /* deprecated-SearchViewController.swift in Sources */,
+				28CA2C0520D2A562002781FF /* SearchViewController.swift in Sources */,
 				28D9657D20D7BE9D00158318 /* MapAnnotation.swift in Sources */,
 				28D7700820F6229B00FEF210 /* CreateAccountTableViewController.swift in Sources */,
 				28D5F79D20F334C60023CE05 /* Users.swift in Sources */,
@@ -286,7 +300,9 @@
 				281E988F20F910BB009D5861 /* CardView.swift in Sources */,
 				28CA2C0320D2A562002781FF /* AppDelegate.swift in Sources */,
 				28664AB0210D8DDC000B757A /* LoadingViewController.swift in Sources */,
+				286FA9EC2117574E00F2F72C /* ProfileReviewTableViewController.swift in Sources */,
 				284B012220F0B88E00FEA89B /* BloggerReviewTableViewCell.swift in Sources */,
+				286FA9EA2117571C00F2F72C /* ProfileReviewTableViewCell.swift in Sources */,
 				22D1BD8620E92D3E00A9EA7B /* HopperReviewTableViewController.swift in Sources */,
 				89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */,
 				22115A8E20D2BEB8002F5CB9 /* CafeTableViewController.swift in Sources */,
