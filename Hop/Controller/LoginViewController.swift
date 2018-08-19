@@ -18,20 +18,7 @@ class LoginViewController: UIViewController {
     
 
     @IBAction func loginWithoutAccount(_ sender: UIButton) {
-        let activityViewController = ActivityViewController(message: "Loading...")
-        present(activityViewController, animated: true, completion: nil)
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        NetworkController.shared.fetchNoLoginToken { (token) in
-            NetworkSession.shared.token = token
-            
-            DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                activityViewController.dismiss(animated: true, completion: {
-                    self.performSegue(withIdentifier: "loginToMainPage", sender: nil)
-                })
-            }
-        }
+        dismiss(animated: true, completion: nil)
     }
     
     
@@ -79,7 +66,7 @@ class LoginViewController: UIViewController {
                     DispatchQueue.main.async {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         activityViewController.dismiss(animated: true, completion: {
-                            self.performSegue(withIdentifier: "loginToMainPage", sender: nil)
+                            self.dismiss(animated: true, completion: nil)
                         })
                     }
                 }
@@ -95,8 +82,4 @@ class LoginViewController: UIViewController {
         
     }
      */
-    
-    @IBAction func unwindToLoginViewController(segue: UIStoryboardSegue) {
-        
-    }
 }

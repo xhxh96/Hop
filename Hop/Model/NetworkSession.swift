@@ -6,4 +6,10 @@ struct NetworkSession {
     var guest: Bool
     var user: User?
     var token: String?
+    
+    mutating func initialize() {
+        guest = true
+        user = nil
+        token = nil
+    }
 }

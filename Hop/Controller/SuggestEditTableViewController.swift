@@ -5,13 +5,13 @@ class SuggestEditTableViewController: UITableViewController {
     @IBOutlet weak var cafeAddressTextField: UITextField!
     @IBOutlet weak var cafePostalCodeTextField: UITextField!
     
-    var cafeObject: Cafe!
+    var cafe: Cafe!
     var amenities = [Int].init()
     let amenitiesIndexSection = 2
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        amenities = cafeObject.serializeAmenities()
+        amenities = cafe.serializeAmenities()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -25,9 +25,9 @@ class SuggestEditTableViewController: UITableViewController {
     }
     
     func updateUI() {
-        cafeNameTextField.text = cafeObject.name
-        cafeAddressTextField.text = cafeObject.address
-        cafePostalCodeTextField.text = cafeObject.postalCode
+        cafeNameTextField.text = cafe.name
+        cafeAddressTextField.text = cafe.address
+        cafePostalCodeTextField.text = cafe.postalCode
         
         for index in 0..<amenities.count {
             let indexPath = IndexPath(row: index, section: amenitiesIndexSection)
@@ -76,9 +76,9 @@ class SuggestEditTableViewController: UITableViewController {
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        cafeObject.deserializeAmenities(with: amenities)
+        cafe.deserializeAmenities(with: amenities)
         
-        NetworkController.shared.submitEdit(cafe: cafeObject, with: NetworkSession.shared.token!) { (response) in
+        NetworkController.shared.submitEdit(cafe: cafe, with: NetworkSession.shared.token!) { (response) in
             if let response = response, response.success {
                 DispatchQueue.main.async {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false

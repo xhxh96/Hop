@@ -1,9 +1,10 @@
 import UIKit
 import MapKit
+import SafariServices
 
 class CafeTableViewController: UITableViewController, CLLocationManagerDelegate {
     var selectedCafe: JSON!
-    var cafeObject: Cafe!
+    var cafe: Cafe!
     var bloggerReview: [BloggerReview]?
     var hopperReview: [HopperReview]?
     
@@ -28,7 +29,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     @IBOutlet weak var hopperReviewPageControl: UIPageControl!
     @IBOutlet weak var hopperReviewShowAllButton: UIButton!
     @IBOutlet var shopHourLabels: [UILabel]!
-    @IBOutlet weak var actionCell: UITableViewCell!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,13 +41,15 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         let activityViewController = ActivityViewController(message: "Loading...")
         present(activityViewController, animated: true) {
             NetworkController.shared.fetchCafeFromDatabase(cafe: self.selectedCafe, with: NetworkSession.shared.token!) { (cafe) in
-                self.cafeObject = cafe
+                self.cafe = cafe
                 
                 DispatchQueue.main.async {
-                    self.title = self.cafeObject.name
+                    self.title = self.cafe.name
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(self.addToFavourite(_:)))
                     self.updateSlider()
                     self.updateLabel()
-                    self.updateRating()
+                    self.updateBloggerRating()
+                    self.updateHopperRating()
                     self.updateAmenities()
                     self.updateMap()
                     
@@ -88,22 +90,22 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     
     // MARK: - Helper Function
     func updateLabel() {
-        cafeNameLabel.text = cafeObject.name
-        cafeAddressLabel.text = cafeObject.address
+        cafeNameLabel.text = cafe.name
+        cafeAddressLabel.text = cafe.address
         
-        priceRangeLabel.text = cafeObject.priceRange == -1 ? "No data available" :  String(repeating: "💲", count: cafeObject.priceRange)
-        priceRangeLabel.font = cafeObject.priceRange == -1 ? UIFont.systemFont(ofSize: 17) : UIFont.systemFont(ofSize: 25)
+        priceRangeLabel.text = cafe.priceRange == -1 ? "No data available" :  String(repeating: "💲", count: cafe.priceRange)
+        priceRangeLabel.font = cafe.priceRange == -1 ? UIFont.systemFont(ofSize: 17) : UIFont.systemFont(ofSize: 25)
         
-        websiteButton.isHidden = cafeObject.url == nil ? true : false
+        websiteButton.isHidden = cafe.url == nil ? true : false
         
         
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let dayOfWeek = calendar.component(.weekday, from: today)
         
-        for index in 0..<cafeObject.shopHours.count {
-            if cafeObject.shopHours[index].isOpened{
-                shopHourLabels[index].text = "\(cafeObject.shopHours[index].open) - \(cafeObject.shopHours[index].closed)"
+        for index in 0..<cafe.shopHours.count {
+            if cafe.shopHours[index].isOpened{
+                shopHourLabels[index].text = "\(cafe.shopHours[index].open) - \(cafe.shopHours[index].closed)"
             }
             else {
                 shopHourLabels[index].text = "Closed"
@@ -117,20 +119,20 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
     
     func updateMap() {
-        let latitude = cafeObject.latitude
-        let longitude = cafeObject.longitude
+        let latitude = cafe.latitude
+        let longitude = cafe.longitude
         
         let location = CLLocation(latitude: latitude, longitude: longitude)
         let regionRadius: CLLocationDistance = 250
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius, regionRadius)
-        let mapAnnotation = MapAnnotation(title: cafeObject.name, address: cafeObject.address, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+        let mapAnnotation = MapAnnotation(title: cafe.name, address: cafe.address, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
         
         mapView.setRegion(coordinateRegion, animated: true)
         mapView.addAnnotation(mapAnnotation)
     }
     
-    func updateRating() {
-        if let rating = cafeObject.bloggerRating {
+    func updateBloggerRating() {
+        if let rating = cafe.bloggerRating {
             guard rating != -1 else {
                 return
             }
@@ -139,9 +141,10 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
                 bloggerRatingStars[index].alpha = 1
             }
         }
-        
-        
-        if let rating = cafeObject.hopperRating {
+    }
+    
+    func updateHopperRating() {
+        if let rating = cafe.hopperRating {
             guard rating != -1 else {
                 return
             }
@@ -153,7 +156,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
     
     func updateAmenities() {
-        let amenities = cafeObject.serializeAmenities()
+        let amenities = cafe.serializeAmenities()
         
         for index in 0..<amenities.count {
             if amenities[index] == 2 {
@@ -166,22 +169,22 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
     
     func updateSlider() {
-        sliderPageControl.numberOfPages = cafeObject.images.count
+        sliderPageControl.numberOfPages = cafe.images.count
         
-        for index in 0..<cafeObject.images.count {
+        for index in 0..<cafe.images.count {
             frame.origin.x = sliderScrollView.frame.size.width * CGFloat(index)
             frame.size = sliderScrollView.frame.size
             
             let image = UIImageView(frame: frame)
             image.contentMode = .scaleAspectFill
             
-            let imageURL = URL(string: cafeObject.images[index])
+            let imageURL = URL(string: cafe.images[index])
             let imageData = try? Data(contentsOf: imageURL!)
             image.image = UIImage(data: imageData!)
             
             sliderScrollView.addSubview(image)
         }
-        sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(cafeObject.images.count), height: sliderScrollView.frame.size.height)
+        sliderScrollView.contentSize = CGSize(width: sliderScrollView.frame.size.width * CGFloat(cafe.images.count), height: sliderScrollView.frame.size.height)
         sliderScrollView.delegate = self
         sliderPageControl.currentPage = 0
     }
@@ -281,19 +284,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         hopperReviewScrollView.delegate = self
     }
     
-    @objc func autoSlider() {
-        let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(cafeObject.images.count)
-        let contentOffset: CGFloat = sliderScrollView.contentOffset.x
-        var slideToX = sliderScrollView.frame.width + contentOffset
-        
-        if  sliderScrollView.frame.width + contentOffset >= maxWidth {
-            slideToX = 0
-        }
-        
-        sliderScrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width: sliderScrollView.frame.width, height:sliderScrollView.frame.height), animated: true)
-    }
-
-    
     // MARK: - Delegates
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageNumber = scrollView.contentOffset.x / scrollView.frame.size.width
@@ -343,6 +333,28 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         }
     }
     
+    @IBAction func websiteButtonTapped(_ sender: UIButton) {
+        let safariViewController = SFSafariViewController(url: cafe.url!)
+        present(safariViewController, animated: true, completion: nil)
+    }
+    
+    @IBAction func addToFavourite(_ sender: UIBarButtonItem) {
+        
+    }
+    
+    @IBAction func autoSlider() {
+        let maxWidth: CGFloat = sliderScrollView.frame.width * CGFloat(cafe.images.count)
+        let contentOffset: CGFloat = sliderScrollView.contentOffset.x
+        var slideToX = sliderScrollView.frame.width + contentOffset
+        
+        if  sliderScrollView.frame.width + contentOffset >= maxWidth {
+            slideToX = 0
+        }
+        
+        sliderScrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width: sliderScrollView.frame.width, height:sliderScrollView.frame.height), animated: true)
+    }
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -360,12 +372,12 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         else if segue.identifier == "submitReview" {
             let navigationController = segue.destination as? UINavigationController
             let submitReviewTableViewController = navigationController?.viewControllers.first as! SubmitReviewTableViewController
-            submitReviewTableViewController.cafeObject = cafeObject
+            submitReviewTableViewController.cafe = cafe
         }
         else if segue.identifier == "suggestEdit" {
             let navigationController = segue.destination as? UINavigationController
             let suggestEditTableViewController = navigationController?.viewControllers.first as! SuggestEditTableViewController
-            suggestEditTableViewController.cafeObject = cafeObject
+            suggestEditTableViewController.cafe = cafe
         }
     }
 }

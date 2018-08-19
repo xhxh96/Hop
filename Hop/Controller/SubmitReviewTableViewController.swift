@@ -8,7 +8,7 @@ class SubmitReviewTableViewController: UITableViewController {
     @IBOutlet weak var ratingSlider: HCSStarRatingView!
     @IBOutlet weak var reviewTextView: UITextView!
     
-    var cafeObject: Cafe?
+    var cafe: Cafe?
     var review: HopperReview?
     
     let dateLabelIndexPath = IndexPath(row: 1, section: 0)
@@ -37,8 +37,8 @@ class SubmitReviewTableViewController: UITableViewController {
         dateFormatter.locale = Locale(identifier: "en_GB")
         dateFormatter.dateStyle = .medium
         
-        if let cafeObject = cafeObject {
-            titleLabel.text = cafeObject.name
+        if let cafe = cafe {
+            titleLabel.text = cafe.name
             dateLabel.text = dateFormatter.string(from: Date.init())
         }
             
@@ -97,8 +97,8 @@ class SubmitReviewTableViewController: UITableViewController {
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        if let cafeObject = cafeObject {
-            let review = HopperReview(fsVenueId: cafeObject.fsVenueId, cafeName: cafeObject.name, userId: (NetworkSession.shared.user?.userId)!, reviewDate: datePicker.date.timeIntervalSince1970, rating: Int(ratingSlider.value), content: reviewTextView.text)
+        if let cafe = cafe {
+            let review = HopperReview(fsVenueId: cafe.fsVenueId, cafeName: cafe.name, userId: (NetworkSession.shared.user?.userId)!, reviewDate: datePicker.date.timeIntervalSince1970, rating: Int(ratingSlider.value), content: reviewTextView.text)
             
             NetworkController.shared.submitReview(review: review, with: NetworkSession.shared.token!) { (response) in
                 if let response = response, response.success {
