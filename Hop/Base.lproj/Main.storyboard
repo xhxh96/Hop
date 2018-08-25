@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Aeg-GB-8Dd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="7DI-A7-Ts4">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -12,6 +12,24 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Initial View Controller-->
+        <scene sceneID="sHo-4H-6M0">
+            <objects>
+                <viewController id="7DI-A7-Ts4" customClass="InitialViewController" customModule="Hop" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="D8B-mz-olT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="GAB-CY-MtS"/>
+                    </view>
+                    <connections>
+                        <segue destination="Aeg-GB-8Dd" kind="show" identifier="mainPage" animates="NO" id="7x5-SR-LzM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ywr-vZ-Iwm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3330" y="134"/>
+        </scene>
         <!--Main Page View Controller-->
         <scene sceneID="5Oc-Ev-4aC">
             <objects>
@@ -254,7 +272,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ytx-Wg-YUq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-690.39999999999998" y="164.16791604197903"/>
+            <point key="canvasLocation" x="-2338" y="134"/>
         </scene>
         <!--Profile Review Table View Controller-->
         <scene sceneID="bya-Pk-Ibe">
@@ -415,6 +433,7 @@
                     <connections>
                         <outlet property="memberSinceTextLabel" destination="xif-Yj-UVb" id="vvj-do-OAn"/>
                         <outlet property="reviewsTextLabel" destination="iOe-1H-Q1i" id="zL8-Ml-FRf"/>
+                        <outlet property="viewAllReviewButton" destination="PPf-b1-69s" id="9RD-sa-0hK"/>
                         <outlet property="welcomeTextLabel" destination="OVz-XG-Y7c" id="dlS-Aa-3Xp"/>
                         <segue destination="nlQ-wk-m2i" kind="show" identifier="userReviews" id="XCv-9F-ElU"/>
                     </connections>

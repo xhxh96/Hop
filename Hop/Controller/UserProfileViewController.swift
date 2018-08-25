@@ -4,6 +4,7 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var welcomeTextLabel: UILabel!
     @IBOutlet weak var memberSinceTextLabel: UILabel!
     @IBOutlet weak var reviewsTextLabel: UILabel!
+    @IBOutlet weak var viewAllReviewButton: UIButton!
     
     var reviews: [HopperReview]!
     
@@ -26,6 +27,13 @@ class UserProfileViewController: UIViewController {
         dateFormatter.dateStyle = .medium
         memberSinceTextLabel.text = "Member since: \(dateFormatter.string(from: date))"
         reviewsTextLabel.text = "Reviews Submitted: \(NetworkSession.shared.user!.reviewCount)"
+        
+        if NetworkSession.shared.user!.reviewCount > 0 {
+            viewAllReviewButton.isHidden = false
+        }
+        else {
+            viewAllReviewButton.isHidden = true
+        }
     }
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {

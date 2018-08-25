@@ -28,24 +28,22 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let activityViewController = ActivityViewController(message: "Loading...")
         present(activityViewController, animated: true) {
-            NetworkController.shared.fetchNoLoginToken { (token) in
-                NetworkSession.shared.token = token
-                
-                NetworkController.shared.fetchCafeOfTheDay(with: NetworkSession.shared.token!) { (cafe) in
-                    self.cafe = cafe
-                    let imageURL = URL(string: cafe.images.first!)
-                    let imageData = try? Data(contentsOf: imageURL!)
-                    DispatchQueue.main.async {
-                        self.setupInterface(image: imageData, cafe: self.cafe)
-                        self.updateSearchButton()
-                        activityViewController.dismiss(animated: true, completion: nil)
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    }
+            
+            NetworkController.shared.fetchCafeOfTheDay(with: NetworkSession.shared.token!) { (cafe) in
+                self.cafe = cafe
+                let imageURL = URL(string: cafe.images.first!)
+                let imageData = try? Data(contentsOf: imageURL!)
+                DispatchQueue.main.async {
+                    self.setupInterface(image: imageData, cafe: self.cafe)
+                    self.updateSearchButton()
+                    activityViewController.dismiss(animated: true, completion: nil)
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 }
             }
+            //}
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -125,13 +123,21 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate {
             performSegue(withIdentifier: "loginPage", sender: nil)
         }
         else {
-            NetworkSession.shared.initialize()
-            self.viewDidAppear(true)
+            NetworkSession.shared.resetSession()
+            
+            NetworkController.shared.fetchNoLoginToken { (token) in
+                NetworkSession.shared.token = token
+                UserDefaults.standard.removeObject(forKey: "UserSession")
+                
+                DispatchQueue.main.async {
+                    self.viewDidAppear(true)
+                }
+            }
         }
     }
     
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "beginSearch" {

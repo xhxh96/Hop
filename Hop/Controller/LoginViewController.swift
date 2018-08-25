@@ -59,9 +59,9 @@ class LoginViewController: UIViewController {
                         })
                     }
                 default:
-                    NetworkSession.shared.token = tokenResponse.token
-                    NetworkSession.shared.user = tokenResponse.data
-                    NetworkSession.shared.guest = false
+                    NetworkSession.shared.initializeSession(user: tokenResponse.data, token: tokenResponse.token)
+                    
+                    UserDefaults.standard.set(["userId": self.userIdTextField.text!, "userPassword": self.passwordTextField.text!], forKey: "UserSession")
                     
                     DispatchQueue.main.async {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false

@@ -35,17 +35,29 @@ class ProfileReviewTableViewController: UITableViewController {
     
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
- 
-
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            
+            NetworkController.shared.deleteReview(review: reviews[indexPath.row], with: NetworkSession.shared.token!) { (response) in
+                if let response = response, response.success {
+                    DispatchQueue.main.async {
+                        self.reviews.remove(at: indexPath.row)
+                        tableView.deleteRows(at: [indexPath], with: .fade)
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: "Deletion Error", message: "Your review could not be deleted. Please try again later.", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(dismissAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+            }
         }
     }
     

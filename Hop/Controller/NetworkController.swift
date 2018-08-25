@@ -249,7 +249,7 @@ class NetworkController {
         let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?token=\(token)"
         
         guard let requestURL = URL(string: url) else {
-            print("SUBMIT REVIEW ERROR: Invalid request")
+            print("UPDATE REVIEW ERROR: Invalid request")
             return
         }
         
@@ -268,7 +268,38 @@ class NetworkController {
                 completion(serverResponse)
             }
             else {
-                print("SUBMIT REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
+                print("UPDATE REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
+    
+    func deleteReview(review: HopperReview, with token: String, completion: @escaping (ServerResponse?) -> Void) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?_id=\(review.reviewId!)&token=\(token)"
+        print(url)
+        
+        guard let requestURL = URL(string: url) else {
+            print("DELETE REVIEW ERROR: Invalid request")
+            return
+        }
+        
+        let jsonEncoder = JSONEncoder.init()
+        let data = try? jsonEncoder.encode(review)
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = data
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            
+            if let data = data, let serverResponse = try? jsonDecoder.decode(ServerResponse.self, from: data) {
+                completion(serverResponse)
+            }
+            else {
+                print("DELETE REVIEW WARNING: No JSON Object found, or unable to map JSON Object to model")
                 completion(nil)
             }
         }

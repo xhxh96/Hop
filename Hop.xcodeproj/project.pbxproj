@@ -40,6 +40,7 @@
 		28D5F79D20F334C60023CE05 /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D5F79C20F334C60023CE05 /* Users.swift */; };
 		28D7700820F6229B00FEF210 /* CreateAccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7700720F6229B00FEF210 /* CreateAccountTableViewController.swift */; };
 		28D9657D20D7BE9D00158318 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D9657C20D7BE9D00158318 /* MapAnnotation.swift */; };
+		28DEBB67213195E100BD0D2C /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DEBB66213195E100BD0D2C /* InitialViewController.swift */; };
 		89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +93,7 @@
 		28D5F79C20F334C60023CE05 /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
 		28D7700720F6229B00FEF210 /* CreateAccountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountTableViewController.swift; sourceTree = "<group>"; };
 		28D9657C20D7BE9D00158318 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
+		28DEBB66213195E100BD0D2C /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,6 +138,7 @@
 				281E989020F92258009D5861 /* NetworkController.swift */,
 				28664AAF210D8DDC000B757A /* LoadingViewController.swift */,
 				2825EFC22112E37200060D7C /* UserProfileViewController.swift */,
+				28DEBB66213195E100BD0D2C /* InitialViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -277,8 +280,8 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/HCSStarRatingView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = "/usr/local/bin/carthage copy-frameworks";
-			shellScript = "";
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -290,6 +293,7 @@
 				281E989120F92258009D5861 /* NetworkController.swift in Sources */,
 				2825EFC521132C0C00060D7C /* EditProfileTableViewController.swift in Sources */,
 				22E5AC7220D5306E002DF7C6 /* SearchResultTableViewCell.swift in Sources */,
+				28DEBB67213195E100BD0D2C /* InitialViewController.swift in Sources */,
 				22A5FBB820EBC07D0020E502 /* Extension.swift in Sources */,
 				287B2E9B20F2811800C53CAA /* SuggestEditTableViewController.swift in Sources */,
 				28CA2C0520D2A562002781FF /* SearchViewController.swift in Sources */,
