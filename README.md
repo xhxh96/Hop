@@ -61,7 +61,7 @@ GitHub
 
 ## Authors
 * **Cheng Xianhao** - *Front-End Developer* - [xhxh96](https://github.com/xhxh96)
-* **Elston Aw** - *Back-End Developer* - [elstonayx](https://github.com/elston.ayx)
+* **Elston Aw** - *Back-End Developer* - [elstonayx](https://github.com/elstonayx)
 
 
 ## Acknowledgments
