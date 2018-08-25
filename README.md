@@ -11,7 +11,7 @@ The app is fully written in Swift 4.2, targeted to run on iOS 11.4, although the
 
 The app is however not universal and is thus not officially supported on iPad. 
 
-Backend system of this mobile app is running on MongoDB + NodeJS and managed by @elston.ayx. For updates and development of the backend system, please access the GitHub repo [here](https://github.com/elstonayx/hopdbserver)
+Backend system of this mobile app is running on MongoDB + NodeJS and managed by @elstonayx. For updates and development of the backend system, please access the GitHub repo [here](https://github.com/elstonayx/hopdbserver)
 
 
 ### Prerequisites
@@ -61,7 +61,7 @@ GitHub
 
 ## Authors
 * **Cheng Xianhao** - *Front-End Developer* - [xhxh96](https://github.com/xhxh96)
-* **Elston Aw** - *Back-End Developer* - [elston.ayx](https://github.com/elston.ayx)
+* **Elston Aw** - *Back-End Developer* - [elstonayx](https://github.com/elston.ayx)
 
 
 ## Acknowledgments
