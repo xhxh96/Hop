@@ -7,7 +7,7 @@ The key features of the app are posting of reviews for cafés and updating of ca
 
 ## Getting Started
 
-The app is fully written in Swift 4.2, targeted to run on iOS 11.4, although the app should work for any iOS devices running iOS 9.0 and above.
+The app is fully written in Swift 4.1, targeted to run on iOS 11.4, although the app should work for any iOS devices running iOS 9.0 and above.
 
 The app is however not universal and is thus not officially supported on iPad. 
 
@@ -51,7 +51,7 @@ Deployment of the backend system can be found in the backend server repo.
 
 ## Built With
 * XCode 9.4.1
-* [Swift 4.2](https://github.com/apple/swift)
+* [Swift 4.1](https://github.com/apple/swift)
 * [Carthage](https://github.com/Carthage/Carthage) - Dependency Management
   * [HCSStarRatingView](https://github.com/hsousa/HCSStarRatingView)
 
