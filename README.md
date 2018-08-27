@@ -52,12 +52,16 @@ Deployment of the backend system can be found in the backend server repo.
 ## Built With
 * XCode 9.4.1
 * [Swift 4.1](https://github.com/apple/swift)
-* [Carthage](https://github.com/Carthage/Carthage) - Dependency Management
-  * [HCSStarRatingView](https://github.com/hsousa/HCSStarRatingView)
+* [Carthage](https://github.com/Carthage/Carthage) - Dependency Management (Version 3.4 and prior)
+* [Cocoapod] (https://cocoapods.org/) - Dependency Management (Version 3.5 onwards)
+
+Third-Party Dependencies:
+* [HCSStarRatingView](https://github.com/hsousa/HCSStarRatingView)
+* [ScalingCarousel](https://github.com/superpeteblaze/ScalingCarousel)
 
 
 ## Versioning
-GitHub
+Git
 
 ## Authors
 * **Cheng Xianhao** - *Front-End Developer* - [xhxh96](https://github.com/xhxh96)
