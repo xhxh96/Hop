@@ -4,6 +4,7 @@ import SafariServices
 
 class CafeTableViewController: UITableViewController, CLLocationManagerDelegate {
     var selectedCafe: JSON!
+    var selectedCafeId: String!
     var cafe: Cafe!
     var bloggerReview: [BloggerReview]?
     var hopperReview: [HopperReview]?
@@ -40,7 +41,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let activityViewController = ActivityViewController(message: "Loading...")
         present(activityViewController, animated: true) {
-            NetworkController.shared.fetchCafeFromDatabase(cafe: self.selectedCafe, with: NetworkSession.shared.token!) { (cafe) in
+            NetworkController.shared.fetchCafeFromDatabase(venueId: self.selectedCafeId, with: NetworkSession.shared.token!) { (cafe) in
                 self.cafe = cafe
                 
                 DispatchQueue.main.async {
@@ -57,14 +58,14 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
                     Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.autoSlider), userInfo: nil, repeats: true)
                 }
                 
-                NetworkController.shared.fetchBloggerReviewFromDatabase(cafe: self.selectedCafe, with: NetworkSession.shared.token!, completion: { (bloggerReview) in
+                NetworkController.shared.fetchBloggerReviewFromDatabase(venueId: self.selectedCafeId, with: NetworkSession.shared.token!, completion: { (bloggerReview) in
                     self.bloggerReview = bloggerReview
                     
                     DispatchQueue.main.async {
                         self.updateBloggerReview()
                     }
                     
-                    NetworkController.shared.fetchHopperReviewFromDatabase(cafe: self.selectedCafe, with: NetworkSession.shared.token!, completion: { (hopperReview) in
+                    NetworkController.shared.fetchHopperReviewFromDatabase(venueId: self.selectedCafeId, with: NetworkSession.shared.token!, completion: { (hopperReview) in
                         self.hopperReview = hopperReview
                         DispatchQueue.main.async {
                             self.updateHopperReview()

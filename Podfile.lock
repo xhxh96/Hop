@@ -1,0 +1,15 @@
+PODS:
+  - HCSStarRatingView (1.5)
+  - ScalingCarousel (2.3)
+
+DEPENDENCIES:
+  - HCSStarRatingView
+  - ScalingCarousel
+
+SPEC CHECKSUMS:
+  HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
+  ScalingCarousel: ee866c34c01b784b6edf9009f12ea73935517e3e
+
+PODFILE CHECKSUM: 5d51144607682de5ccaccac77bd8dab9fe3e685d
+
+COCOAPODS: 1.4.0

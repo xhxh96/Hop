@@ -1,23 +1,26 @@
 import UIKit
 import CoreLocation
 
-let client_id = "NAT0ERZ20UEDFBBYWC3LFXTT0QPGH2GU4WEZ1PNI3QO22GRD"
-let client_secret = "YVG0G3PFL2CFDOMIQLGJTMLXSQ0VGP3FOAPEY2UUUEAUC0FZ"
-
 class SearchResultTableViewController: UITableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     var searchKeyword: String?
     var cafeResults = [JSON]()
     var currentLocation: CLLocationCoordinate2D?
-    var counter: Int = 0
+    var searchByKeyword = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        NetworkController.shared.fetchFromFourSquare(keyword: searchKeyword, location: currentLocation) { (data) in
-            self.cafeResults = data["response"]["group"]["results"].arrayValue
+        NetworkController.shared.fetchFromFourSquare(searchByKeyword: &searchByKeyword, keyword: searchKeyword, location: currentLocation) { (data) in
+            
+            if self.searchByKeyword {
+                self.cafeResults = data.arrayValue
+            }
+            else {
+                self.cafeResults = data["response"]["group"]["results"].arrayValue
+            }
             
             DispatchQueue.main.async {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -48,8 +51,17 @@ class SearchResultTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath) as! SearchResultTableViewCell
         
-        let name = cafeResults[indexPath.row]["venue"]["name"].string
-        let address = cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string
+        var name: String
+        var address: String
+        
+        if searchByKeyword {
+            name = cafeResults[indexPath.row]["name"].string!
+            address = cafeResults[indexPath.row]["address"].string!
+        }
+        else {
+            name = cafeResults[indexPath.row]["venue"]["name"].string!
+            address = cafeResults[indexPath.row]["venue"]["location"]["formattedAddress"][0].string!
+        }
         
         guard let thumbnailURL = generateThumbnailURL(at: indexPath) else {
             cell.updateLabel(thumbnail: nil, name: name, address: address)
@@ -68,7 +80,10 @@ class SearchResultTableViewController: UITableViewController {
     }
     
     func generateThumbnailURL(at indexPath: IndexPath) -> URL? {
-        if let prefixURL = cafeResults[indexPath.row]["photo"]["prefix"].string, let suffixURL = cafeResults[indexPath.row]["photo"]["suffix"].string, let imageURL = URL(string: prefixURL + "90x90" + suffixURL) {
+        if searchByKeyword, let url = cafeResults[indexPath.row]["thumbnail"].string {
+            return URL(string: url)
+        }
+        else if let prefixURL = cafeResults[indexPath.row]["photo"]["prefix"].string, let suffixURL = cafeResults[indexPath.row]["photo"]["suffix"].string, let imageURL = URL(string: prefixURL + "90x90" + suffixURL) {
             
             return imageURL
         }
@@ -88,8 +103,14 @@ class SearchResultTableViewController: UITableViewController {
             searchKeyword = searchBar.text
         }
         
-        NetworkController.shared.fetchFromFourSquare(keyword: searchKeyword, location: currentLocation) { (data) in
-            self.cafeResults = data["response"]["group"]["results"].arrayValue
+        NetworkController.shared.fetchFromFourSquare(searchByKeyword: &searchByKeyword, keyword: searchKeyword, location: currentLocation) { (data) in
+            
+            if self.searchByKeyword {
+                self.cafeResults = data.arrayValue
+            }
+            else {
+                self.cafeResults = data["response"]["group"]["results"].arrayValue
+            }
             
             DispatchQueue.main.async {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -108,7 +129,13 @@ class SearchResultTableViewController: UITableViewController {
             let cafeTableViewController = segue.destination as! CafeTableViewController
             let indexPath = tableView.indexPathForSelectedRow!
             let selectedCafe = cafeResults[indexPath.row]
-            cafeTableViewController.selectedCafe = selectedCafe
+            
+            if searchByKeyword {
+                cafeTableViewController.selectedCafeId = selectedCafe["fsVenueId"].string
+            }
+            else {
+                cafeTableViewController.selectedCafeId = selectedCafe["venue"]["id"].string
+            }
         }
     }
 }

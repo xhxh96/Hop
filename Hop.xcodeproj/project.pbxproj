@@ -20,7 +20,6 @@
 		2817F93E2107A5CD003C8B79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2817F93D2107A5CD003C8B79 /* Assets.xcassets */; };
 		281E988F20F910BB009D5861 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E988E20F910BB009D5861 /* CardView.swift */; };
 		281E989120F92258009D5861 /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281E989020F92258009D5861 /* NetworkController.swift */; };
-		281EAAF320F765C400AD7CA0 /* HCSStarRatingView.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 281EAAF120F765C400AD7CA0 /* HCSStarRatingView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2825EFC12112A85B00060D7C /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2825EFC02112A85B00060D7C /* NetworkSession.swift */; };
 		2825EFC32112E37200060D7C /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2825EFC22112E37200060D7C /* UserProfileViewController.swift */; };
 		2825EFC521132C0C00060D7C /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2825EFC421132C0C00060D7C /* EditProfileTableViewController.swift */; };
@@ -41,23 +40,12 @@
 		28D7700820F6229B00FEF210 /* CreateAccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7700720F6229B00FEF210 /* CreateAccountTableViewController.swift */; };
 		28D9657D20D7BE9D00158318 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D9657C20D7BE9D00158318 /* MapAnnotation.swift */; };
 		28DEBB67213195E100BD0D2C /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DEBB66213195E100BD0D2C /* InitialViewController.swift */; };
+		2F79632B3A930630C9D38CD6 /* Pods_Hop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA40BC0BE044243815C99C4 /* Pods_Hop.framework */; };
 		89DF7EFC20D6C08E00BDEAF9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		281EAAD920F762C500AD7CA0 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				281EAAF320F765C400AD7CA0 /* HCSStarRatingView.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		18F56E77739D6394F3780459 /* Pods-Hop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hop.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hop/Pods-Hop.debug.xcconfig"; sourceTree = "<group>"; };
 		22115A8520D2BB17002F5CB9 /* Cafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cafe.swift; sourceTree = "<group>"; };
 		22115A8A20D2BB5A002F5CB9 /* SearchResultTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewController.swift; sourceTree = "<group>"; };
 		22115A8D20D2BEB8002F5CB9 /* CafeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CafeTableViewController.swift; sourceTree = "<group>"; };
@@ -71,7 +59,6 @@
 		2817F93D2107A5CD003C8B79 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		281E988E20F910BB009D5861 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		281E989020F92258009D5861 /* NetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
-		281EAAF120F765C400AD7CA0 /* HCSStarRatingView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HCSStarRatingView.framework; path = Carthage/Build/iOS/HCSStarRatingView.framework; sourceTree = "<group>"; };
 		2825EFC02112A85B00060D7C /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
 		2825EFC22112E37200060D7C /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		2825EFC421132C0C00060D7C /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
@@ -94,7 +81,9 @@
 		28D7700720F6229B00FEF210 /* CreateAccountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountTableViewController.swift; sourceTree = "<group>"; };
 		28D9657C20D7BE9D00158318 /* MapAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
 		28DEBB66213195E100BD0D2C /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		4FA40BC0BE044243815C99C4 /* Pods_Hop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		89DF7EFB20D6C08E00BDEAF9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		EADB86281F5C31BA835F6567 /* Pods-Hop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hop.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hop/Pods-Hop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F79632B3A930630C9D38CD6 /* Pods_Hop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +114,7 @@
 		22115A8C20D2BB62002F5CB9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				28DEBB66213195E100BD0D2C /* InitialViewController.swift */,
 				22E53E0D20E653C8005CD8CC /* LoginViewController.swift */,
 				286FA9EB2117574E00F2F72C /* ProfileReviewTableViewController.swift */,
 				28B96EFE2106443400CE65AA /* MainPageViewController.swift */,
@@ -138,7 +129,6 @@
 				281E989020F92258009D5861 /* NetworkController.swift */,
 				28664AAF210D8DDC000B757A /* LoadingViewController.swift */,
 				2825EFC22112E37200060D7C /* UserProfileViewController.swift */,
-				28DEBB66213195E100BD0D2C /* InitialViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -169,7 +159,8 @@
 			children = (
 				28CA2C0120D2A562002781FF /* Hop */,
 				28CA2C0020D2A562002781FF /* Products */,
-				281EAAF120F765C400AD7CA0 /* HCSStarRatingView.framework */,
+				835B4C14C4741B5C59C403EB /* Pods */,
+				A47038C0F7FDF70E2A51D5EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -199,6 +190,23 @@
 			path = Hop;
 			sourceTree = "<group>";
 		};
+		835B4C14C4741B5C59C403EB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				18F56E77739D6394F3780459 /* Pods-Hop.debug.xcconfig */,
+				EADB86281F5C31BA835F6567 /* Pods-Hop.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A47038C0F7FDF70E2A51D5EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4FA40BC0BE044243815C99C4 /* Pods_Hop.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -206,11 +214,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 28CA2C1120D2A563002781FF /* Build configuration list for PBXNativeTarget "Hop" */;
 			buildPhases = (
+				BBAE1D515FA14FBFCF5DC810 /* [CP] Check Pods Manifest.lock */,
 				28CA2BFB20D2A562002781FF /* Sources */,
 				28CA2BFC20D2A562002781FF /* Frameworks */,
 				28CA2BFD20D2A562002781FF /* Resources */,
-				281EAAD820F75F2300AD7CA0 /* ShellScript */,
-				281EAAD920F762C500AD7CA0 /* CopyFiles */,
+				334D73E3E8455B7DDAE406A5 /* [CP] Embed Pods Frameworks */,
+				33437E9ACB0B8D3C9C188312 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -268,20 +277,58 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		281EAAD820F75F2300AD7CA0 /* ShellScript */ = {
+		33437E9ACB0B8D3C9C188312 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/HCSStarRatingView.framework",
 			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/HCSStarRatingView.framework",
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hop/Pods-Hop-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		334D73E3E8455B7DDAE406A5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Hop/Pods-Hop-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/HCSStarRatingView/HCSStarRatingView.framework",
+				"${BUILT_PRODUCTS_DIR}/ScalingCarousel/ScalingCarousel.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HCSStarRatingView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ScalingCarousel.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hop/Pods-Hop-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BBAE1D515FA14FBFCF5DC810 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Hop-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -462,13 +509,11 @@
 		};
 		28CA2C1220D2A563002781FF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 18F56E77739D6394F3780459 /* Pods-Hop.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Hop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -483,13 +528,11 @@
 		};
 		28CA2C1320D2A563002781FF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EADB86281F5C31BA835F6567 /* Pods-Hop.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Hop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

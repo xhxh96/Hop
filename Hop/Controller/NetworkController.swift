@@ -61,16 +61,20 @@ class NetworkController {
         task.resume()
     }
     
-    func fetchFromFourSquare(keyword searchKeyword: String?, location currentLocation: CLLocationCoordinate2D?, completion: @escaping (JSON) -> Void) {
+    func fetchFromFourSquare(searchByKeyword: inout Bool, keyword searchKeyword: String?, location currentLocation: CLLocationCoordinate2D?, completion: @escaping (JSON) -> Void) {
         var url: String
         let formattedSearchInput = searchKeyword?.replacingOccurrences(of: " ", with: "-")
-        // to implement guard for input in URL
         
         if let searchExist = formattedSearchInput {
-            url = "https://api.foursquare.com/v2/search/recommendations?near=\(searchExist)&radius=1500&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+            //url = "https://api.foursquare.com/v2/search/recommendations?near=\(searchExist)&radius=1500&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+            url = "https://hopdbserver.herokuapp.com/search/fuzzy?token=\(NetworkSession.shared.token!)&query=\(searchExist)"
+            searchByKeyword = true
+            
+            print(url)
         }
         else {
             url = "https://api.foursquare.com/v2/search/recommendations?ll=\(currentLocation!.latitude),\(currentLocation!.longitude)&radius=1500&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
+            searchByKeyword = false
         }
         
         let request = NSMutableURLRequest(url: URL(string: url)!)
@@ -119,9 +123,25 @@ class NetworkController {
         task.resume()
     }
     
-    func fetchCafeFromDatabase(cafe selectedCafe: JSON, with token: String, completion: @escaping (Cafe) -> Void) {
-        let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/data?fsVenueId=\(venueId!)&token=\(token)"
+    func fetchPopularCafes(with token: String, completion: @escaping ([Cafe]) -> Void) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/popular?token=\(token)"
+        
+        guard let requestURL = URL(string: url) else {
+            print("FETCH POPULAR CAFE ERROR: Invalid request")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: requestURL) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            if let data = data, let popularCafe = try? jsonDecoder.decode([Cafe].self, from: data) {
+                completion(popularCafe)
+            }
+        }
+        task.resume()
+    }
+    
+    func fetchCafeFromDatabase(venueId: String, with token: String, completion: @escaping (Cafe) -> Void) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/data?fsVenueId=\(venueId)&token=\(token)"
         print("Cafe Database URL: \(url)")
         
         guard let requestURL = URL(string: url) else {
@@ -144,9 +164,8 @@ class NetworkController {
         task.resume()
     }
     
-    func fetchBloggerReviewFromDatabase(cafe selectedCafe: JSON, with token: String, completion: @escaping ([BloggerReview]?) -> Void) {
-        let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/blogger?fsVenueId=\(venueId!)&token=\(token)"
+    func fetchBloggerReviewFromDatabase(venueId: String, with token: String, completion: @escaping ([BloggerReview]?) -> Void) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/blogger?fsVenueId=\(venueId)&token=\(token)"
         
         guard let requestURL = URL(string: url) else {
             print("FETCH BLOGGER REVIEW ERROR: Invalid request")
@@ -166,9 +185,8 @@ class NetworkController {
         task.resume()
     }
     
-    func fetchHopperReviewFromDatabase(cafe selectedCafe: JSON, with token: String, completion: @escaping ([HopperReview]?) -> Void) {
-        let venueId = selectedCafe["venue"]["id"].string
-        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?fsVenueId=\(venueId!)&token=\(token)"
+    func fetchHopperReviewFromDatabase(venueId: String, with token: String, completion: @escaping ([HopperReview]?) -> Void) {
+        let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?fsVenueId=\(venueId)&token=\(token)"
         print("Hopper Review URL: \(url)")
         
         guard let requestURL = URL(string: url) else {

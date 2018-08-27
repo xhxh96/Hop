@@ -1,6 +1,8 @@
 import UIKit
 
 class InitialViewController: UIViewController {
+    var cafeOfTheDay: Cafe?
+    var popularCafes: [Cafe]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,10 +21,18 @@ class InitialViewController: UIViewController {
                 if let tokenResponse = tokenResponse, tokenResponse.success {
                     NetworkSession.shared.initializeSession(user: tokenResponse.data, token: tokenResponse.token)
                     
-                    DispatchQueue.main.async {
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                        self.performSegue(withIdentifier: "mainPage", sender: nil)
-                    }
+                    NetworkController.shared.fetchCafeOfTheDay(with: NetworkSession.shared.token!, completion: { (cafe) in
+                        self.cafeOfTheDay = cafe
+                        
+                        NetworkController.shared.fetchPopularCafes(with: NetworkSession.shared.token!, completion: { (cafes) in
+                            self.popularCafes = cafes
+                            
+                            DispatchQueue.main.async {
+                                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                                self.performSegue(withIdentifier: "mainPage", sender: nil)
+                            }
+                        })
+                    })
                 }
             }
         }
@@ -30,10 +40,18 @@ class InitialViewController: UIViewController {
             NetworkController.shared.fetchNoLoginToken { (token) in
                 NetworkSession.shared.token = token
                 
-                DispatchQueue.main.async {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    self.performSegue(withIdentifier: "mainPage", sender: nil)
-                }
+                NetworkController.shared.fetchCafeOfTheDay(with: NetworkSession.shared.token!, completion: { (cafe) in
+                    self.cafeOfTheDay = cafe
+                    
+                    NetworkController.shared.fetchPopularCafes(with: NetworkSession.shared.token!, completion: { (cafes) in
+                        self.popularCafes = cafes
+                        
+                        DispatchQueue.main.async {
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                            self.performSegue(withIdentifier: "mainPage", sender: nil)
+                        }
+                    })
+                })
             }
         }
     }
@@ -44,14 +62,17 @@ class InitialViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "mainPage" {
+            let mainPageViewController = segue.destination as! MainPageViewController
+            mainPageViewController.cafeOfTheDay = cafeOfTheDay!
+            mainPageViewController.popularCafes = popularCafes!
+        }
     }
-    */
+    
 
 }
