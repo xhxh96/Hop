@@ -53,7 +53,7 @@ Deployment of the backend system can be found in the backend server repo.
 * XCode 9.4.1
 * [Swift 4.1](https://github.com/apple/swift)
 * [Carthage](https://github.com/Carthage/Carthage) - Dependency Management (Version 3.4 and prior)
-* [Cocoapod] (https://cocoapods.org/) - Dependency Management (Version 3.5 onwards)
+* [Cocoapod](https://cocoapods.org/) - Dependency Management (Version 3.5 onwards)
 
 Third-Party Dependencies:
 * [HCSStarRatingView](https://github.com/hsousa/HCSStarRatingView)
