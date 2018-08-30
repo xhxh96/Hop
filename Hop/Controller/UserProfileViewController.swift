@@ -1,10 +1,17 @@
 import UIKit
+import ScalingCarousel
 
-class UserProfileViewController: UIViewController {
+class favoriteCafeCell: ScalingCarouselCell {
+    
+}
+
+class UserProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     @IBOutlet weak var welcomeTextLabel: UILabel!
     @IBOutlet weak var memberSinceTextLabel: UILabel!
     @IBOutlet weak var reviewsTextLabel: UILabel!
     @IBOutlet weak var viewAllReviewButton: UIButton!
+    
+    @IBOutlet weak var carousel: ScalingCarouselView!
     
     var reviews: [HopperReview]!
     
@@ -16,6 +23,11 @@ class UserProfileViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        carousel.deviceRotated()
     }
     
     func updateLabel() {
@@ -53,8 +65,52 @@ class UserProfileViewController: UIViewController {
         }
     }
     
+    // MARK: - Datasource
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return NetworkSession.shared.user?.savedCafes?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favoriteCafeCell", for: indexPath)
+        
+        if let carouselCell = cell as? ScalingCarouselCell {
+            let views = carouselCell.mainView.subviews
+            
+            for view in views {
+                if let labelView = view as? UILabel {
+                    labelView.text = NetworkSession.shared.user!.savedCafes![indexPath.row].name
+                }
+                
+                if let imageView = view as? UIImageView {
+                    let imageURL = URL(string: NetworkSession.shared.user?.savedCafes?[indexPath.row].thumbnail ?? "")
+                    let imageData = try? Data(contentsOf: imageURL!)
+                    
+                    guard let data = imageData else {
+                        continue
+                    }
+                    imageView.image = UIImage(data: data)
+                    imageView.layer.cornerRadius = 20.0
+                    imageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+                }
+            }
+        }
+        
+        DispatchQueue.main.async {
+            cell.setNeedsLayout()
+            cell.layoutIfNeeded()
+        }
+        
+        return cell
+    }
+    
+    
+    // MARK: - Delegate
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        carousel.didScroll()
+    }
+    
+    
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.

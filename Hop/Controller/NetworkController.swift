@@ -70,7 +70,6 @@ class NetworkController {
             url = "https://hopdbserver.herokuapp.com/search/fuzzy?token=\(NetworkSession.shared.token!)&query=\(searchExist)"
             searchByKeyword = true
             
-            print(url)
         }
         else {
             url = "https://api.foursquare.com/v2/search/recommendations?ll=\(currentLocation!.latitude),\(currentLocation!.longitude)&radius=1500&v=20180617&categoryId=4bf58dd8d48988d16d941735&limit=15&client_id=\(client_id)&client_secret=\(client_secret)"
@@ -187,7 +186,6 @@ class NetworkController {
     
     func fetchHopperReviewFromDatabase(venueId: String, with token: String, completion: @escaping ([HopperReview]?) -> Void) {
         let url: String = "https://hopdbserver.herokuapp.com/cafe/review/hopper?fsVenueId=\(venueId)&token=\(token)"
-        print("Hopper Review URL: \(url)")
         
         guard let requestURL = URL(string: url) else {
             print("FETCH HOPPER REVIEW ERROR: Invalid request")
@@ -348,6 +346,58 @@ class NetworkController {
             }
             else {
                 print("SUGGEST EDIT WARNING: No JSON Object found, or unable to map JSON Object to model")
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
+    
+    func addToFavorite(venueId: String, userId: String, with token: String, completion: @escaping (ServerResponse?) -> Void) {
+        let url = "https://hopdbserver.herokuapp.com/cafe/save?token=\(token)&fsVenueId=\(venueId)&userId=\(userId)"
+        
+        guard let requestURL = URL(string: url) else {
+            print("Invalid request")
+            return
+        }
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            
+            if let data = data, let serverResponse = try? jsonDecoder.decode(ServerResponse.self, from: data) {
+                completion(serverResponse)
+            }
+            else {
+                print("ADD TO FAVORITE WARNING: No JSON Object found, or unable to map JSON Object to model")
+                completion(nil)
+            }
+        }
+        task.resume()
+    }
+    
+    func removeFromFavorite(venueId: String, userId: String, with token: String, completion: @escaping (ServerResponse?) -> Void) {
+        let url = "https://hopdbserver.herokuapp.com/cafe/save?token=\(token)&fsVenueId=\(venueId)&userId=\(userId)"
+        
+        guard let requestURL = URL(string: url) else {
+            print("Invalid request")
+            return
+        }
+        
+        var request = URLRequest(url: requestURL)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            let jsonDecoder = JSONDecoder.init()
+            
+            if let data = data, let serverResponse = try? jsonDecoder.decode(ServerResponse.self, from: data) {
+                completion(serverResponse)
+            }
+            else {
+                print("DELETE FROM FAVORITE WARNING: No JSON Object found, or unable to map JSON Object to model")
                 completion(nil)
             }
         }

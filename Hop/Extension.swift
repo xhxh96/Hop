@@ -7,9 +7,3 @@ extension URL {
         return components?.url
     }
 }
-
-extension UIApplication {
-    var statusBarView: UIView? {
-        return value(forKey: "statusBar") as? UIView
-    }
-}

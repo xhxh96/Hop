@@ -61,10 +61,9 @@ class LoginViewController: UIViewController {
                 default:
                     NetworkSession.shared.initializeSession(user: tokenResponse.data, token: tokenResponse.token)
                     
-                    UserDefaults.standard.set(["userId": self.userIdTextField.text!, "userPassword": self.passwordTextField.text!], forKey: "UserSession")
-                    
                     DispatchQueue.main.async {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        UserDefaults.standard.set(["userId": self.userIdTextField.text!, "userPassword": self.passwordTextField.text!], forKey: "UserSession")
                         activityViewController.dismiss(animated: true, completion: {
                             self.dismiss(animated: true, completion: nil)
                         })

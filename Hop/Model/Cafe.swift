@@ -18,7 +18,7 @@ struct Cafe: Codable {
     var contactNo: String?
     var contactEmail: String?
     var address: String
-    var postalCode: String
+    var postalCode: String?
     var latitude: Double
     var longitude: Double
     var amenities: [String: Int]
@@ -56,7 +56,7 @@ struct Cafe: Codable {
         contactNo = try? valueContainer.decode(String.self, forKey: CodingKeys.contactNo)
         contactEmail = try? valueContainer.decode(String.self, forKey: CodingKeys.contactEmail)
         address = try valueContainer.decode(String.self, forKey: CodingKeys.address)
-        postalCode = try valueContainer.decode(String.self, forKey: CodingKeys.postalCode)
+        postalCode = try? valueContainer.decode(String.self, forKey: CodingKeys.postalCode)
         latitude = try valueContainer.decode(Double.self, forKey: CodingKeys.latitude)
         longitude = try valueContainer.decode(Double.self, forKey: CodingKeys.longitude)
         amenities = try valueContainer.decode([String: Int].self, forKey: CodingKeys.amenities)
@@ -122,5 +122,18 @@ struct Cafe: Codable {
                 break
             }
         }
+    }
+}
+
+struct SavedCafe: Codable {
+    var name: String
+    var fsVenueId: String
+    var thumbnail: String?
+    
+    init(from decoder: Decoder) throws {
+        let valueContainer = try decoder.container(keyedBy: CodingKeys.self)
+        name = try valueContainer.decode(String.self, forKey: CodingKeys.name)
+        fsVenueId = try valueContainer.decode(String.self, forKey: CodingKeys.fsVenueId)
+        thumbnail = try? valueContainer.decode(String.self, forKey: CodingKeys.thumbnail)
     }
 }

@@ -3,11 +3,11 @@ import MapKit
 import SafariServices
 
 class CafeTableViewController: UITableViewController, CLLocationManagerDelegate {
-    var selectedCafe: JSON!
     var selectedCafeId: String!
     var cafe: Cafe!
     var bloggerReview: [BloggerReview]?
     var hopperReview: [HopperReview]?
+    var favorited: Bool = false
     
     var frame = CGRect(x: 0, y: 0, width: 0, height: 0)
     
@@ -43,10 +43,11 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         present(activityViewController, animated: true) {
             NetworkController.shared.fetchCafeFromDatabase(venueId: self.selectedCafeId, with: NetworkSession.shared.token!) { (cafe) in
                 self.cafe = cafe
+                self.updateFavorite()
                 
                 DispatchQueue.main.async {
                     self.title = self.cafe.name
-                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(self.addToFavourite(_:)))
+                    self.navigationItem.rightBarButtonItem = NetworkSession.shared.guest ? nil : UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(self.addToFavourite(_:)))
                     self.updateSlider()
                     self.updateLabel()
                     self.updateBloggerRating()
@@ -76,12 +77,6 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
                 })
             }
         }
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func didReceiveMemoryWarning() {
@@ -94,8 +89,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         cafeNameLabel.text = cafe.name
         cafeAddressLabel.text = cafe.address
         
-        priceRangeLabel.text = cafe.priceRange == -1 ? "No data available" :  String(repeating: "💲", count: cafe.priceRange)
-        priceRangeLabel.font = cafe.priceRange == -1 ? UIFont.systemFont(ofSize: 17) : UIFont.systemFont(ofSize: 25)
+        priceRangeLabel.text = cafe.priceRange == -1 ? "💲💲" :  String(repeating: "💲", count: cafe.priceRange)
         
         websiteButton.isHidden = cafe.url == nil ? true : false
         
@@ -152,6 +146,18 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
             
             for index in 0..<Int(rating) {
                 hopperRatingStars[index].alpha = 1
+            }
+        }
+    }
+    
+    func updateFavorite() {
+        guard let user = NetworkSession.shared.user, let savedCafes = user.savedCafes else {
+            return
+        }
+        
+        for cafe in savedCafes {
+            if cafe.fsVenueId == selectedCafeId {
+                favorited = true
             }
         }
     }
@@ -340,7 +346,46 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
     
     @IBAction func addToFavourite(_ sender: UIBarButtonItem) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
+        if favorited {
+            NetworkController.shared.removeFromFavorite(venueId: cafe.fsVenueId, userId: (NetworkSession.shared.user?.userId)!, with: NetworkSession.shared.token!) { (response) in
+                if let response = response, response.success {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        self.favorited = false
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: "Unfavorite Error", message: "This café could not be unfavorited. Please try again later.", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(dismissAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
+        else {
+            NetworkController.shared.addToFavorite(venueId: cafe.fsVenueId, userId: (NetworkSession.shared.user?.userId)!, with: NetworkSession.shared.token!) { (response) in
+                if let response = response, response.success {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        self.favorited = true
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        let alertController = UIAlertController(title: "Favorite Error", message: "This café could not be favorited. Please try again later.", preferredStyle: .alert)
+                        let dismissAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(dismissAction)
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
     }
     
     @IBAction func autoSlider() {

@@ -10,6 +10,7 @@ struct User: Codable {
     var contact: [String: String]
     var reviewCount: Int
     var accountCreatedOn: TimeInterval
+    var savedCafes: [SavedCafe]?
     //var reward: [String: Int]
     
     enum CodingKeys: String, CodingKey {
@@ -21,6 +22,7 @@ struct User: Codable {
         case contact
         case reviewCount
         case accountCreatedOn
+        case savedCafes
     }
     
     init(from decoder: Decoder) throws {
@@ -33,6 +35,7 @@ struct User: Codable {
         contact = try valueContainer.decode([String: String].self, forKey: CodingKeys.contact)
         reviewCount = try valueContainer.decode(Int.self, forKey: CodingKeys.reviewCount)
         accountCreatedOn = try valueContainer.decode(TimeInterval.self, forKey: CodingKeys.accountCreatedOn)
+        savedCafes = try? valueContainer.decode([SavedCafe].self, forKey: CodingKeys.savedCafes)
     }
     
     init(userId: String, password: String, firstName: String, lastName: String, contact: [String: String], reviewCount: Int, accountCreatedOn: Date) {
@@ -43,6 +46,7 @@ struct User: Codable {
         self.contact = contact
         self.reviewCount = reviewCount
         self.accountCreatedOn = accountCreatedOn.timeIntervalSince1970
+        self.savedCafes = nil
     }
 }
 

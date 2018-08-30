@@ -126,6 +126,25 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate, UICol
         }
     }
     
+    @IBAction func myProfileTapped(_ sender: UIButton) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        if let UserSession = UserDefaults.standard.value(forKey: "UserSession") as? [String: String] {
+            let userId = UserSession["userId"]!
+            let userPassword = UserSession["userPassword"]!
+            
+            NetworkController.shared.fetchLoginToken(account: UserLogin(userId: userId, password: userPassword)) { (tokenResponse) in
+                if let tokenResponse = tokenResponse, tokenResponse.success {
+                    NetworkSession.shared.initializeSession(user: tokenResponse.data, token: tokenResponse.token)
+                    
+                    DispatchQueue.main.async {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                        self.performSegue(withIdentifier: "myProfile", sender: nil)
+                    }
+                }
+            }
+        }
+    }
+    
     @IBAction func signInLogOutTapped(_ sender: UIButton) {
         if NetworkSession.shared.guest {
             performSegue(withIdentifier: "loginPage", sender: nil)
