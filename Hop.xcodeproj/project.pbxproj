@@ -24,6 +24,7 @@
 		2825EFC32112E37200060D7C /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2825EFC22112E37200060D7C /* UserProfileViewController.swift */; };
 		2825EFC521132C0C00060D7C /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2825EFC421132C0C00060D7C /* EditProfileTableViewController.swift */; };
 		282CA01820F9E8170020E1A7 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282CA01720F9E8170020E1A7 /* Response.swift */; };
+		283B0941213A9D3E00A2A297 /* AppInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283B0940213A9D3E00A2A297 /* AppInfoViewController.swift */; };
 		284B012020F0B71C00FEA89B /* BloggerReviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284B011F20F0B71C00FEA89B /* BloggerReviewTableViewController.swift */; };
 		284B012220F0B88E00FEA89B /* BloggerReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */; };
 		28664AB0210D8DDC000B757A /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28664AAF210D8DDC000B757A /* LoadingViewController.swift */; };
@@ -64,6 +65,7 @@
 		2825EFC22112E37200060D7C /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		2825EFC421132C0C00060D7C /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
 		282CA01720F9E8170020E1A7 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		283B0940213A9D3E00A2A297 /* AppInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfoViewController.swift; sourceTree = "<group>"; };
 		284B011F20F0B71C00FEA89B /* BloggerReviewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggerReviewTableViewController.swift; sourceTree = "<group>"; };
 		284B012120F0B88E00FEA89B /* BloggerReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggerReviewTableViewCell.swift; sourceTree = "<group>"; };
 		28664AAF210D8DDC000B757A /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		22115A8C20D2BB62002F5CB9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				283B0940213A9D3E00A2A297 /* AppInfoViewController.swift */,
 				28DEBB66213195E100BD0D2C /* InitialViewController.swift */,
 				22E53E0D20E653C8005CD8CC /* LoginViewController.swift */,
 				28C067CC213A4ABA0093AD7E /* FavoriteCafeTableViewController.swift */,
@@ -368,6 +371,7 @@
 				22D1BD8820E92EFC00A9EA7B /* HopperReviewTableViewCell.swift in Sources */,
 				2825EFC12112A85B00060D7C /* NetworkSession.swift in Sources */,
 				284B012020F0B71C00FEA89B /* BloggerReviewTableViewController.swift in Sources */,
+				283B0941213A9D3E00A2A297 /* AppInfoViewController.swift in Sources */,
 				22E53E0E20E653C8005CD8CC /* LoginViewController.swift in Sources */,
 				282CA01820F9E8170020E1A7 /* Response.swift in Sources */,
 				22115A8B20D2BB5A002F5CB9 /* SearchResultTableViewController.swift in Sources */,

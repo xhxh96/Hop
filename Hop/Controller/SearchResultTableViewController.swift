@@ -126,7 +126,8 @@ class SearchResultTableViewController: UITableViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "cafeDetails" {
-            let cafeTableViewController = segue.destination as! CafeTableViewController
+            let navigationController = segue.destination as! UINavigationController
+            let cafeTableViewController = navigationController.viewControllers.first as! CafeTableViewController
             let indexPath = tableView.indexPathForSelectedRow!
             let selectedCafe = cafeResults[indexPath.row]
             

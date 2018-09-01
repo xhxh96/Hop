@@ -163,6 +163,9 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate, UICol
         }
     }
     
+    @IBAction func cafeOfTheDayTapped(_ sender: UITapGestureRecognizer) {
+        performSegue(withIdentifier: "cafeDetails", sender: nil)
+    }
     
     // MARK: - DataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -181,15 +184,13 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate, UICol
                 }
                 
                 if let imageView = view as? UIImageView {
-                    let imageURL = URL(string: popularCafes[indexPath.row].images.first!)
-                    let imageData = try? Data(contentsOf: imageURL!)
+                    let imageURL = popularCafes[indexPath.row].images.first ?? String.init()
                     
-                    guard let data = imageData else {
-                        continue
+                    if let imageURL = URL(string: imageURL), let imageData = try? Data(contentsOf: imageURL) {
+                        imageView.image = UIImage(data: imageData)
+                        imageView.layer.cornerRadius = 20.0
+                        imageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
                     }
-                    imageView.image = UIImage(data: data)
-                    imageView.layer.cornerRadius = 20.0
-                    imageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
                 }
             }
         }
@@ -212,19 +213,26 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate, UICol
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "beginSearch" {
-            let navigationController = segue.destination as? UINavigationController
-            let searchResultTableViewController = navigationController?.viewControllers.first as? SearchResultTableViewController
+            let navigationController = segue.destination as! UINavigationController
+            let searchResultTableViewController = navigationController.viewControllers.first as! SearchResultTableViewController
             
             if let location = locationManager.location {
                 currentLocation = location.coordinate
             }
-            searchResultTableViewController?.currentLocation = currentLocation
+            searchResultTableViewController.currentLocation = currentLocation
+        }
+        else if segue.identifier == "cafeDetails" {
+            let navigationController = segue.destination as! UINavigationController
+            let cafeTableViewController = navigationController.viewControllers.first as! CafeTableViewController
+            cafeTableViewController.selectedCafeId = cafeOfTheDay.fsVenueId
+            
         }
         else if segue.identifier == "popularCafeDetails" {
-            let cafeTableViewController = segue.destination as? CafeTableViewController
+            let navigationController = segue.destination as! UINavigationController
+            let cafeTableViewController = navigationController.viewControllers.first as! CafeTableViewController
             let indexPath = (carousel.indexPathsForSelectedItems?.first)!
             let selectedCafe = popularCafes[indexPath.row]
-            cafeTableViewController?.selectedCafeId = selectedCafe.fsVenueId
+            cafeTableViewController.selectedCafeId = selectedCafe.fsVenueId
         }
     }
 }

@@ -96,8 +96,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
                         continue
                     }
                     imageView.image = UIImage(data: data)
-                    imageView.layer.cornerRadius = 20.0
-                    imageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
                 }
             }
         }

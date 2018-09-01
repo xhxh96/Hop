@@ -76,7 +76,9 @@ class NetworkController {
             searchByKeyword = false
         }
         
-        let request = NSMutableURLRequest(url: URL(string: url)!)
+        let requestURL = URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)
+        
+        let request = NSMutableURLRequest(url: requestURL!)
         let session = URLSession.shared
         
         request.httpMethod = "GET"

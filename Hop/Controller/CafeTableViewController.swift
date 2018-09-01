@@ -37,6 +37,10 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         tableView.allowsSelection = false
         
         mapView.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let activityViewController = ActivityViewController(message: "Loading...")
@@ -345,6 +349,10 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         present(safariViewController, animated: true, completion: nil)
     }
     
+    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func addToFavourite(_ sender: UIBarButtonItem) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
@@ -428,31 +436,4 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
     }
 }
 
-extension CafeTableViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let annotation = annotation as? MapAnnotation else {
-            return nil
-        }
-        
-        let identifier = "marker"
-        var view: MKMarkerAnnotationView
-        
-        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-            as? MKMarkerAnnotationView {
-            dequeuedView.annotation = annotation
-            view = dequeuedView
-        }
-        else {
-            view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            view.canShowCallout = true
-            view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-        }
-        return view
-    }
-    
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        let location = view.annotation as! MapAnnotation
-        let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
-        location.mapItem().openInMaps(launchOptions: launchOptions)
-    }
-}
+
