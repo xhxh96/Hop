@@ -1,6 +1,6 @@
 import UIKit
 
-class CreateAccountTableViewController: UITableViewController {
+class CreateAccountTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailAddressTextField: UITextField!
@@ -58,6 +58,29 @@ class CreateAccountTableViewController: UITableViewController {
             present(alertController, animated: true, completion: nil)
         }
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        switch textField {
+        case userNameTextField:
+            passwordTextField.becomeFirstResponder()
+        case passwordTextField:
+            rePasswordTextField.becomeFirstResponder()
+        case rePasswordTextField:
+            firstNameTextField.becomeFirstResponder()
+        case firstNameTextField:
+            lastNameTextField.becomeFirstResponder()
+        case lastNameTextField:
+            emailAddressTextField.becomeFirstResponder()
+        case emailAddressTextField:
+            contactNumberTextField.becomeFirstResponder()
+        
+        default:
+            break
+        }
+        return true
+    }
+    
     @IBAction func passwordEditingDidEnd(_ sender: UITextField) {
         checkPassword()
     }

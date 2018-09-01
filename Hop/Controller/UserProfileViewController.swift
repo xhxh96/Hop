@@ -10,7 +10,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     @IBOutlet weak var memberSinceTextLabel: UILabel!
     @IBOutlet weak var reviewsTextLabel: UILabel!
     @IBOutlet weak var viewAllReviewButton: UIButton!
-    
+    @IBOutlet weak var viewAllCafeButton: UIButton!
     @IBOutlet weak var carousel: ScalingCarouselView!
     
     var reviews: [HopperReview]!
@@ -45,6 +45,13 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         }
         else {
             viewAllReviewButton.isHidden = true
+        }
+        
+        if let favoriteCafeCount = NetworkSession.shared.user!.savedCafes?.count, favoriteCafeCount > 0 {
+            viewAllCafeButton.isHidden = false
+        }
+        else {
+            viewAllCafeButton.isHidden = true
         }
     }
     
@@ -118,6 +125,10 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         if segue.identifier == "userReviews" {
             let profileReviewTableViewController = segue.destination as! ProfileReviewTableViewController
             profileReviewTableViewController.reviews = reviews
+        }
+        else if segue.identifier == "userFavorite" {
+            let favoriteCafeTableViewController = segue.destination as! FavoriteCafeTableViewController
+            favoriteCafeTableViewController.favoriteCafe = NetworkSession.shared.user!.savedCafes!
         }
     }
  

@@ -64,12 +64,12 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate, UICol
     
     func setupCafeOfTheDay() {
         // Setup image and label
-        let imageURL = URL(string: cafeOfTheDay.images.first!)
-        let imageData = try? Data(contentsOf: imageURL!)
+        let imageURL = URL(string: cafeOfTheDay.images.first ?? String.init())
         
-        if let image = imageData {
-            cafeImage.image = UIImage(data: image)
+        if let imageURL = imageURL, let imageData = try? Data(contentsOf: imageURL) {
+            cafeImage.image = UIImage(data: imageData)
         }
+        
         cafeName.text = cafeOfTheDay.name
         
         // Setup ratings in café of the day card
@@ -224,7 +224,6 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate, UICol
             let cafeTableViewController = segue.destination as? CafeTableViewController
             let indexPath = (carousel.indexPathsForSelectedItems?.first)!
             let selectedCafe = popularCafes[indexPath.row]
-            print(selectedCafe.name)
             cafeTableViewController?.selectedCafeId = selectedCafe.fsVenueId
         }
     }

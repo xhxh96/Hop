@@ -1,6 +1,6 @@
 import UIKit
 
-class EditProfileTableViewController: UITableViewController {
+class EditProfileTableViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
@@ -13,7 +13,6 @@ class EditProfileTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateTextField()
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,6 +51,17 @@ class EditProfileTableViewController: UITableViewController {
             alertController.addAction(dismissAction)
             present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        switch textField {
+        case passwordTextField:
+            rePasswordTextField.becomeFirstResponder()
+        default:
+            break
+        }
+        return true
     }
 
     @IBAction func passwordEditingDidEnd(_ sender: UITextField) {
