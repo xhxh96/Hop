@@ -22,5 +22,8 @@ class AppInfoViewController: UIViewController {
         versionTextField.text = version
         
     }
-
+    
+    @IBAction func closeButtonTapped(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
 }

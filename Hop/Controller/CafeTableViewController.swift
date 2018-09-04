@@ -288,7 +288,7 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
             descriptionLabel.text = reviews[index].content
             descriptionLabel.numberOfLines = 0
             descriptionLabel.textAlignment = .justified
-            descriptionLabel.font = UIFont.systemFont(ofSize: 10)
+            descriptionLabel.font = UIFont.systemFont(ofSize: 12)
             hopperReviewScrollView.addSubview(descriptionLabel)
         }
         hopperReviewScrollView.contentSize = CGSize(width: hopperReviewScrollView.frame.size.width * CGFloat(reviews.count), height: hopperReviewScrollView.frame.size.height)
