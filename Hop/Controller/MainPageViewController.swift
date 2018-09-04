@@ -155,6 +155,7 @@ class MainPageViewController: UIViewController, CLLocationManagerDelegate, UICol
             NetworkController.shared.fetchNoLoginToken { (token) in
                 NetworkSession.shared.token = token
                 UserDefaults.standard.removeObject(forKey: "UserSession")
+                UserDefaults.standard.removeObject(forKey: "ProfileImage")
                 
                 DispatchQueue.main.async {
                     self.viewDidAppear(true)

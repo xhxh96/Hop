@@ -6,8 +6,6 @@ class FavoriteCafeTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.allowsSelection = false
-        tableView.allowsSelectionDuringEditing = true
         self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
@@ -78,14 +76,19 @@ class FavoriteCafeTableViewController: UITableViewController {
     }
 
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "favoriteCafeDetails" {
+            let navigationController = segue.destination as! UINavigationController
+            let cafeTableViewController = navigationController.viewControllers.first as! CafeTableViewController
+            let indexPath = tableView.indexPathForSelectedRow!
+            let selectedCafe = favoriteCafe[indexPath.row]
+            cafeTableViewController.selectedCafeId = selectedCafe.fsVenueId
+        }
     }
-    */
+ 
 
 }

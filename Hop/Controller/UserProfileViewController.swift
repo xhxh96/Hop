@@ -5,7 +5,9 @@ class favoriteCafeCell: ScalingCarouselCell {
     
 }
 
-class UserProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class UserProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var welcomeTextLabel: UILabel!
     @IBOutlet weak var memberSinceTextLabel: UILabel!
     @IBOutlet weak var reviewsTextLabel: UILabel!
@@ -18,6 +20,7 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
     override func viewDidLoad() {
         super.viewDidLoad()
         updateLabel()
+        updateImage()
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,6 +58,16 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         }
     }
     
+    func updateImage() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped(_:)))
+        profileImage.addGestureRecognizer(tap)
+        
+        if let imageData = UserDefaults.standard.value(forKey: "ProfileImage") as? Data {
+            profileImage.image = UIImage(data: imageData)
+        }
+        
+    }
+    
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
@@ -70,6 +83,33 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
                 }
             }
         }
+    }
+    
+    @IBAction func profileImageTapped(_ gesture: UIGestureRecognizer) {
+        let imagePicker = UIImagePickerController.init()
+        imagePicker.delegate = self
+        
+        let alertController = UIAlertController(title: "Choose Image Source", message: nil, preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let cameraAction = UIAlertAction(title: "Camera", style: .default) { action in
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)
+            }
+            alertController.addAction(cameraAction)
+        }
+        
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { action in
+                imagePicker.sourceType = .photoLibrary
+                self.present(imagePicker, animated: true, completion: nil)
+            }
+            alertController.addAction(photoLibraryAction)
+        }
+        present(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Datasource
@@ -114,6 +154,15 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         carousel.didScroll()
     }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            profileImage.image = selectedImage
+            let imageData = UIImagePNGRepresentation(selectedImage)
+            UserDefaults.standard.set(imageData, forKey: "ProfileImage")
+            dismiss(animated: true, completion: nil)
+        }
+    }
+    
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -127,6 +176,13 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
         else if segue.identifier == "userFavorite" {
             let favoriteCafeTableViewController = segue.destination as! FavoriteCafeTableViewController
             favoriteCafeTableViewController.favoriteCafe = NetworkSession.shared.user!.savedCafes!
+        }
+        else if segue.identifier == "favoriteCafeDetails" {
+            let navigationController = segue.destination as! UINavigationController
+            let cafeTableViewController = navigationController.viewControllers.first as! CafeTableViewController
+            let indexPath = (carousel.indexPathsForSelectedItems?.first)!
+            let selectedCafe = NetworkSession.shared.user!.savedCafes![indexPath.row]
+            cafeTableViewController.selectedCafeId = selectedCafe.fsVenueId
         }
     }
  

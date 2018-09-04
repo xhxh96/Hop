@@ -632,7 +632,7 @@
                                 <color key="textColor" red="0.30196078430000001" green="0.2274509804" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbnail-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="aCa-aq-QNR">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbnail-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="aCa-aq-QNR">
                                 <rect key="frame" x="127.5" y="118" width="120" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="JWp-wI-HAK"/>
@@ -712,6 +712,7 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="mainView" destination="6DT-mX-IV6" id="r8T-L3-KO9"/>
+                                            <segue destination="eOG-Es-ygB" kind="show" identifier="favoriteCafeDetails" id="xua-f8-2t3"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -782,6 +783,7 @@
                     <connections>
                         <outlet property="carousel" destination="6ua-Vj-vP9" id="WqQ-jB-nRd"/>
                         <outlet property="memberSinceTextLabel" destination="xif-Yj-UVb" id="vvj-do-OAn"/>
+                        <outlet property="profileImage" destination="aCa-aq-QNR" id="Org-xO-e9c"/>
                         <outlet property="reviewsTextLabel" destination="iOe-1H-Q1i" id="zL8-Ml-FRf"/>
                         <outlet property="viewAllCafeButton" destination="ey3-Mb-88d" id="e8x-FX-Z6e"/>
                         <outlet property="viewAllReviewButton" destination="PPf-b1-69s" id="9RD-sa-0hK"/>
@@ -1036,6 +1038,9 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.78039215689999997" green="0.69803921570000005" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <segue destination="eOG-Es-ygB" kind="show" identifier="favoriteCafeDetails" id="mAj-de-IrF"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -3156,7 +3161,7 @@
         <image name="wifi" width="64" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="XKl-6f-4jg"/>
-        <segue reference="vcM-Tm-oKD"/>
+        <segue reference="xua-f8-2t3"/>
+        <segue reference="gDf-XT-e7y"/>
     </inferredMetricsTieBreakers>
 </document>
