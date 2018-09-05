@@ -185,6 +185,5 @@ class UserProfileViewController: UIViewController, UICollectionViewDataSource, U
             cafeTableViewController.selectedCafeId = selectedCafe.fsVenueId
         }
     }
- 
 
 }

@@ -435,5 +435,3 @@ class CafeTableViewController: UITableViewController, CLLocationManagerDelegate 
         }
     }
 }
-
-
