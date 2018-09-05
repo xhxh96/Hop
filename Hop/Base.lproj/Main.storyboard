@@ -21,18 +21,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="TVx-fa-Y9c">
-                                <rect key="frame" x="23" y="602.5" width="328" height="48.5"/>
+                                <rect key="frame" x="61" y="539" width="253" height="112"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Designed by Elston Aw and Cheng Xianhao" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BFa-ww-FQw">
-                                        <rect key="frame" x="0.0" y="0.0" width="328" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Designed by Elston and Xian Hao" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BFa-ww-FQw">
+                                        <rect key="frame" x="0.0" y="0.0" width="253" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An NUS School of Computing Orbital Project" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GMl-5m-tYg">
-                                        <rect key="frame" x="0.0" y="30.5" width="328" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="under guidance of " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xyn-sY-Vbd">
+                                        <rect key="frame" x="0.0" y="30.5" width="253" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Laurence Putra Fransley" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DkP-eH-MpV">
+                                        <rect key="frame" x="0.0" y="61" width="253" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kyle Timothy Ng Chu" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EkX-Vo-G4V">
+                                        <rect key="frame" x="0.0" y="91.5" width="253" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -98,20 +110,29 @@
                                     <action selector="closeButtonTapped:" destination="zpF-Fa-5gC" eventType="touchUpInside" id="QF1-1q-pkS"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An NUS School of Computing Orbital Project" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GMl-5m-tYg">
+                                <rect key="frame" x="35" y="64" width="304.5" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.78039215689999997" green="0.69803921570000005" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="c8X-lb-mvM" firstAttribute="bottom" secondItem="TVx-fa-Y9c" secondAttribute="bottom" constant="16" id="1El-S8-H0r"/>
+                            <constraint firstItem="GMl-5m-tYg" firstAttribute="centerX" secondItem="5FS-a4-yQB" secondAttribute="centerX" id="4NT-bU-Nz3"/>
                             <constraint firstItem="k5u-da-YKA" firstAttribute="centerY" secondItem="5FS-a4-yQB" secondAttribute="centerY" id="Kd1-J9-FVC"/>
                             <constraint firstItem="Aab-Vl-Nqs" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="5FS-a4-yQB" secondAttribute="leading" constant="20" symbolic="YES" id="Qz8-0d-TgA"/>
                             <constraint firstItem="c8X-lb-mvM" firstAttribute="trailing" secondItem="Aab-Vl-Nqs" secondAttribute="trailing" constant="16" id="Z1L-ot-0uI"/>
                             <constraint firstItem="Aab-Vl-Nqs" firstAttribute="top" secondItem="c8X-lb-mvM" secondAttribute="top" id="ijy-k5-Mtm"/>
                             <constraint firstItem="TVx-fa-Y9c" firstAttribute="centerX" secondItem="5FS-a4-yQB" secondAttribute="centerX" id="juf-qW-feT"/>
                             <constraint firstItem="k5u-da-YKA" firstAttribute="centerX" secondItem="5FS-a4-yQB" secondAttribute="centerX" id="vdd-Aq-MkX"/>
+                            <constraint firstItem="GMl-5m-tYg" firstAttribute="top" secondItem="Aab-Vl-Nqs" secondAttribute="bottom" constant="8" id="yXD-jt-V1b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="c8X-lb-mvM"/>
                     </view>
                     <connections>
+                        <outlet property="appIcon" destination="wG6-ea-glg" id="4wL-Sz-3cW"/>
                         <outlet property="buildTextField" destination="X4d-Xk-Qjr" id="mCc-4s-amb"/>
                         <outlet property="versionTextField" destination="6hh-c3-UTn" id="pp0-Wc-VTx"/>
                     </connections>
@@ -632,7 +653,7 @@
                                 <color key="textColor" red="0.30196078430000001" green="0.2274509804" blue="0.20392156859999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbnail-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="aCa-aq-QNR">
+                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbnail-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="aCa-aq-QNR">
                                 <rect key="frame" x="127.5" y="118" width="120" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="JWp-wI-HAK"/>
