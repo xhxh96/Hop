@@ -19,11 +19,11 @@ Backend system of this mobile app is running on MongoDB + NodeJS and managed by 
 
 
 ## User Guide
-The mobile app can be used with and without an account being created (guest mode)
+The mobile app can be used with and without an account being created (guest mode).
 
 
 ### Creating an Account
-Account can be created selecting Sign In, followed by Create an Account. 
+Account can be created by selecting `Sign In`, followed by `Create an Account`. 
 
 Account details are stored in our backend server, with the password being hashed via bcrypt.
 
@@ -33,16 +33,22 @@ User Profile can only be accessed after user has logged in via the main page.
 
 Under User Profile, user can edit the profile information and view all the reviews submitted. 
 
-Review management are also done using the User Profile.
+Review management is also done using the User Profile page.
 
 
 ### Café Search
-To begin café search, select the search bar in the main page. 
+To begin a café search, select the search bar in the main page. 
 
 User will then be brought to the search result table. By default, the results will show cafés that are near the user. 
 
-Selecting the café in the search result will bring user to the café page. 
+Selecting the café in the search result will bring user to the café page.
 
+### Café Page
+The café page provides users with a systematic view of the general information such as address and operating hours. It also provides users with the available amenities (such as free WiFi, being situated near a public transit etc) as well as reviews from verified users and food bloggers.
+
+Reviews from food bloggers are scrapped using GoogleSearch API. 
+
+Users are also able to submit a review for the café by selecting the `Submit Review` option, or update the amenities available by selecting the `Update` at the bottom of the page. 
 
 
 ## Deployment
