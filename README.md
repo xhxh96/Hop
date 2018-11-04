@@ -13,6 +13,7 @@ The app is however not universal and is thus not officially supported on iPad.
 
 Backend system of this mobile app is running on MongoDB + NodeJS and managed by @elstonayx. For updates and development of the backend system, please access the GitHub repo [here](https://github.com/elstonayx/hopdbserver)
 
+Note: The `client_id` and `client_secret` in `NetworkController.swift` have been revoked for security purposes. To get the search working, you would have to input your own Foursquare `client_id` and `client_secret`. 
 
 ### Prerequisites
 * iOS device running iOS 9.0 and above
